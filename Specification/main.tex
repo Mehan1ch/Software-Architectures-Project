@@ -1,0 +1,66 @@
+%--------------------------------------------------------------------------------------
+% Dokumentum formátuma [Document format]
+%--------------------------------------------------------------------------------------
+\documentclass[12pt,a4paper,oneside]{article}
+
+%--------------------------------------------------------------------------------------
+% Csomagok inicializálása [Initializing packages]
+%--------------------------------------------------------------------------------------
+
+\input{packages}
+
+%--------------------------------------------------------------------------------------
+% Dokumentum törzse [Document body]
+%--------------------------------------------------------------------------------------
+
+\begin{document}
+
+%--------------------------------------------------------------------------------------
+% Címoldal [Titlepage]
+%--------------------------------------------------------------------------------------
+
+\include{titlepage}  
+
+%--------------------------------------------------------------------------------------
+% Tartalomjegyzék [Table of Contents]
+%--------------------------------------------------------------------------------------
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+%--------------------------------------------------------------------------------------
+% Oldalszámok formázása [Page numbering]
+%--------------------------------------------------------------------------------------
+\fancyhf{}
+\lhead{Szoftverarchitektúrák}
+\rhead{VIAUMA21}
+\cfoot{\thepage}
+\pagestyle{fancy}
+\setcounter{page}{1}
+
+
+%--------------------------------------------------------------------------------------
+% Tartalom [Contents]
+%--------------------------------------------------------------------------------------
+
+%TODO A tartalmat ide írd  [Write the chapters here]
+% Ki lehet file-okba is szervezni [You can organize it into files]
+% Példa: \include{sections/introduction}
+\section{Példa}
+Teszt szöveg.\cite{wikipedia}
+
+%--------------------------------------------------------------------------------------
+% Bibliográfia [Bibliography] - Ha üres kommenteld ki [Uncomment if empty]
+%--------------------------------------------------------------------------------------
+\newpage
+\thispagestyle{empty}
+\pagenumbering{gobble}
+{
+    \footnotesize  % Kisebb betűméret [Smaller font size]
+    \bibliographystyle{plain}
+    \bibliography{mybib}
+}
+\addcontentsline{toc}{section}{Hivatkozások}
+
+\end{document}
