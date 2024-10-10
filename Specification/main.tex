@@ -47,84 +47,12 @@
 %TODO A tartalmat ide írd  [Write the chapters here]
 % Ki lehet file-okba is szervezni [You can organize it into files]
 % Példa: \include{sections/introduction}
-\section{Fogalomszótár}
-\begin{description}
-\item [Látogató:] Egy személy, aki az író olvasó klienst használja. Képes a megosztott művek között böngészni és azokat olvasni.
 
-\item [(Regisztrált) Felhasználó:] Egy látogató, aki regisztrál a platformon, és képes műveket olvasni, megosztani, kommentelni, saját műveit gyűjteményekbe szervezni, valamint privát üzeneteket küldeni.
+\include{sections/description}
 
-\item [Moderátor:] Egy speciális felhasználó, aki jogosult a beküldött történetek átnézésére, jóváhagyására vagy elutasítására.
+\include{sections/definitions}
 
-\item [Admin:] Minden jogosultsággal rendelkező speciális felhasználó, moderátorokat jelölhet ki, a felhasználókat menedzselheti
-
-\item [Mű:] A platformon megosztott írásos tartalom. A tartalma fejezeteket és fejezeten kívüli szöveges részeket tartalmazhat. (pl: a regény fejezetekből áll, egy vers vagy novella nem tartalmaz fejezeteket).
-A művek gyűjtemények részei lehetnek. Művekhez kommentek fűzhetők és kedvelhetők
-A műveket saját szerzőik és a moderátorok opcionálisan tulajdonságokkal láthatják el:
-
-\begin{itemize}
-\item \emph{Kategória:} Leírja a mű műfaját vagy típusát.
-Előre definiált kategóriák vannak amiket a felhasználók használhatnak
-Kategóriát moderátor hozhat létre, módosíthat, törölhet
-\item \emph{Címkék:} Kulcsszavak, amik további információt adnak a műről.
-Bárki hozhat létre új jellemzőt, vagy használhat egy már meglévőt
-\item \emph{Szereplők:} A műben szereplő kitalált vagy valós személyek.
-Bárki hozhat létre új szereplőt, vagy használhat egy már meglévőt 
-\item \emph{Figyelmeztetések:} Specifikus tartalmi figyelmeztetések (pl: erőszakos tartalom).
-Előre definiált figyelmeztetések vannak amiket a felhasználók használhatnak
-Figyelmeztetést moderátor hozhat létre, módosíthat, törölhet
-\item \emph{Korhatár:} Jelzi a mű olvasására ajánlott korosztályt.
-Előre definiált korhatárok vannak amiket a felhasználók használhatnak
-Korhatárt moderátor hozhat létre, módosíthat, törölhet
-\item \emph{Nyelv:} Az a nyelv, amelyen a mű olvasható.
-Előre felvett listából választható, a földön beszélt legtöbb nyelvet tartalmazza
-\end{itemize}
-
-\item [Fejezet:]  Művek alegységei, melyek saját címmel és számozással rendelkeznek. Egy fejezet nem bontható további alegységekre. A műveket nem kötelező fejezetekre bontani. 
-
-\item [Gyűjtemény:] Publikált művek egy listája, címmel ellátva. A felhasználók a publikált műveket gyűjteményekbe rendezhetik. A gyűjtemények nyilvánosan elérhetők, de csak az azt létrehozó felhasználó szerkesztheti.
-
-\item [Megjegyzések:] A történetekhez, gyűjteményekhez, regényekhez hozzáfűzhető vélemények és kritikák. Kommentekhez nem lehet válasz kommentet fűzni, de lehet kedvelni.
-
-\item [Kedvelések:] Egy felhasználó műveket és megjegyzéseket is kedvelhet, de egy adottat csakis egyszer. Több fajta reakció (pl: dislike, emoji) nincs.
-
-\item [Privát üzenet:] Egy kommunikációs funkció ami lehetővé teszi a felhasználóknak, hogy személyes üzeneteket küldjenek egymásnak.
-\end{description}
-
-\section{Kliens funkciók}
-
-\subsection{Szereplők:}
-\begin{itemize}
-\item Látogató
-\item (Regisztrált) Felhasználó
-\item Moderátor
-\item Rendszer
-\end{itemize}
-
-\subsection{Use case-ek:}
-\textbf{(w):} csak webes, \textbf{(m):} csak mobilos funkció
-\begin{itemize}
-\item \textbf{Regisztráció/Bejelentkezés:} A klienst használó személy létrehoz egy felhasználói fiókot vagy bejelentkezik.
-\item \textbf{Felhasználói fiók beállítások:} A felhasználó módosíthatja profiljának adatait (pl. felhasználónév, jelszó)
-\item \textbf{Történet létrehozása / szerkesztése / beküldése moderálásra (w):} Felhasználó új történeteket hozhat létre, korábbi történeteit szerkesztheti, beküldheti történeteit moderálásra.
-\item \textbf{Történetek olvasása:} Látogatók böngészhetnek a közzétett történetek között és megnyithatják őket olvasásra.
-\item \textbf{Történethez hozzászólás/kritika rendelése:} A felhasználó bármely publikált műhöz megjegyzést írhat
-\item \textbf{Történet letöltése offline olvasásra (m):} Felhasználók letölthetnek történeteket amik törlésig lokálisan a mobil eszközön tárolódnak és megnyithatók olvasásra.  
-\item \textbf{Letöltött történetek törlése (m):} Felhasználó törölheti az eszközére korábban letöltött történeteket
-\item \textbf{Moderálás:} Az a folyamat, amely során a beküldött történeteket a moderátorok átnézik, jóváhagyják vagy elutasítják. 
-\item \textbf{Moderálási értesítés fogadása:} A moderálás eredményéről a felhasználó számára érkező automata üzenet.
-\item \textbf{Gyűjteménybe/fejezetbe rendezés:} Egy felhasználó saját gyűjteményt hozhat létre, melybe saját és mások publikusan elérhető műveit helyezheti el. Egy felhasználó csak a saját gyűjteményeit szerkesztheti. 
-\item \textbf{Privát üzenetek küldése fogadása:} Felhasználók egymásnak üzeneteket küldhetnek
-\end{itemize}
-\subsection{Use case diagram:}
-\begin{center}
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{./figures/Use-case_diagram.png}
-\end{center}
-
-
-\section{Architektúra}
-Teszt szöveg.\cite{wikipedia}
-
-\include{sections/definitons}
+\include{sections/functions}
 
 %--------------------------------------------------------------------------------------
 % Bibliográfia [Bibliography] - Ha üres kommenteld ki [Uncomment if empty]

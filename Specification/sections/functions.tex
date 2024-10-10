@@ -1,0 +1,29 @@
+\section{Kliens funkciók}
+
+\subsection{Szereplők:}
+\begin{itemize}
+\item Látogató
+\item (Regisztrált) Felhasználó
+\item Moderátor
+\item Rendszer
+\end{itemize}
+
+\subsection{Use case-ek:}
+\textbf{(w):} csak webes, \textbf{(m):} csak mobilos funkció
+\begin{itemize}
+\item \textbf{Regisztráció/Bejelentkezés:} A klienst használó személy létrehoz egy felhasználói fiókot vagy bejelentkezik.
+\item \textbf{Felhasználói fiók beállítások:} A felhasználó módosíthatja profiljának adatait (pl. felhasználónév, jelszó)
+\item \textbf{Történet létrehozása / szerkesztése / beküldése moderálásra (w):} Felhasználó új történeteket hozhat létre, korábbi történeteit szerkesztheti, beküldheti történeteit moderálásra.
+\item \textbf{Történetek olvasása:} Látogatók böngészhetnek a közzétett történetek között és megnyithatják őket olvasásra.
+\item \textbf{Történethez hozzászólás/kritika rendelése:} A felhasználó bármely publikált műhöz megjegyzést írhat
+\item \textbf{Történet letöltése offline olvasásra (m):} Felhasználók letölthetnek történeteket amik törlésig lokálisan a mobil eszközön tárolódnak és megnyithatók olvasásra.  
+\item \textbf{Letöltött történetek törlése (m):} Felhasználó törölheti az eszközére korábban letöltött történeteket
+\item \textbf{Moderálás:} Az a folyamat, amely során a beküldött történeteket a moderátorok átnézik, jóváhagyják vagy elutasítják. 
+\item \textbf{Moderálási értesítés fogadása:} A moderálás eredményéről a felhasználó számára érkező automata üzenet.
+\item \textbf{Gyűjteménybe/fejezetbe rendezés:} Egy felhasználó saját gyűjteményt hozhat létre, melybe saját és mások publikusan elérhető műveit helyezheti el. Egy felhasználó csak a saját gyűjteményeit szerkesztheti. 
+\item \textbf{Privát üzenetek küldése fogadása:} Felhasználók egymásnak üzeneteket küldhetnek
+\end{itemize}
+\subsection{Use case diagram:}
+\begin{center}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{./figures/Use-case_diagram.png}
+\end{center}
