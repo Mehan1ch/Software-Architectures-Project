@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Writer-Reader-Client"
 include(":app")
+ 
