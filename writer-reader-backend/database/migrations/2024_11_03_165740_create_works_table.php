@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->text('content');
             $table->foreignUuid('creator_id')->constrained('users');
+            //TODO A $php artisan migrate parancs futtatasakor hibat dobott a toArray() hivasra: "Call to a member function toArray() on string"
             $table->enum('moderation_status', ModerationEnum::class->toArray()->default(ModerationEnum::PENDING));
             $table->foreignUuid('moderator_id')->nullable()->constrained('users');
             $table->foreignUuid('rating_id')->nullable()->constrained('ratings');

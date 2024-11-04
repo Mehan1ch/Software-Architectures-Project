@@ -6,15 +6,17 @@ use Database\Factories\WorkFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Language extends Model
+class Work_category extends Model
 {
     /** @use HasFactory<WorkFactory> */
     use HasFactory;
     use HasUuids;
 
     protected $fillable = [
-        'name',
+        'work_id',
+        'category_id',
         'created_at',
         'updated_at',
     ];
@@ -23,4 +25,14 @@ class Language extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function work(): BelongsTo
+    {
+        return $this->belongsTo(Work::class, 'work_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }
