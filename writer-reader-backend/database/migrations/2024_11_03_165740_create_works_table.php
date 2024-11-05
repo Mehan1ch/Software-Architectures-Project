@@ -14,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('works', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('title');
             $table->text('content');
             $table->foreignUuid('creator_id')->constrained('users');
-            //TODO A $php artisan migrate parancs futtatasakor hibat dobott a toArray() hivasra: "Call to a member function toArray() on string"
-            $table->enum('moderation_status', ModerationEnum::class->toArray()->default(ModerationEnum::PENDING));
+            $table->enum('moderation_status', ModerationEnum::values())->default(ModerationEnum::PENDING);
             $table->foreignUuid('moderator_id')->nullable()->constrained('users');
             $table->foreignUuid('rating_id')->nullable()->constrained('ratings');
             $table->foreignUuid('language_id')->nullable()->constrained('languages');

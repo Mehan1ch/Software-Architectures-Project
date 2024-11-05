@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->text('content');
             $table->foreignUuid('sent_by_id')->constrained('users');
             $table->foreignUuid('sent_to_id')->constrained('users');
             $table->timestamps();

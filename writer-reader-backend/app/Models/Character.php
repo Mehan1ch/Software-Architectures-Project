@@ -6,6 +6,7 @@ use Database\Factories\WorkFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Character extends Model
 {
@@ -23,4 +24,9 @@ class Character extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function works(): BelongsToMany
+    {
+        return $this->belongsToMany(Work::class);
+    }
 }
