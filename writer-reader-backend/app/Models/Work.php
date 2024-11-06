@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ModerationEnum;
 use Database\Factories\WorkFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +33,7 @@ class Work extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'moderation_status' => ModerationEnum::class,
     ];
 
     public function creator(): BelongsTo

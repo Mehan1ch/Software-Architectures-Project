@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Warning;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Warning>
+ * @extends Factory<Warning>
  */
 class WarningFactory extends Factory
 {
@@ -16,8 +17,11 @@ class WarningFactory extends Factory
      */
     public function definition(): array
     {
+        $created_at = $this->faker->dateTime();
         return [
-            //
+            'details' => $this->faker->sentence(),
+            'created_at' => $created_at,
+            'updated_at' => $this->faker->dateTimeBetween($created_at),
         ];
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Character;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Character>
+ * @extends Factory<Character>
  */
 class CharacterFactory extends Factory
 {
@@ -16,8 +17,11 @@ class CharacterFactory extends Factory
      */
     public function definition(): array
     {
+        $created_at = $this->faker->dateTime();
         return [
-            //
+            'name' => $this->faker->name,
+            'created_at' => $created_at,
+            'updated_at' => $this->faker->dateTimeBetween($created_at),
         ];
     }
 }
