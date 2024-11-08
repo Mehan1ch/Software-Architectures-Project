@@ -16,15 +16,7 @@ class WorkController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return WorkResource::collection(Work::paginate(10));
     }
 
     /**
@@ -40,15 +32,7 @@ class WorkController extends Controller
      */
     public function show(Work $work)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Work $work)
-    {
-        //
+        return new WorkResource($work);
     }
 
     /**

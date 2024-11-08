@@ -26,8 +26,8 @@ class WorkSeeder extends Seeder
             ->has(Category::factory()->count(fake()->numberBetween(1, 10)))
             ->has(Tag::factory()->count(fake()->numberBetween(1, 10)))
             ->has(Character::factory()->count(fake()->numberBetween(1,10)))
-            ->has(Like::factory()->count(fake()->numberBetween(1,10)))
-            ->has(Comment::factory()->count(fake()->numberBetween(1,10)))
+            //->has(Like::factory()->count(fake()->numberBetween(1,10)))
+            //->has(Comment::factory()->count(fake()->numberBetween(1,10)))
             ->create();
     }
 }

@@ -19,7 +19,7 @@ class Work extends Model
     use HasUuids;
 
     protected $fillable = [
-        'name',
+        'title',
         'content',
         'creator_id',
         'moderation_status',
