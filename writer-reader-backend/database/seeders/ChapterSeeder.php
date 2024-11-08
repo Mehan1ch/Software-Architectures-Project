@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Chapter;
+use App\Models\Work;
 use Illuminate\Database\Seeder;
 
 class ChapterSeeder extends Seeder
@@ -12,6 +13,9 @@ class ChapterSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+         Chapter::factory(25)
+             ->recycle(Work::all())
+             //->has(Work::factory()->count(fake()->numberBetween(1, 5)))
+             ->create();
     }
 }

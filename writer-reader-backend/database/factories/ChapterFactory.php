@@ -23,9 +23,6 @@ class ChapterFactory extends Factory
             'title' => $this->faker->sentence,
             'content' => $this->faker->paragraphs(3, true),
             'work_id' => Work::all()->random()->id,
-            'created_at' => $created_at,
-            'updated_at' => $this->faker->dateTimeBetween($created_at),
-            //
         ];
     }
 }

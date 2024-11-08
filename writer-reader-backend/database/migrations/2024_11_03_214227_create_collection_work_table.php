@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('work_warnings', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+        Schema::create('collection_work', function (Blueprint $table) {
+            $table->foreignUuid('collection_id')->constrained('collections');
             $table->foreignUuid('work_id')->constrained('works');
-            $table->foreignUuid('warning_id')->constrained('warnings');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('work_warnings');
+        Schema::dropIfExists('collection_works');
     }
 };

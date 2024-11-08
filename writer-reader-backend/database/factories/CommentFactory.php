@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Collection;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\Work;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,12 +20,12 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
-        $createdAt = $this->faker->dateTime();
+        $commentable = $this->faker->randomElement([Work::all()->random(), Collection::all()->random()]);
         return [
             'content' => $this->faker->text(),
             'user_id' => User::all()->random()->id,
-            'created_at' => $createdAt,
-            'updated_at' => $this->faker->dateTimeBetween($createdAt),
+            'commentable_id' => $commentable->id,
+            'commentable_type' => $commentable->getMorphClass(),
         ];
     }
 }

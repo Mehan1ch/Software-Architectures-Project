@@ -17,6 +17,8 @@ class Like extends Model
 
     protected $fillable = [
         'user_id',
+        'likeable_id',
+        'likeable_type',
         'created_at',
         'updated_at',
     ];
@@ -31,7 +33,7 @@ class Like extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function likes(): MorphTo
+    public function likeable(): MorphTo
     {
         return $this->morphTo();
     }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->text('content');
             $table->foreignUuid('user_id')->constrained('users');
+            $table->uuidMorphs('commentable');
             $table->timestamps();
         });
     }

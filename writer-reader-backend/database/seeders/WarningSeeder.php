@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Warning;
+use App\Models\Work;
 use Illuminate\Database\Seeder;
 
 class WarningSeeder extends Seeder
@@ -12,6 +13,9 @@ class WarningSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Warning::factory(25)
+            ->recycle(Work::all())
+            //->has(Work::factory())
+            ->create();
     }
 }

@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('collection_works', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('collection_id')->constrained('collections');
+        Schema::create('tag_work', function (Blueprint $table) {
             $table->foreignUuid('work_id')->constrained('works');
+            $table->foreignUuid('tag_id')->constrained('tags');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('collection_works');
+        Schema::dropIfExists('work_tags');
     }
 };

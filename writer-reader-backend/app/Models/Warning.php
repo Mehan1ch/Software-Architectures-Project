@@ -25,7 +25,7 @@ class Warning extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function work(): BelongsToMany
+    public function works(): BelongsToMany
     {
         return $this->belongsToMany(Work::class);
     }

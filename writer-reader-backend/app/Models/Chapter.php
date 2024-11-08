@@ -26,7 +26,7 @@ class Chapter extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function work(): BelongsTo
+    public function works(): BelongsTo
     {
         return $this->belongsTo(Work::class, 'work_id');
     }

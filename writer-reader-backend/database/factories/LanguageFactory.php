@@ -17,11 +17,8 @@ class LanguageFactory extends Factory
      */
     public function definition(): array
     {
-        $created_at = $this->faker->dateTime();
         return [
             'name' => $this->faker->unique()->languageCode(),
-            'created_at' => $created_at,
-            'updated_at' => $this->faker->dateTimeBetween($created_at),
         ];
     }
 }

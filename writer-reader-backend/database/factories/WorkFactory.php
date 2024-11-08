@@ -21,17 +21,14 @@ class WorkFactory extends Factory
      */
     public function definition(): array
     {
-        $created_at = $this->faker->dateTime();
         return [
-            'name' => $this->faker->sentence,
+            'title' => $this->faker->sentence,
             'content' => $this->faker->paragraphs(3, true),
             'creator_id' => User::all()->random()->id,
             'moderation_status' => $this->faker->randomElement(ModerationEnum::values()),
             'moderator_id' => User::all()->random()->id,
             'rating_id' => Rating::all()->random()->id,
             'language_id' => Language::all()->random()->id,
-            'created_at' => $created_at,
-            'updated_at' => $this->faker->dateTimeBetween($created_at),
         ];
     }
 }

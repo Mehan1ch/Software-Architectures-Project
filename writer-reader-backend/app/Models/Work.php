@@ -81,6 +81,11 @@ class Work extends Model
         return $this->belongsToMany(Character::class);
     }
 
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class,'commentable');

@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Collection;
+use App\Models\User;
+use App\Models\Work;
 use Illuminate\Database\Seeder;
 
 class CollectionSeeder extends Seeder
@@ -12,6 +14,11 @@ class CollectionSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Collection::factory(20)
+            ->recycle(Work::all())
+            ->recycle(User::all())
+            //->for(User::factory())
+            //->has(Work::factory()->count(fake()->numberBetween(1, 10)))
+            ->create();
     }
 }

@@ -2,8 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Collection;
+use App\Models\Comment;
 use App\Models\Like;
 use App\Models\User;
+use App\Models\Work;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,12 +21,11 @@ class LikeFactory extends Factory
      */
     public function definition(): array
     {
-        $created_at = $this->faker->dateTime();
+        $likeable = $this->faker->randomElement([Work::all()->random(), Collection::all()->random(), Comment::all()->random()]);
         return [
-            'usr_id' => User::all()->random()->id,
-            'created_at' => $created_at,
-            'updated_at' => $this->faker->dateTimeBetween($created_at),
-            //
+            'user_id' => User::all()->random()->id,
+            'likeable_id' => $likeable->id,
+            'likeable_type' => $likeable->getMorphClass(),
         ];
     }
 }

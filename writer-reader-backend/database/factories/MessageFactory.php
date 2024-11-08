@@ -18,13 +18,10 @@ class MessageFactory extends Factory
      */
     public function definition(): array
     {
-        $created_at = $this->faker->dateTime();
         return [
             'content' => $this->faker->text,
             'sent_by_id' => User::all()->random()->id,
             'sent_to_id' => User::all()->random()->id,
-            'created_at' => $created_at,
-            'updated_at' => $this->faker->dateTimeBetween($created_at),
         ];
     }
 }

@@ -17,12 +17,9 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $created_at = $this->faker->dateTime();
         return [
             'name' => $this->faker->word,
             'description' => $this->faker->sentence,
-            'created_at' => $created_at,
-            'updated_at' => $this->faker->dateTimeBetween($created_at),
         ];
     }
 }

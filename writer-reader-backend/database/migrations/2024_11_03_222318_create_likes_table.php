@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('likes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users');
+            $table->uuidMorphs('likeable');
             $table->timestamps();
         });
     }

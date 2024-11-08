@@ -26,7 +26,7 @@ class Rating extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function work(): HasMany
+    public function works(): HasMany
     {
         return $this->hasMany(Work::class);
     }
