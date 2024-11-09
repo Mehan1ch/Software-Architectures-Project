@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,9 +34,16 @@ fun RegisterScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(28.dp),
-        contentAlignment = Alignment.TopStart
+        contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+            Text(
+                text = stringResource(id = R.string.text_sign_up),
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineLarge
+               )
+
             NormalTextField(
                 value = state.username,
                 label = stringResource(id = R.string.textfield_label_username),

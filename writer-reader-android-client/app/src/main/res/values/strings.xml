@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Writer Reader</string>
+    <string name="app_name">Író Olvasó</string>
     <string name="button_label_login">Bejelentkezés</string>>
     <string name="button_label_register">Fiók létrehozása</string>
     <string name="textfield_label_username">Felhasználónév</string>
@@ -7,6 +7,8 @@
     <string name="textfield_label_confirm_password">Jelszó megerősítése</string>
     <string name="textfield_label_email">E-mail cím</string>
     <string name="checkbox_label_terms_and_conditions">Elfogadom az felhasználási feltételeket</string>
-
+    <string name="snackbar_label_login_failed">Sikertelen bejelentkezés!</string>
+    <string name="snackbar_label_register_failed">Sikertelen regisztráció!</string>
+    <string name="text_sign_up">Fiók létrehozása</string>
 
 </resources>
