@@ -20,8 +20,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.bme.aut.android.writer_reader_client.R
 import hu.bme.aut.android.writer_reader_client.ui.common.NormalTextField
 import hu.bme.aut.android.writer_reader_client.ui.common.PasswordTextField
+import hu.bme.aut.android.writer_reader_client.ui.common.WorkCard
 
 
 @ExperimentalMaterial3Api
@@ -83,6 +82,17 @@ fun LoginScreen(
 
     ){
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+            WorkCard(
+                title = "The Great Gatsby",
+                authorName = "F. Scott Fitzgerald",
+                profileImageUrl = "https://www.clipartmax.com/png/middle/58-589213_user-profile-avatar-scalable-vector-graphics-icon-profile-girl-avatar.png",
+                modifier = Modifier,
+                creationYear = "1925",
+                genre = "Novel",
+                characters = listOf("The Great Gatsby", "Fitzgerald"),
+                language = "English"
+            )
 
             Text(
                 text = stringResource(id = R.string.app_name),

@@ -1,6 +1,9 @@
+//import androidx.glance.appwidget.compose
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -70,4 +73,7 @@ dependencies {
     //from login screen project
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.coil.compose)
+    //implementation(libs.coil.network.okhttp)
 }
