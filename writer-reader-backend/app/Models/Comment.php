@@ -10,6 +10,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @class Comment
+ * @package App\Models
+ * @property string id
+ * @property string content
+ * @property int user_id
+ * @property string commentable_id
+ * @property string commentable_type
+ * @property string created_at
+ * @property string updated_at
+ * @property User user
+ */
 class Comment extends Model
 {
     /** @use HasFactory<WorkFactory> */

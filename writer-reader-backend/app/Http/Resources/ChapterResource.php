@@ -2,9 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Chapter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class CharacterResource
+ * @package App\Http\Resources
+ * @mixin Chapter
+ */
 class ChapterResource extends JsonResource
 {
     /**

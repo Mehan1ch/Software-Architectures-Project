@@ -12,6 +12,33 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+
+/**
+ * @class Work
+ * @package App\Models
+ * @property string id
+ * @property string title
+ * @property string content
+ * @property int creator_id
+ * @property ModerationEnum moderation_status
+ * @property int moderator_id
+ * @property int rating_id
+ * @property int language_id
+ * @property string created_at
+ * @property string updated_at
+ * @property User creator
+ * @property User moderator
+ * @property Chapter[] chapters
+ * @property Collection[] collections
+ * @property Rating rating
+ * @property Language language
+ * @property Warning[] warnings
+ * @property Tag[] tags
+ * @property Character[] characters
+ * @property Category[] categories
+ * @property Comment[] comments
+ * @property Like[] likes
+ */
 class Work extends Model
 {
     /** @use HasFactory<WorkFactory> */

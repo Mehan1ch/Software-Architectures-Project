@@ -9,6 +9,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * @class Like
+ * @package App\Models
+ * @property string id
+ * @property int user_id
+ * @property string likeable_id
+ * @property string likeable_type
+ * @property string created_at
+ * @property string updated_at
+ * @property User user
+ */
 class Like extends Model
 {
     /** @use HasFactory<WorkFactory> */

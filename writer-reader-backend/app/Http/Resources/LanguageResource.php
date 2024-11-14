@@ -2,9 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class CommentResource
+ * @package App\Http\Resources
+ * @mixin Language
+ */
 class LanguageResource extends JsonResource
 {
     /**

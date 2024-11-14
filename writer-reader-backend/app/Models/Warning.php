@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @class Warning
+ * @package App\Models
+ * @property string id
+ * @property string details
+ * @property string created_at
+ * @property string updated_at
+ * @property Work[] works
+ */
 class Warning extends Model
 {
     /** @use HasFactory<WorkFactory> */

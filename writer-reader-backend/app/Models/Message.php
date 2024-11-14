@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @class Message
+ * @package App\Models
+ * @property string id
+ * @property string content
+ * @property int sent_by_id
+ * @property int sent_to_id
+ * @property string created_at
+ * @property string updated_at
+ * @property User sender
+ * @property User receiver
+ */
 class Message extends Model
 {
     /** @use HasFactory<WorkFactory> */

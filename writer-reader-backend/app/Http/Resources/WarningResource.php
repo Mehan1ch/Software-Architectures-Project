@@ -2,9 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Warning;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class CategoryResource
+ * @package App\Http\Resources
+ * @mixin Warning
+ */
 class WarningResource extends JsonResource
 {
     /**

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
+ * Class WorkResource
+ * @package App\Http\Resources
  * @mixin Work
  */
 class WorkResource extends JsonResource

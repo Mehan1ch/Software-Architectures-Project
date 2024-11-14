@@ -2,9 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * Class MessageResource
+ * @package App\Http\Resources
+ * @mixin Like
+ */
 class LikeResource extends JsonResource
 {
     /**
