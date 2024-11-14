@@ -11,7 +11,7 @@ class StoreCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "content" => "required|string",
+            "user_id" => "required|uuid|exists:users,id",
+            // TODO Implement own Validation for Morphs
+            "commentable_type" => "required|morph_exists:commentable_type",
+            "commentable_id" => "required|morph_exists:commentable_id",
         ];
     }
 }

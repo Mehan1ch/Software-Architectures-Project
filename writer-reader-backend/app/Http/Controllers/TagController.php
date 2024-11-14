@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
+use App\Http\Resources\RatingResource;
+use App\Http\Resources\TagResource;
 use App\Models\Tag;
 
 class TagController extends Controller
@@ -13,15 +15,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return TagResource::collection(Tag::paginate(10));
     }
 
     /**
@@ -29,7 +23,8 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request)
     {
-        //
+        $tag = Tag::create($request->validated());
+        return new TagResource($tag);
     }
 
     /**
@@ -37,15 +32,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Tag $tag)
-    {
-        //
+        return new TagResource($tag);
     }
 
     /**
@@ -53,7 +40,8 @@ class TagController extends Controller
      */
     public function update(UpdateTagRequest $request, Tag $tag)
     {
-        //
+        $tag->update($request->validated());
+        return new TagResource($tag);
     }
 
     /**
@@ -61,6 +49,7 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+        return response()->json(['message' => 'Tag deleted successfully.'], 200);
     }
 }

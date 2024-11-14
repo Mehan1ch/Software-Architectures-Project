@@ -11,7 +11,7 @@ class StoreLikeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreLikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "user_id" => "required|uuid|exists:users,id",
+            // TODO Implement own Validation for Morphs
+            "likeable_type" => "required|morph_exists:likeable_type",
+            "likeable_id" => "required|morph_exists:likeable_id",
         ];
     }
 }

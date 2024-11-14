@@ -19,6 +19,8 @@ class Collection extends Model
     use HasUuids;
 
     protected $fillable = [
+        'name',
+        'description',
         'user_id',
         'created_at',
         'updated_at',

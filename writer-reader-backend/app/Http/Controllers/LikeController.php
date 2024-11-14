@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLikeRequest;
 use App\Http\Requests\UpdateLikeRequest;
+use App\Http\Resources\LikeResource;
 use App\Models\Like;
 
 class LikeController extends Controller
@@ -13,15 +14,7 @@ class LikeController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return LikeResource::collection(Like::paginate(10));
     }
 
     /**
@@ -29,7 +22,8 @@ class LikeController extends Controller
      */
     public function store(StoreLikeRequest $request)
     {
-        //
+        $like = Like::create($request->validated());
+        return new LikeResource($like);
     }
 
     /**
@@ -37,15 +31,7 @@ class LikeController extends Controller
      */
     public function show(Like $like)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Like $like)
-    {
-        //
+        return new LikeResource($like);
     }
 
     /**
@@ -53,7 +39,8 @@ class LikeController extends Controller
      */
     public function update(UpdateLikeRequest $request, Like $like)
     {
-        //
+        $like->update($request->validated());
+        return new LikeResource($like);
     }
 
     /**
@@ -61,6 +48,7 @@ class LikeController extends Controller
      */
     public function destroy(Like $like)
     {
-        //
+        $like->delete();
+        return response()->json(['message' => 'Like deleted successfully.'], 200);
     }
 }

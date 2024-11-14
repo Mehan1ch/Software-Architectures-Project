@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCharacterRequest;
 use App\Http\Requests\UpdateCharacterRequest;
+use App\Http\Resources\CharacterResource;
 use App\Models\Character;
 
 class CharacterController extends Controller
@@ -13,15 +14,7 @@ class CharacterController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return CharacterResource::collection(Character::paginate(10));
     }
 
     /**
@@ -29,7 +22,8 @@ class CharacterController extends Controller
      */
     public function store(StoreCharacterRequest $request)
     {
-        //
+        $character = Character::create($request->validated());
+        return new CharacterResource($character);
     }
 
     /**
@@ -37,15 +31,7 @@ class CharacterController extends Controller
      */
     public function show(Character $character)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Character $character)
-    {
-        //
+        return new CharacterResource($character);
     }
 
     /**
@@ -53,7 +39,8 @@ class CharacterController extends Controller
      */
     public function update(UpdateCharacterRequest $request, Character $character)
     {
-        //
+        $character->update($request->validated());
+        return new CharacterResource($character);
     }
 
     /**
@@ -61,6 +48,7 @@ class CharacterController extends Controller
      */
     public function destroy(Character $character)
     {
-        //
+        $character->delete();
+        return response()->json(['message' => 'Character deleted successfully.'], 200);
     }
 }

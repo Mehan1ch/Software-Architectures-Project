@@ -15,6 +15,7 @@ class Chapter extends Model
     use HasUuids;
 
     protected $fillable = [
+        'title',
         'content',
         'work_id',
         'created_at',

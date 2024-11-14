@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
+use App\Http\Resources\MessageResource;
 use App\Models\Message;
 
 class MessageController extends Controller
@@ -13,15 +14,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return MessageResource::collection(Message::paginate(10));
     }
 
     /**
@@ -29,7 +22,8 @@ class MessageController extends Controller
      */
     public function store(StoreMessageRequest $request)
     {
-        //
+        $message = Message::create($request->validated());
+        return new MessageResource($message);
     }
 
     /**
@@ -37,15 +31,7 @@ class MessageController extends Controller
      */
     public function show(Message $message)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Message $message)
-    {
-        //
+        return new MessageResource($message);
     }
 
     /**
@@ -53,7 +39,8 @@ class MessageController extends Controller
      */
     public function update(UpdateMessageRequest $request, Message $message)
     {
-        //
+        $message->update($request->validated());
+        return new MessageResource($message);
     }
 
     /**
@@ -61,6 +48,7 @@ class MessageController extends Controller
      */
     public function destroy(Message $message)
     {
-        //
+        $message->delete();
+        return response()->json(['message' => 'Message deleted successfully.'], 200);
     }
 }

@@ -12,7 +12,7 @@ class StoreWorkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,13 @@ class StoreWorkRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => 'required|string|max:100',
             'content' => 'required|string',
+            'creator_id' => 'required|uuid|exists:users,id',
+            //'moderation_status' => 'required|enum',               // TODO
+            'moderator_id' => 'required|uuid|exists:users,id',
+            'rating_id' => 'required|uuid|exists:ratings,id',
+            'language_id' => 'required|uuid|exists:languages,id',
         ];
     }
 }

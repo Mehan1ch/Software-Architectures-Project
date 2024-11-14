@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreChapterRequest;
 use App\Http\Requests\UpdateChapterRequest;
+use App\Http\Resources\ChapterResource;
 use App\Models\Chapter;
 
 class ChapterController extends Controller
@@ -13,15 +14,7 @@ class ChapterController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return ChapterResource::collection(Chapter::paginate(10));
     }
 
     /**
@@ -29,7 +22,8 @@ class ChapterController extends Controller
      */
     public function store(StoreChapterRequest $request)
     {
-        //
+        $chapter = Chapter::create($request->validated());
+        return new ChapterResource($chapter);
     }
 
     /**
@@ -37,15 +31,7 @@ class ChapterController extends Controller
      */
     public function show(Chapter $chapter)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Chapter $chapter)
-    {
-        //
+        return new ChapterResource($chapter);
     }
 
     /**
@@ -53,7 +39,8 @@ class ChapterController extends Controller
      */
     public function update(UpdateChapterRequest $request, Chapter $chapter)
     {
-        //
+        $chapter->update($request->validated());
+        return new ChapterResource($chapter);
     }
 
     /**
@@ -61,6 +48,7 @@ class ChapterController extends Controller
      */
     public function destroy(Chapter $chapter)
     {
-        //
+        $chapter->delete();
+        return response()->json(['message' => 'Chapter deleted successfully.'], 200);
     }
 }

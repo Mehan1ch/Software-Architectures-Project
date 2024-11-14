@@ -24,7 +24,8 @@ class WorkController extends Controller
      */
     public function store(StoreWorkRequest $request)
     {
-        //
+        $work = Work::create($request->validated());
+        return new WorkResource($work);
     }
 
     /**
@@ -40,7 +41,8 @@ class WorkController extends Controller
      */
     public function update(UpdateWorkRequest $request, Work $work)
     {
-        //
+        $work->update($request->validated());
+        return new WorkResource($work);
     }
 
     /**
@@ -48,6 +50,7 @@ class WorkController extends Controller
      */
     public function destroy(Work $work)
     {
-        //
+        $work->delete();
+        return response()->json(['message' => 'Work deleted successfully.'], 200);
     }
 }

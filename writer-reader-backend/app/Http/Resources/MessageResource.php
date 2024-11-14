@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TagResource extends JsonResource
+class MessageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,9 @@ class TagResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'content' => $this->content,
+            'sent_by' => UserResource::make($this->sent_by),
+            'sent_to' => UserResource::make($this->sent_to),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

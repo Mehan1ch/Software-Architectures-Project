@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCollectionRequest;
 use App\Http\Requests\UpdateCollectionRequest;
+use App\Http\Resources\CollectionResource;
 use App\Models\Collection;
 
 class CollectionController extends Controller
@@ -13,23 +14,17 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        //
+        return CollectionResource::collection(Collection::paginate(10));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCollectionRequest $request)
     {
-        //
+        $collection = Collection::create($request->validated());
+        return new CollectionResource($collection);
     }
 
     /**
@@ -37,15 +32,7 @@ class CollectionController extends Controller
      */
     public function show(Collection $collection)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Collection $collection)
-    {
-        //
+        return new CollectionResource($collection);
     }
 
     /**
@@ -53,7 +40,8 @@ class CollectionController extends Controller
      */
     public function update(UpdateCollectionRequest $request, Collection $collection)
     {
-        //
+        $collection->update($request->validated());
+        return new CollectionResource($collection);
     }
 
     /**
@@ -61,6 +49,7 @@ class CollectionController extends Controller
      */
     public function destroy(Collection $collection)
     {
-        //
+        $collection->delete();
+        return response()->json(['message' => 'Collection deleted successfully.'], 200);
     }
 }

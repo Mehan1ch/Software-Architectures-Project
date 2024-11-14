@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreWarningRequest;
 use App\Http\Requests\UpdateWarningRequest;
+use App\Http\Resources\WarningResource;
 use App\Models\Warning;
 
 class WarningController extends Controller
@@ -13,15 +14,7 @@ class WarningController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return WarningResource::collection(Warning::paginate(10));
     }
 
     /**
@@ -29,7 +22,8 @@ class WarningController extends Controller
      */
     public function store(StoreWarningRequest $request)
     {
-        //
+        $warning = Warning::create($request->validated());
+        return new WarningResource($warning);
     }
 
     /**
@@ -37,15 +31,7 @@ class WarningController extends Controller
      */
     public function show(Warning $warning)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Warning $warning)
-    {
-        //
+        return new WarningResource($warning);
     }
 
     /**
@@ -53,7 +39,8 @@ class WarningController extends Controller
      */
     public function update(UpdateWarningRequest $request, Warning $warning)
     {
-        //
+        $warning->update($request->validated());
+        return new WarningResource($warning);
     }
 
     /**
@@ -61,6 +48,7 @@ class WarningController extends Controller
      */
     public function destroy(Warning $warning)
     {
-        //
+        $warning->delete();
+        return response()->json(['message' => 'Warning deleted successfully.'], 200);
     }
 }

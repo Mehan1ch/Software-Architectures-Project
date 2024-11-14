@@ -11,7 +11,7 @@ class UpdateLikeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateLikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "user_id" => "required|uuid|exists:users,id",
+            // TODO Implement own Validation for Morphs
         ];
     }
 }
