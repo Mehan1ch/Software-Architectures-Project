@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRatingRequest;
-use App\Http\Requests\UpdateRatingRequest;
+use App\Http\Requests\Store\StoreRatingRequest;
+use App\Http\Requests\Update\UpdateRatingRequest;
 use App\Http\Resources\RatingResource;
 use App\Models\Rating;
-use Illuminate\Http\Request;
 
 class RatingController extends Controller
 {

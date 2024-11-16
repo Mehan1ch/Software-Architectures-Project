@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Update;
 
+use App\Enums\ModerationEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreWorkRequest extends FormRequest
+class UpdateWorkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +28,7 @@ class StoreWorkRequest extends FormRequest
             'title' => 'required|string|max:100',
             'content' => 'required|string',
             'creator_id' => 'required|uuid|exists:users,id',
-            //'moderation_status' => 'required|enum',               // TODO
+            'moderation_status' => [Rule::enum(ModerationEnum::class), 'required'],
             'moderator_id' => 'required|uuid|exists:users,id',
             'rating_id' => 'required|uuid|exists:ratings,id',
             'language_id' => 'required|uuid|exists:languages,id',

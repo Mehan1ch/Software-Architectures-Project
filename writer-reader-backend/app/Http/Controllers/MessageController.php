@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreMessageRequest;
-use App\Http\Requests\UpdateMessageRequest;
+use App\Http\Requests\Store\StoreMessageRequest;
+use App\Http\Requests\Update\UpdateMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 

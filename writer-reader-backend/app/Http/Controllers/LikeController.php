@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreLikeRequest;
-use App\Http\Requests\UpdateLikeRequest;
+use App\Http\Requests\Store\StoreLikeRequest;
+use App\Http\Requests\Update\UpdateLikeRequest;
 use App\Http\Resources\LikeResource;
 use App\Models\Like;
 

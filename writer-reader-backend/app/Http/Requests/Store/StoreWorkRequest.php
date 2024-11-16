@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Store;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateWorkRequest extends FormRequest
+class StoreWorkRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,6 @@ class UpdateWorkRequest extends FormRequest
             'title' => 'required|string|max:100',
             'content' => 'required|string',
             'creator_id' => 'required|uuid|exists:users,id',
-            //'moderation_status' => 'required|enum',               // TODO
             'moderator_id' => 'required|uuid|exists:users,id',
             'rating_id' => 'required|uuid|exists:ratings,id',
             'language_id' => 'required|uuid|exists:languages,id',

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Store;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTagRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,8 @@ class UpdateTagRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
+            'email' => 'required|string|email|max:100|unique:users',
+            // TODO
         ];
     }
 }

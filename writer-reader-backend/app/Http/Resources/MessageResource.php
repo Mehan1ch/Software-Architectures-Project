@@ -23,8 +23,8 @@ class MessageResource extends JsonResource
         return [
             'id' => $this->id,
             'content' => $this->content,
-            'sent_by' => UserResource::make($this->sent_by),
-            'sent_to' => UserResource::make($this->sent_to),
+            'sent_by' => UserResource::make($this->sender),
+            'sent_to' => UserResource::make($this->receiver),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

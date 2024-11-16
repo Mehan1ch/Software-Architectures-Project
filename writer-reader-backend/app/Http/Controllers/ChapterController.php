@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreChapterRequest;
-use App\Http\Requests\UpdateChapterRequest;
+use App\Http\Requests\Store\StoreChapterRequest;
+use App\Http\Requests\Update\UpdateChapterRequest;
 use App\Http\Resources\ChapterResource;
 use App\Models\Chapter;
 

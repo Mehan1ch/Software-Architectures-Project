@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Update;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateWarningRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,9 @@ class UpdateWarningRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'details' => 'required|string',
+            'name' => 'required|string|max:100',
+            'email' => 'required|string|email|max:100|unique:users',
+            // TODO: should be fine as
         ];
     }
 }

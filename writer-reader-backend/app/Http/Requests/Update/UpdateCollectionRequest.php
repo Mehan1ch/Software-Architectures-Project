@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Update;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRatingRequest extends FormRequest
+class UpdateCollectionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,9 @@ class StoreRatingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'details' => 'required|string',
+            "name" => "required|string|max:100",
+            "description" => "required|string",
+            "user_id" => "required|uuid|exists:users,id",
         ];
     }
 }

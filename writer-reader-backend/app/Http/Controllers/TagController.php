@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTagRequest;
-use App\Http\Requests\UpdateTagRequest;
-use App\Http\Resources\RatingResource;
+use App\Http\Requests\Store\StoreTagRequest;
+use App\Http\Requests\Update\UpdateTagRequest;
 use App\Http\Resources\TagResource;
 use App\Models\Tag;
 

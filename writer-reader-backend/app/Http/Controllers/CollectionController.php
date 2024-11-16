@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCollectionRequest;
-use App\Http\Requests\UpdateCollectionRequest;
+use App\Http\Requests\Store\StoreCollectionRequest;
+use App\Http\Requests\Update\UpdateCollectionRequest;
 use App\Http\Resources\CollectionResource;
 use App\Models\Collection;
 

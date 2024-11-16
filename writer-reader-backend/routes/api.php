@@ -78,6 +78,17 @@ Route::post('/tags', [TagController::class, 'store']);
 Route::put('/tags/{tag}', [TagController::class, 'update']);
 Route::delete('/tags/{tag}', [TagController::class, 'destroy']);
 
+//TODO: add relationships to resources
+//TODO: fix morph rules with data aware custom rule class
+//TODO: add collection resource classes
+//TODO: remove pagination number from controllers
+//TODO: remove unnecessary controller methods
+//TODO: implement moderation state machine
+//TODO: implement authorization
+//TODO: apply auth to routes
+//TODO: optional testing
+//TODO: optional api documentation
+//TODO: filament admin panel
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{user}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store']);

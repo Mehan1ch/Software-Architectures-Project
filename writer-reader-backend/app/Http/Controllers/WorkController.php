@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreWorkRequest;
-use App\Http\Requests\UpdateWorkRequest;
+use App\Http\Requests\Store\StoreWorkRequest;
+use App\Http\Requests\Update\UpdateWorkRequest;
 use App\Http\Resources\WorkResource;
 use App\Models\Work;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class WorkController extends Controller
 {

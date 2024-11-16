@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Store;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateMessageRequest extends FormRequest
+class StoreCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,8 @@ class UpdateMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "content" => "required|string",
-            "sent_by_id" => "required|uuid|exists:users,id",
-            "sent_to_id" => "required|uuid|exists:users,id",
+            'name' => 'required|string|max:100',
+            'description' => 'string|nullable|max:500',
         ];
     }
 }

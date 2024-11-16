@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Update;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateCollectionRequest extends FormRequest
+class UpdateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,8 @@ class UpdateCollectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|max:100",
-            "description" => "required|string",
-            "user_id" => "required|uuid|exists:users,id",
+            'name' => 'required|string|max:100',
+            'description' => 'string|nullable|max:500',
         ];
     }
 }

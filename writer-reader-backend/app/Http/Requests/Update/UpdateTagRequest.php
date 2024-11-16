@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Update;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateChapterRequest extends FormRequest
+class UpdateTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,7 @@ class UpdateChapterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => "required|string|max:100",
-            "content" => "required|string",
-            "work_id" => "required|uuid|exists:works,id",
+            'name' => 'required|string|max:100',
         ];
     }
 }

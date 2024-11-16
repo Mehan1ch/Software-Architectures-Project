@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Store;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreWarningRequest extends FormRequest
+class StoreChapterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,9 @@ class StoreWarningRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'details' => 'required|string',
+            "title" => "required|string|max:100",
+            "content" => "required|string",
+            "work_id" => "required|uuid|exists:works,id",
         ];
     }
 }

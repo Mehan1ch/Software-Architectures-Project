@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCharacterRequest;
-use App\Http\Requests\UpdateCharacterRequest;
+use App\Http\Requests\Store\StoreCharacterRequest;
+use App\Http\Requests\Update\UpdateCharacterRequest;
 use App\Http\Resources\CharacterResource;
 use App\Models\Character;
 

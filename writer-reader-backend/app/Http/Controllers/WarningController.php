@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreWarningRequest;
-use App\Http\Requests\UpdateWarningRequest;
+use App\Http\Requests\Store\StoreWarningRequest;
+use App\Http\Requests\Update\UpdateWarningRequest;
 use App\Http\Resources\WarningResource;
 use App\Models\Warning;
 

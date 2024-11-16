@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCommentRequest;
-use App\Http\Requests\UpdateCommentRequest;
+use App\Http\Requests\Store\StoreCommentRequest;
+use App\Http\Requests\Update\UpdateCommentRequest;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 
