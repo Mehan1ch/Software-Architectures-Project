@@ -5,23 +5,25 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Store\StoreCollectionRequest;
 use App\Http\Requests\Update\UpdateCollectionRequest;
 use App\Http\Resources\CollectionResource;
+use App\Http\Resources\Collections\CollectionCollection;
 use App\Models\Collection;
+use Illuminate\Http\JsonResponse;
 
 class CollectionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): CollectionCollection
     {
-        return CollectionResource::collection(Collection::paginate(10));
+        return new CollectionCollection(Collection::paginate());
     }
 
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCollectionRequest $request)
+    public function store(StoreCollectionRequest $request): CollectionResource
     {
         $collection = Collection::create($request->validated());
         return new CollectionResource($collection);
@@ -30,7 +32,7 @@ class CollectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Collection $collection)
+    public function show(Collection $collection): CollectionResource
     {
         return new CollectionResource($collection);
     }
@@ -38,7 +40,7 @@ class CollectionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCollectionRequest $request, Collection $collection)
+    public function update(UpdateCollectionRequest $request, Collection $collection): CollectionResource
     {
         $collection->update($request->validated());
         return new CollectionResource($collection);
@@ -47,7 +49,7 @@ class CollectionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Collection $collection)
+    public function destroy(Collection $collection): JsonResponse
     {
         $collection->delete();
         return response()->json(['message' => 'Collection deleted successfully.'], 200);

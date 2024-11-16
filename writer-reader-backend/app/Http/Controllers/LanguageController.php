@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Collections\LanguageCollection;
 use App\Http\Resources\LanguageResource;
 use App\Models\Language;
-use Illuminate\Http\Request;
 
 class LanguageController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): LanguageCollection
     {
-        return LanguageResource::collection(Language::paginate(10));
+        return new LanguageCollection(Language::paginate());
     }
 
 
     /**
      * Display the specified resource.
      */
-    public function show(Language $language)
+    public function show(Language $language): LanguageResource
     {
         return new LanguageResource($language);
     }

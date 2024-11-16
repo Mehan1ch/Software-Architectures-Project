@@ -79,7 +79,7 @@ Route::put('/tags/{tag}', [TagController::class, 'update']);
 Route::delete('/tags/{tag}', [TagController::class, 'destroy']);
 
 //TODO: add relationships to resources
-//TODO: fix morph rules with data aware custom rule class
+//TODO: fix morph rules with data aware custom rule class -> needs testing
 //TODO: add collection resource classes
 //TODO: remove pagination number from controllers
 //TODO: remove unnecessary controller methods
