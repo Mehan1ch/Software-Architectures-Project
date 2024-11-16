@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Update;
 
+use App\Models\Work;
+use App\Rules\MorphIdRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreLikeRequest extends FormRequest
+class UpdateLikeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +27,9 @@ class StoreLikeRequest extends FormRequest
     {
         return [
             "user_id" => "required|uuid|exists:users,id",
-            // TODO Implement own Validation for Morphs
-            "likeable_type" => "required|morph_exists:likeable_type",
-            "likeable_id" => "required|morph_exists:likeable_id",
+            //TODO: Check if this works
+            "likeable_id" => ["required", "string", new MorphIdRule],
+            "likeable_type" => [Rule::in(["App\Models\Work", "App\Models\Collection","App\Models\Comment"]), "required", "string"],
         ];
     }
 }

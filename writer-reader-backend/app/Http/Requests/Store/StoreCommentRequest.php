@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Store;
 
+use App\Rules\MorphIdRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCommentRequest extends FormRequest
 {
@@ -25,9 +27,9 @@ class StoreCommentRequest extends FormRequest
         return [
             "content" => "required|string",
             "user_id" => "required|uuid|exists:users,id",
-            // TODO Implement own Validation for Morphs
-            "commentable_type" => "required|morph_exists:commentable_type",
-            "commentable_id" => "required|morph_exists:commentable_id",
+            // TODO: Check if this works
+            "commentable_type" => ['required', 'string', Rule::in(['App\Models\Collection', 'App\Models\Work'])],
+            "commentable_id" => ['required', 'uuid', new MorphIdRule],
         ];
     }
 }
