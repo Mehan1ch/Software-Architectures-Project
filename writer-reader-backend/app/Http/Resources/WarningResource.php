@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Collections\WorkCollection;
 use App\Models\Warning;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -25,6 +26,7 @@ class WarningResource extends JsonResource
             'details' => $this->details,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'works' => WorkCollection::make($this->works),
         ];
     }
 }

@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string created_at
  * @property string updated_at
  * @property User user
+ * @property Like[] likes
  */
 class Comment extends Model
 {

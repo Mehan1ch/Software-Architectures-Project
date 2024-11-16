@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Collections\LikeCollection;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,6 +27,7 @@ class CommentResource extends JsonResource
             'user' => UserResource::make($this->user),
             'commentable_id' => $this->commentable_id,
             'commentable_type' => $this->commentable_type,
+            'likes' => LikeCollection::make($this->likes),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
