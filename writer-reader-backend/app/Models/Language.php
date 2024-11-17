@@ -34,6 +34,15 @@ class Language extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($language) {
+            $language->works()->detach();
+        });
+    }
+
     public function works(): HasMany
     {
         return $this->hasMany(Work::class);

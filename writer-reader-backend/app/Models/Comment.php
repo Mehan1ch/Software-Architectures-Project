@@ -43,6 +43,16 @@ class Comment extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($comment) {
+            $comment->user()->dissociate();
+            $comment->likes()->delete();
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

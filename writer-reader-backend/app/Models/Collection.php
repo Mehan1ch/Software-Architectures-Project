@@ -45,6 +45,18 @@ class Collection extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($collection) {
+            $collection->user()->dissociate();
+            $collection->works()->detach();
+            $collection->likes()->delete();
+            $collection->comments()->delete();
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

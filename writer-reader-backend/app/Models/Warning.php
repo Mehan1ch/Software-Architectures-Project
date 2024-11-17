@@ -34,6 +34,15 @@ class Warning extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($warning) {
+            $warning->works()->detach();
+        });
+    }
+
     public function works(): BelongsToMany
     {
         return $this->belongsToMany(Work::class)->withTimestamps();

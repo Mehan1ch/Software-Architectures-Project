@@ -38,6 +38,15 @@ class Chapter extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($chapter) {
+            $chapter->work()->dissociate();
+        });
+    }
+
     public function work(): BelongsTo
     {
         return $this->belongsTo(Work::class, 'work_id');

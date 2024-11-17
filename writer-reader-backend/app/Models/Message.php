@@ -39,6 +39,16 @@ class Message extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($message) {
+            $message->sender()->dissociate();
+            $message->receiver()->dissociate();
+        });
+    }
+
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sent_by_id');

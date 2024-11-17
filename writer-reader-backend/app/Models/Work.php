@@ -63,6 +63,22 @@ class Work extends Model
         'moderation_status' => ModerationEnum::class,
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($work) {
+            $work->chapters()->delete();
+            $work->collections()->detach();
+            $work->warnings()->detach();
+            $work->tags()->detach();
+            $work->characters()->detach();
+            $work->categories()->detach();
+            $work->comments()->delete();
+            $work->likes()->delete();
+        });
+    }
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creator_id');

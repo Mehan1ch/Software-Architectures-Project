@@ -34,6 +34,15 @@ class Tag extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($tag) {
+            $tag->works()->detach();
+        });
+    }
+
     public function works(): BelongsToMany
     {
         return $this->belongsToMany(Work::class)->withTimestamps();

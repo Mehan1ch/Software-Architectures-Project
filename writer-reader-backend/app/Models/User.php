@@ -67,6 +67,20 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function boot():void {
+        parent::boot();
+        static::deleting(function($user) {
+            $user->works()->delete();
+            $user->collections()->delete();
+            $user->comments()->delete();
+            $user->likes()->delete();
+            /* These should be deleted by the user's deletion */
+            //$user->sentMessages()->delete();
+            //$user->receivedMessages()->delete();
+            //$user->moderatedWorks()->delete();
+        });
+    }
+
     public function works(): HasMany
     {
         return $this->hasMany(Work::class);

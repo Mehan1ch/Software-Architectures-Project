@@ -39,6 +39,16 @@ class Like extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($like) {
+            $like->user()->dissociate();
+            $like->likeable()->dissociate();
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
