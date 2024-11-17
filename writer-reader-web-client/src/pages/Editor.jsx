@@ -1,7 +1,3 @@
 export default function Editor() {
-    return (
-        <>
-            Editor
-        </>
-    )
+  return <>Editor</>;
 }
