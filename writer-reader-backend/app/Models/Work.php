@@ -86,7 +86,9 @@ class Work extends Model
 
             // Email notification to the creator if the new status is EDIT_REQUESTED or APPROVED
             if ($work->moderation_status === ModerationEnum::EDIT_REQUESTED || $work->moderation_status === ModerationEnum::APPROVED) {
-                // Send email to the creator
+                // TODO: Send email to the creator
+                //Tip: Gmail SMTP server is a good option for development, just need to create a random google account, and an app password, limitation: 500 emails per day
+                //See: https://www.iankumu.com/blog/laravel-send-emails/
             }
         });
 

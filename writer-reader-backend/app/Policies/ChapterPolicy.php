@@ -9,14 +9,6 @@ use Illuminate\Auth\Access\Response;
 class ChapterPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Chapter $chapter): bool
@@ -44,22 +36,6 @@ class ChapterPolicy
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Chapter $chapter): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Chapter $chapter): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Chapter $chapter): bool
     {
         //
     }
