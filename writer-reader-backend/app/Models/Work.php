@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ModerationEnum;
+use App\Exceptions\StateMachineException;
 use Database\Factories\WorkFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,6 +67,28 @@ class Work extends Model
     protected static function boot(): void
     {
         parent::boot();
+
+        static::creating(function (self $work) {
+            $work->moderation_status = ModerationEnum::PENDING;
+        });
+
+
+        static::saving(function (self $work) {
+            if (! $work->isDirty('moderation_status')) {
+                return;
+            }
+
+            /** @var ModerationEnum $status */
+            $status = $work->getOriginal('moderation_status');
+            if ($status->ableToTransferTo($work->moderation_status)) {
+                throw new StateMachineException("[{$status->name}] cannot transfer into [{$work->moderation_status->name}].");
+            }
+
+            // Email notification to the creator if the new status is EDIT_REQUESTED or APPROVED
+            if ($work->moderation_status === ModerationEnum::EDIT_REQUESTED || $work->moderation_status === ModerationEnum::APPROVED) {
+                // Send email to the creator
+            }
+        });
 
         static::deleting(function($work) {
             $work->chapters()->delete();
