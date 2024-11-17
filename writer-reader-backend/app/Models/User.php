@@ -80,6 +80,7 @@ class User extends Authenticatable
             //$user->sentMessages()->delete();
             //$user->receivedMessages()->delete();
             //$user->moderatedWorks()->delete();
+            //$user->characters()->delete();
         });
     }
 
@@ -116,5 +117,10 @@ class User extends Authenticatable
     public function moderatedWorks(): HasMany
     {
         return $this->hasMany(Work::class, 'moderator_id');
+    }
+
+    public function characters(): HasMany
+    {
+        return $this->hasMany(Character::class);
     }
 }

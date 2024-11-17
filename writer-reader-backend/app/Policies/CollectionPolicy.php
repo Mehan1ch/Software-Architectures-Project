@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
 use App\Models\Collection;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class CollectionPolicy
      */
     public function view(User $user, Collection $collection): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +22,7 @@ class CollectionPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can(PermissionsEnum::CREATE_COLLECTIONS->value);
     }
 
     /**
@@ -29,7 +30,10 @@ class CollectionPolicy
      */
     public function update(User $user, Collection $collection): bool
     {
-        //
+        if ($user->can(PermissionsEnum::UPDATE_COLLECTIONS->value)) {
+            return $collection->user->id === $user->id;
+        }
+        return false;
     }
 
     /**
@@ -37,6 +41,9 @@ class CollectionPolicy
      */
     public function delete(User $user, Collection $collection): bool
     {
-        //
+        if ($user->can(PermissionsEnum::DELETE_COLLECTIONS->value)) {
+            return $collection->user->id === $user->id;
+        }
+        return false;
     }
 }

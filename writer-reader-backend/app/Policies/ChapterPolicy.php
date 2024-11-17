@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
 use App\Models\Chapter;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class ChapterPolicy
      */
     public function view(User $user, Chapter $chapter): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +22,7 @@ class ChapterPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can(PermissionsEnum::CREATE_CHAPTERS->value);
     }
 
     /**
@@ -29,7 +30,10 @@ class ChapterPolicy
      */
     public function update(User $user, Chapter $chapter): bool
     {
-        //
+        if($user->can(PermissionsEnum::UPDATE_CHAPTERS->value)){
+            return $chapter->work->creator->id === $user->id;
+        }
+        return false;
     }
 
     /**
@@ -37,6 +41,9 @@ class ChapterPolicy
      */
     public function delete(User $user, Chapter $chapter): bool
     {
-        //
+       if($user->can(PermissionsEnum::DELETE_CHAPTERS->value)){
+           return $chapter->work->creator->id === $user->id;
+       }
+       return false;
     }
 }

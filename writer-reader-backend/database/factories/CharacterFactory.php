@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Character;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,6 +20,7 @@ class CharacterFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'user_id' => User::all()->random()->id,
         ];
     }
 }

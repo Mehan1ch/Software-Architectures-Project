@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
 use App\Models\Character;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class CharacterPolicy
      */
     public function view(User $user, Character $character): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +22,7 @@ class CharacterPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can(PermissionsEnum::CREATE_CHARACTERS->value);
     }
 
     /**
@@ -29,7 +30,10 @@ class CharacterPolicy
      */
     public function update(User $user, Character $character): bool
     {
-        //
+        if ($user->can(PermissionsEnum::UPDATE_CHARACTERS->value)) {
+            return $character->user->id === $user->id;
+        }
+        return false;
     }
 
     /**
@@ -37,6 +41,9 @@ class CharacterPolicy
      */
     public function delete(User $user, Character $character): bool
     {
-        //
+        if ($user->can(PermissionsEnum::DELETE_CHARACTERS->value)) {
+            return $character->user->id === $user->id;
+        }
+        return false;
     }
 }

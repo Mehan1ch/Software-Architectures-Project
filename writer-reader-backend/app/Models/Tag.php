@@ -6,6 +6,7 @@ use Database\Factories\WorkFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -15,7 +16,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string name
  * @property string created_at
  * @property string updated_at
+ * @property string user_id
  * @property Work[] works
+ * @property User user
  */
 class Tag extends Model
 {
@@ -27,6 +30,7 @@ class Tag extends Model
         'name',
         'created_at',
         'updated_at',
+        'user_id',
     ];
 
     protected $casts = [
@@ -40,11 +44,17 @@ class Tag extends Model
 
         static::deleting(function($tag) {
             $tag->works()->detach();
+            $tag->user()->dissociate();
         });
     }
 
     public function works(): BelongsToMany
     {
         return $this->belongsToMany(Work::class)->withTimestamps();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

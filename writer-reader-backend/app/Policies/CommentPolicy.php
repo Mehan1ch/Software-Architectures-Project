@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
 use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -9,19 +10,11 @@ use Illuminate\Auth\Access\Response;
 class CommentPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Comment $comment): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +22,7 @@ class CommentPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can(PermissionsEnum::CREATE_COMMENTS->value);
     }
 
     /**
@@ -37,7 +30,10 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment): bool
     {
-        //
+        if ($user->can(PermissionsEnum::UPDATE_COMMENTS->value)) {
+            return $comment->user->id === $user->id;
+        }
+        return false;
     }
 
     /**
@@ -45,22 +41,9 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Comment $comment): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Comment $comment): bool
-    {
-        //
+        if ($user->can(PermissionsEnum::DELETE_COMMENTS->value)) {
+            return $comment->user->id === $user->id;
+        }
+        return false;
     }
 }

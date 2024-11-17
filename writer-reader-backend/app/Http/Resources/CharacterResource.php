@@ -26,6 +26,7 @@ class CharacterResource extends JsonResource
             'name' => $this->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'user' => UserResource::make($this->user),
             'works' => WorkCollection::make($this->works),
         ];
     }

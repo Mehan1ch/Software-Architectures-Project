@@ -3,16 +3,16 @@
 namespace App\Policies;
 
 use App\Enums\PermissionsEnum;
-use App\Models\Category;
+use App\Models\Rating;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class CategoryPolicy
+class RatingPolicy
 {
+
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Category $category): bool
+    public function view(User $user, Rating $rating): bool
     {
         return true;
     }
@@ -22,22 +22,22 @@ class CategoryPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can(PermissionsEnum::CREATE_CATEGORIES->value);
+        return $user->can(PermissionsEnum::CREATE_RATINGS->value);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Category $category): bool
+    public function update(User $user, Rating $rating): bool
     {
-        return $user->can(PermissionsEnum::UPDATE_CATEGORIES->value);
+        return $user->can(PermissionsEnum::UPDATE_RATINGS->value);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Category $category): bool
+    public function delete(User $user, Rating $rating): bool
     {
-        return $user->can(PermissionsEnum::DELETE_CATEGORIES->value);
+        return $user->can(PermissionsEnum::DELETE_RATINGS->value);
     }
 }
