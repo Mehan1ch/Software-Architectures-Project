@@ -25,6 +25,14 @@ class WorkController extends Controller
     public function store(StoreWorkRequest $request): WorkResource
     {
         $work = Work::create($request->validated());
+        $categories = $request->input('categories');
+        $work->categories()->attach($categories);
+        $tags = $request->input('tags');
+        $work->tags()->attach($tags);
+        $characters = $request->input('characters');
+        $work->characters()->attach($characters);
+        $warnings = $request->input('warnings');
+        $work->warnings()->attach($warnings);
         return new WorkResource($work);
     }
 
@@ -42,6 +50,14 @@ class WorkController extends Controller
     public function update(UpdateWorkRequest $request, Work $work): WorkResource
     {
         $work->update($request->validated());
+        $categories = $request->input('categories');
+        $work->categories()->sync($categories);
+        $tags = $request->input('tags');
+        $work->tags()->sync($tags);
+        $characters = $request->input('characters');
+        $work->characters()->sync($characters);
+        $warnings = $request->input('warnings');
+        $work->warnings()->sync($warnings);
         return new WorkResource($work);
     }
 

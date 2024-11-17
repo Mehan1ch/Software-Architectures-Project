@@ -26,6 +26,8 @@ class CollectionController extends Controller
     public function store(StoreCollectionRequest $request): CollectionResource
     {
         $collection = Collection::create($request->validated());
+        $works = $request->input('works');
+        $collection->works()->attach($works);
         return new CollectionResource($collection);
     }
 
@@ -43,6 +45,8 @@ class CollectionController extends Controller
     public function update(UpdateCollectionRequest $request, Collection $collection): CollectionResource
     {
         $collection->update($request->validated());
+        $works = $request->input('works');
+        $collection->works()->sync($works);
         return new CollectionResource($collection);
     }
 
