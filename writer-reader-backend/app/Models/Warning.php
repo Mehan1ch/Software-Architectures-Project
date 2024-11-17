@@ -36,7 +36,7 @@ class Warning extends Model
 
     public function works(): BelongsToMany
     {
-        return $this->belongsToMany(Work::class);
+        return $this->belongsToMany(Work::class)->withTimestamps();
     }
 
 }

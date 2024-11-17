@@ -29,9 +29,9 @@ class UpdateWorkRequest extends FormRequest
             'content' => 'required|string',
             'creator_id' => 'required|uuid|exists:users,id',
             'moderation_status' => [Rule::enum(ModerationEnum::class), 'required'],
-            'moderator_id' => 'required|uuid|exists:users,id',
-            'rating_id' => 'required|uuid|exists:ratings,id',
-            'language_id' => 'required|uuid|exists:languages,id',
+            'moderator_id' => 'optional|uuid|exists:users,id',
+            'rating_id' => 'optional|uuid|exists:ratings,id',
+            'language_id' => 'optional|uuid|exists:languages,id',
         ];
     }
 }

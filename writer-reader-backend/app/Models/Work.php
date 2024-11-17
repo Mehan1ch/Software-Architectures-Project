@@ -80,7 +80,7 @@ class Work extends Model
 
     public function collections(): BelongsToMany
     {
-        return $this->belongsToMany(Collection::class);
+        return $this->belongsToMany(Collection::class)->withTimestamps();
     }
 
     public function rating(): BelongsTo
@@ -95,22 +95,22 @@ class Work extends Model
 
     public function warnings(): BelongsToMany
     {
-        return $this->belongsToMany(Warning::class);
+        return $this->belongsToMany(Warning::class)->withTimestamps();
     }
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
     public function characters(): BelongsToMany
     {
-        return $this->belongsToMany(Character::class);
+        return $this->belongsToMany(Character::class)->withTimestamps();
     }
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
     public function comments(): MorphMany
