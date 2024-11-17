@@ -73,7 +73,7 @@ class Work extends Model
         });
 
 
-        static::saving(function (self $work) {
+        static::updating(function (self $work) {
             if (! $work->isDirty('moderation_status')) {
                 return;
             }
