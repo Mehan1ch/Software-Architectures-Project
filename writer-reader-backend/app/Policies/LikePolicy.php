@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
 use App\Models\Like;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -9,19 +10,11 @@ use Illuminate\Auth\Access\Response;
 class LikePolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Like $like): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +22,7 @@ class LikePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can(PermissionsEnum::CREATE_LIKES->value);
     }
 
     /**
@@ -37,7 +30,10 @@ class LikePolicy
      */
     public function update(User $user, Like $like): bool
     {
-        //
+        if ($user->can(PermissionsEnum::UPDATE_LIKES->value)) {
+            return $like->user->id === $user->id;
+        }
+        return false;
     }
 
     /**
@@ -45,22 +41,9 @@ class LikePolicy
      */
     public function delete(User $user, Like $like): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Like $like): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Like $like): bool
-    {
-        //
+        if ($user->can(PermissionsEnum::DELETE_LIKES->value)) {
+            return $like->user->id === $user->id;
+        }
+        return false;
     }
 }

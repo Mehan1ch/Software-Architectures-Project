@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
 use App\Models\Collection;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -9,19 +10,11 @@ use Illuminate\Auth\Access\Response;
 class CollectionPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Collection $collection): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +22,7 @@ class CollectionPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can(PermissionsEnum::CREATE_COLLECTIONS->value);
     }
 
     /**
@@ -37,7 +30,10 @@ class CollectionPolicy
      */
     public function update(User $user, Collection $collection): bool
     {
-        //
+        if ($user->can(PermissionsEnum::UPDATE_COLLECTIONS->value)) {
+            return $collection->user->id === $user->id;
+        }
+        return false;
     }
 
     /**
@@ -45,22 +41,9 @@ class CollectionPolicy
      */
     public function delete(User $user, Collection $collection): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Collection $collection): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Collection $collection): bool
-    {
-        //
+        if ($user->can(PermissionsEnum::DELETE_COLLECTIONS->value)) {
+            return $collection->user->id === $user->id;
+        }
+        return false;
     }
 }

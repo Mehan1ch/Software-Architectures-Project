@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionsEnum;
 use App\Models\User;
 use App\Models\Warning;
 use Illuminate\Auth\Access\Response;
@@ -9,19 +10,11 @@ use Illuminate\Auth\Access\Response;
 class WarningPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can view the model.
      */
     public function view(User $user, Warning $warning): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +22,7 @@ class WarningPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->can(PermissionsEnum::CREATE_WARNINGS->value);
     }
 
     /**
@@ -37,7 +30,7 @@ class WarningPolicy
      */
     public function update(User $user, Warning $warning): bool
     {
-        //
+        return $user->can(PermissionsEnum::UPDATE_WARNINGS->value);
     }
 
     /**
@@ -45,22 +38,6 @@ class WarningPolicy
      */
     public function delete(User $user, Warning $warning): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Warning $warning): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Warning $warning): bool
-    {
-        //
+        return $user->can(PermissionsEnum::DELETE_WARNINGS->value);
     }
 }

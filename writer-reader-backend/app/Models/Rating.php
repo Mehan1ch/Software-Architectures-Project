@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @class Rating
+ * @package App\Models
+ * @property string id
+ * @property string details
+ * @property string created_at
+ * @property string updated_at
+ * @property Work[] works
+ */
 class Rating extends Model
 {
     /** @use HasFactory<WorkFactory> */
@@ -25,6 +34,15 @@ class Rating extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($rating) {
+            $rating->works()->detach();
+        });
+    }
 
     public function works(): HasMany
     {

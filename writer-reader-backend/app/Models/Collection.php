@@ -12,6 +12,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+/**
+ * @class Collection
+ * @package App\Models
+ * @property string id
+ * @property string name
+ * @property string description
+ * @property string user_id
+ * @property string created_at
+ * @property string updated_at
+ * @property User user
+ * @property Work[] works
+ * @property Like[] likes
+ * @property Comment[] comments
+ */
 class Collection extends Model
 {
     /** @use HasFactory<WorkFactory> */
@@ -19,6 +33,8 @@ class Collection extends Model
     use HasUuids;
 
     protected $fillable = [
+        'name',
+        'description',
         'user_id',
         'created_at',
         'updated_at',
@@ -29,6 +45,18 @@ class Collection extends Model
         'updated_at' => 'datetime',
     ];
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function($collection) {
+            $collection->user()->dissociate();
+            $collection->works()->detach();
+            $collection->likes()->delete();
+            $collection->comments()->delete();
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -36,7 +64,7 @@ class Collection extends Model
 
     public function works(): BelongsToMany
     {
-        return $this->belongsToMany(Work::class);
+        return $this->belongsToMany(Work::class)->withTimestamps();
     }
 
     public function likes(): MorphMany
