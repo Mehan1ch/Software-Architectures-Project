@@ -82,18 +82,6 @@ fun LoginScreen(
 
     ){
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-            WorkCard(
-                title = "The Great Gatsby",
-                authorName = "F. Scott Fitzgerald",
-                profileImageUrl = "https://www.clipartmax.com/png/middle/58-589213_user-profile-avatar-scalable-vector-graphics-icon-profile-girl-avatar.png",
-                modifier = Modifier,
-                creationYear = "1925",
-                genre = "Novel",
-                characters = listOf("The Great Gatsby", "Fitzgerald"),
-                language = "English"
-            )
-
             Text(
                 text = stringResource(id = R.string.app_name),
                 fontWeight = FontWeight.Bold,

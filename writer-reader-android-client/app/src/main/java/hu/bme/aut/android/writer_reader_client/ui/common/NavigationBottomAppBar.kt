@@ -30,13 +30,13 @@ data class NavigationItem(
 
 
 @Composable
-fun RwNavigationBar(
+fun NavigationBottomAppBar(
     navHostController: NavHostController = rememberNavController()
 ) {
     val navigationItems = listOf(
         NavigationItem(Screen.Home, "Kezdőlap", Icons.AutoMirrored.Filled.LibraryBooks, Icons.Filled.Home),
-        NavigationItem(Screen.Login, "Profil", Icons.Outlined.Person, Icons.Filled.Person),
-        NavigationItem(Screen.Register, "Gyűjtemények", Icons.AutoMirrored.Outlined.Message, Icons.AutoMirrored.Filled.LibraryBooks
+        NavigationItem(Screen.Login, "login", Icons.Outlined.Person, Icons.Filled.Person),
+        NavigationItem(Screen.Register, "Üzenetek", Icons.AutoMirrored.Outlined.Message, Icons.AutoMirrored.Filled.LibraryBooks
         ),
         //NavigationItem(Screen.Messenger, "Üzenetek", Icons.Outlined.Notifications, Icons.Filled.Notifications),
     )
@@ -67,7 +67,7 @@ fun RwNavigationBar(
 fun NavigationBarPreview() {
     MaterialTheme {
         Surface {
-            RwNavigationBar()
+            NavigationBottomAppBar()
         }
     }
 }

@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalPagingApi::class)
+
 package hu.bme.aut.android.writer_reader_client.navigation
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -8,12 +11,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.ExperimentalPagingApi
 import hu.bme.aut.android.writer_reader_client.feature.home.HomeScreen
 import hu.bme.aut.android.writer_reader_client.feature.login.LoginScreen
 import hu.bme.aut.android.writer_reader_client.feature.register.RegisterScreen
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun NavGraph(
     navHostController: NavHostController = rememberNavController(),
@@ -24,7 +28,7 @@ fun NavGraph(
         startDestination = startDestination
     ){
         composable(Screen.Home.route){
-            HomeScreen()
+            HomeScreen(navHostController = navHostController)
 
         }
         composable(Screen.Login.route){
