@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\PermissionsEnum;
+use App\Enums\RolesEnum;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -70,7 +72,14 @@ class User extends Authenticatable
     }
 
     protected static function boot():void {
+
         parent::boot();
+
+        static::creating(function($user) {
+            // Assign the default role to the user
+            $user->assignRole(RolesEnum::REGISTERED->value);
+        });
+
         static::deleting(function($user) {
             $user->works()->delete();
             $user->collections()->delete();

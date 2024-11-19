@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\PermissionsEnum;
 use App\Models\Collection;
 use App\Models\Message;
 use App\Models\User;
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            PermissionSeeder::class,
             LanguageSeeder::class,
             RatingSeeder::class,
             WorkSeeder::class,
