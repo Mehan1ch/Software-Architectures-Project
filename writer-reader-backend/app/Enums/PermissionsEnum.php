@@ -2,8 +2,12 @@
 
 namespace App\Enums;
 
+use App\Traits\EnumToArray;
+
 enum PermissionsEnum:string
 {
+
+    use EnumToArray;
     case VIEW_CATEGORIES = 'view categories';
     case CREATE_CATEGORIES = 'create categories';
     case UPDATE_CATEGORIES = 'update categories';

@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Enums\PermissionsEnum;
 use App\Models\Message;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class MessagePolicy
 {
