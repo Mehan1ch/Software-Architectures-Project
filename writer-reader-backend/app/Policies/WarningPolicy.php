@@ -12,7 +12,7 @@ class WarningPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Warning $warning): bool
+    public function view(?User $user, ?Warning $warning): bool
     {
         return true;
     }

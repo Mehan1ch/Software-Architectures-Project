@@ -12,7 +12,7 @@ class RatingPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Rating $rating): bool
+    public function view(?User $user, ?Rating $rating): bool
     {
         return true;
     }

@@ -59,6 +59,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/likes/{like}', [LikeController::class, 'update'])->can('update', Like::class);
     Route::delete('/likes/{like}', [LikeController::class, 'destroy'])->can('delete', Like::class);
 
+    Route::get('/messages', [MessageController::class, 'index'])->can('view', Message::class);
+    Route::get('/messages/{message}', [MessageController::class, 'show'])->can('view', Message::class);
     Route::post('/messages', [MessageController::class, 'store'])->can('create', Message::class);
     Route::put('/messages/{message}', [MessageController::class, 'update'])->can('update', Message::class);
     Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->can('delete', Message::class);
@@ -108,9 +110,6 @@ Route::get('/languages/{language}', [LanguageController::class, 'show'])->can('v
 
 Route::get('/likes', [LikeController::class, 'index'])->can('view', Like::class);
 Route::get('/likes/{like}', [LikeController::class, 'show'])->can('view', Like::class);
-
-Route::get('/messages', [MessageController::class, 'index'])->can('view', Message::class);
-Route::get('/messages/{message}', [MessageController::class, 'show'])->can('view', Message::class);
 
 Route::get('/ratings', [RatingController::class, 'index'])->can('view', Rating::class);
 Route::get('/ratings/{rating}', [RatingController::class, 'show'])->can('view', Rating::class);
