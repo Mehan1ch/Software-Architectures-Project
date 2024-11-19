@@ -126,10 +126,9 @@ Route::get('/warnings/{warning}', [WarningController::class, 'show'])->can('view
 Route::get('/works', [WorkController::class, 'index'])->can('view', Work::class);
 Route::get('/works/{work}', [WorkController::class, 'show'])->can('view', Work::class);
 
-//TODO: fix morph rules with data aware custom rule class -> needs testing
-//TODO: apply auth to routes
-//TODO: email notifications on moderation state change
-//TODO: optional testing
-//TODO: optional api documentation
-//TODO: optional method comments
-//TODO: filament admin panel
+//TODO: email notifications on moderation state change -> see Work.php for more
+//TODO: testing -> request validaton, morph validation, routes, policies, controllers
+//TODO: language seeding for production (eg: laraworld) see LanguageFatcory.php for more
+//TODO: optional api documentation (OpenAPI spec / Swagger) -> if there is time left
+//TODO: optional method comments -> if there is time left looks good, extremely low priority
+//TODO: filament admin panel -> after testing main priority
