@@ -12,7 +12,7 @@ class LikePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(?User $user, ?Like $like): bool
+    public function view(?User $user): bool
     {
         return true;
     }

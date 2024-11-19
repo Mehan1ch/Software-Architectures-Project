@@ -12,7 +12,7 @@ class CharacterPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(?User $user, ?Character $character): bool
+    public function view(?User $user): bool
     {
         return true;
     }
