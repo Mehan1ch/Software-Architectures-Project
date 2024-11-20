@@ -26,7 +26,6 @@ class UpdateCommentRequest extends FormRequest
     {
         return [
             "content" => "required|string",
-            // TODO Check if this works
             "commentable_type" => ['required', 'string', Rule::in(['App\Models\Collection', 'App\Models\Work'])],
             "commentable_id" => ['required', 'uuid', new MorphIdRule],
         ];

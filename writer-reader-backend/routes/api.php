@@ -127,9 +127,7 @@ Route::get('/works', [WorkController::class, 'index'])->can('view', Work::class)
 Route::get('/works/{work}', [WorkController::class, 'show'])->can('view', Work::class);
 
 //TODO: email notifications on moderation state change -> see Work.php for more
-//TODO: testing -> request validaton, morph validation, routes, policies, controllers
-//TODO: update resource classes for frontend needs
 //TODO: language seeding for production (eg: laraworld) see LanguageFatcory.php for more
 //TODO: optional api documentation (OpenAPI spec / Swagger) -> if there is time left
 //TODO: optional method comments -> if there is time left looks good, extremely low priority
-//TODO: filament admin panel -> after testing main priority
+//TODO: filament admin panel -> after testing main priority -> see: https://filamentphp.com
