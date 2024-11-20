@@ -96,7 +96,7 @@ class User extends Authenticatable
 
     public function works(): HasMany
     {
-        return $this->hasMany(Work::class,'creator_id');
+        return $this->hasMany(Work::class,'user_id');
     }
 
     public function collections(): HasMany
