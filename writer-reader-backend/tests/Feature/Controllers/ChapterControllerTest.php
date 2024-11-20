@@ -41,6 +41,7 @@ test('post chapter', function () {
 
     $response->assertCreated();
     $this->assertDatabaseHas('chapters', [
+        'id'=>$response->json('data.id'),
         'title' => $chapter['title'],
         'content' => $chapter['content'],
         'work_id' => $work->id,

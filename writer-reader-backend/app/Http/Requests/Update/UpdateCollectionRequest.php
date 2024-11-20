@@ -25,7 +25,7 @@ class UpdateCollectionRequest extends FormRequest
         return [
             "name" => "required|string|max:100",
             "description" => "required|string",
-            'works' => 'optional|array',
+            'works' => 'array',
             'works.*' => 'uuid|exists:works,id',
         ];
     }
