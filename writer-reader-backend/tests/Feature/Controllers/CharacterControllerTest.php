@@ -4,7 +4,6 @@ use App\Enums\RolesEnum;
 use App\Models\Character;
 use App\Models\User;
 
-
 beforeEach(function () {
     // Only add the necessary role for the test
     $this->user = User::factory(1)->create()->each(function ($user) {

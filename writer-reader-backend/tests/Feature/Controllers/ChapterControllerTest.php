@@ -4,9 +4,6 @@ use App\Enums\RolesEnum;
 use App\Models\Chapter;
 use App\Models\User;
 use App\Models\Work;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
 
 beforeEach(function () {
     // Only add the necessary role for the test

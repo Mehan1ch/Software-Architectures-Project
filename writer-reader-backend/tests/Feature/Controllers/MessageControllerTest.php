@@ -4,10 +4,8 @@
 use App\Enums\RolesEnum;
 use App\Models\Message;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 
-uses(RefreshDatabase::class);
 
 beforeEach(function () {
     // Only add the necessary role for the test
@@ -27,8 +25,8 @@ test('get messages', function () {
 
 test('get a single message', function () {
     $message = Message::factory()->create([
-        'sent_to_id' => $this->sent_to,
-        'sent_by_id' => $this->sent_by,
+        'sent_to_id' => $this->sent_to->id,
+        'sent_by_id' => $this->sent_by->id,
     ]);
     $response = $this->actingAs($this->sent_by)->get('/api/messages/'.$message->id);
 
@@ -49,7 +47,10 @@ test('create a message', function () {
 
 
 test('update a message', function () {
-    $message = Message::factory()->create();
+    $message = Message::factory([
+        'sent_by_id' => $this->sent_by->id,
+        'sent_to_id' => $this->sent_to->id,
+    ])->create();
     $newMessage = [
         'content' => 'Updated Message content',
         'sent_by_id' => $this->sent_by->id,
@@ -67,7 +68,10 @@ test('update a message', function () {
 });
 
 test('delete a message', function () {
-    $message = Message::factory()->create();
+    $message = Message::factory([
+        'sent_by_id' => $this->sent_by->id,
+        'sent_to_id' => $this->sent_to->id,
+    ])->create();
     $response = $this->actingAs($this->sent_by)->delete('/api/messages/'.$message->id);
 
     $response->assertOk();

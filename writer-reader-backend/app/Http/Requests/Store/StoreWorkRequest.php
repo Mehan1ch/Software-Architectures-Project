@@ -25,16 +25,16 @@ class StoreWorkRequest extends FormRequest
         return [
             'title' => 'required|string|max:100',
             'content' => 'required|string',
-            'moderator_id' => 'optional|uuid|exists:users,id',
-            'rating_id' => 'optional|uuid|exists:ratings,id',
-            'language_id' => 'optional|uuid|exists:languages,id',
-            'warnings' => 'optional|array',
+            'moderator_id' => 'uuid|exists:users,id',
+            'rating_id' => 'uuid|exists:ratings,id',
+            'language_id' => 'uuid|exists:languages,id',
+            'warnings' => 'array',
             'warnings.*' => 'uuid|exists:warnings,id',
-            'tags' => 'optional|array',
+            'tags' => 'array',
             'tags.*' => 'uuid|exists:tags,id',
-            'characters' => 'optional|array',
+            'characters' => 'array',
             'characters.*' => 'uuid|exists:characters,id',
-            'categories' => 'optional|array',
+            'categories' => 'array',
             'categories.*' => 'uuid|exists:categories,id',
         ];
     }

@@ -91,6 +91,7 @@ class User extends Authenticatable
             //$user->receivedMessages()->delete();
             //$user->moderatedWorks()->delete();
             //$user->characters()->delete();
+            //$user->tags()->delete();
         });
     }
 
@@ -132,5 +133,10 @@ class User extends Authenticatable
     public function characters(): HasMany
     {
         return $this->hasMany(Character::class);
+    }
+
+    public function tags(): HasMany
+    {
+        return $this->hasMany(Tag::class);
     }
 }

@@ -8,6 +8,12 @@ use App\Models\User;
 
 class MessagePolicy
 {
+
+    public function viewAny(User $user): bool
+    {
+        return $user->can(PermissionsEnum::VIEW_MESSAGES->value);
+    }
+
     /**
      * Determine whether the user can view the model.
      */

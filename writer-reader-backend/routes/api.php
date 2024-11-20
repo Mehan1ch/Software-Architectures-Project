@@ -59,8 +59,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/likes/{like}', [LikeController::class, 'update'])->can('update', 'like');
     Route::delete('/likes/{like}', [LikeController::class, 'destroy'])->can('delete', 'like');
 
-    Route::get('/messages', [MessageController::class, 'index'])->can('view', Message::class);
-    Route::get('/messages/{message}', [MessageController::class, 'show'])->can('view', Message::class);
+    Route::get('/messages', [MessageController::class, 'index'])->can('viewAny', Message::class);
+    Route::get('/messages/{message}', [MessageController::class, 'show'])->can('view', 'message');
     Route::post('/messages', [MessageController::class, 'store'])->can('create', Message::class);
     Route::put('/messages/{message}', [MessageController::class, 'update'])->can('update', 'message');
     Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->can('delete', 'message');

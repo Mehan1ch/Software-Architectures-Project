@@ -20,7 +20,7 @@ test('get warnings', function () {
 });
 
 test('get a single warning', function () {
-    $warningId = Warning::all()->random()->id;
+    $warningId = Warning::factory()->create()->id;
     $response = $this->get('/api/warnings/' . $warningId);
 
     $response->assertOk();
@@ -35,12 +35,14 @@ test('create a warning', function () {
 
     $response->assertCreated();
     $this->assertDatabaseHas('warnings', [
+        'id' => $response->json('data.id'),
         'details' => $warningData['details'],
     ]);
 });
 
 test('update a warning', function () {
     $warning = Warning::factory()->create();
+
     $newData = [
         'details' => 'Update Warning Details',
     ];

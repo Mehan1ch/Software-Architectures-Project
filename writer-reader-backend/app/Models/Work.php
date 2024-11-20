@@ -55,7 +55,7 @@ class Work extends Model
         'moderation_status',
         'moderator_id',
         'rating_id',
-        'languages_id',
+        'language_id',
         'created_at',
         'updated_at',
     ];

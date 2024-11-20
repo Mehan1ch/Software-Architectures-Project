@@ -1,14 +1,8 @@
 <?php
 
-use App\Enums\PermissionsEnum;
 use App\Enums\RolesEnum;
 use App\Models\Rating;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
-
-
 
 beforeEach(function () {
     // Only add the necessary role for the test
@@ -25,7 +19,7 @@ test('get ratings', function () {
 });
 
 test('get a single rating', function () {
-    $ratingId = Rating::all()->random()->id;
+    $ratingId = Rating::factory()->create()->id;
     $response = $this->get('/api/ratings/'.$ratingId);
 
     $response->assertOk();
@@ -38,6 +32,10 @@ test('create a rating', function () {
     $response = $this->actingAs($this->user)->post('/api/ratings', $rating);
 
     $response->assertCreated();
+    $this->assertDatabaseHas('ratings', [
+        'id' => $response->json('data.id'),
+        'details' => $rating['details'],
+    ]);
 });
 
 
