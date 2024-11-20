@@ -28,7 +28,7 @@ class WarningPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Warning $warning): bool
+    public function update(User $user): bool
     {
         return $user->can(PermissionsEnum::UPDATE_WARNINGS->value);
     }
@@ -36,7 +36,7 @@ class WarningPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Warning $warning): bool
+    public function delete(User $user): bool
     {
         return $user->can(PermissionsEnum::DELETE_WARNINGS->value);
     }

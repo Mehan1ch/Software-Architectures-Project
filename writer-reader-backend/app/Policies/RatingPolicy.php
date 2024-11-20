@@ -28,7 +28,7 @@ class RatingPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Rating $rating): bool
+    public function update(User $user): bool
     {
         return $user->can(PermissionsEnum::UPDATE_RATINGS->value);
     }
@@ -36,7 +36,7 @@ class RatingPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Rating $rating): bool
+    public function delete(User $user): bool
     {
         return $user->can(PermissionsEnum::DELETE_RATINGS->value);
     }
