@@ -32,6 +32,10 @@ test('create a character', function () {
     $response = $this->actingAs($this->user)->post('/api/characters', $character);
 
     $response->assertCreated();
+    $this->assertDatabaseHas('characters', [
+        'id' => $response->json('data.id'),
+        'name' => $character['name'],
+    ]);
 });
 
 test('update a character', function () {

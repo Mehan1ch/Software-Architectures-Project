@@ -48,6 +48,11 @@ class MorphIdRule implements DataAwareRule, ValidationRule
 
         if (!$class || !$id) {
             $fail("The :attribute is invalid.");
+            return;
+        }
+        if(!class_exists($class)) {
+            $fail("The :attribute is invalid.");
+            return;
         }
 
         if (!$class::find($id)) {

@@ -35,6 +35,7 @@ test('create a category', function () {
 
     $response->assertCreated();
     $this->assertDatabaseHas('categories', [
+        'id'=>$response->json('data.id'),
         'name' => $category['name'],
         'description' => $category['description'],
     ]);
