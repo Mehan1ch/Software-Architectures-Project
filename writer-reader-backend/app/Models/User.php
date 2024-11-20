@@ -96,7 +96,7 @@ class User extends Authenticatable
 
     public function works(): HasMany
     {
-        return $this->hasMany(Work::class);
+        return $this->hasMany(Work::class,'creator_id');
     }
 
     public function collections(): HasMany
@@ -116,12 +116,12 @@ class User extends Authenticatable
 
     public function sentMessages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class,'sent_by_id');
     }
 
     public function receivedMessages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class,'sent_to_id');
     }
 
     public function moderatedWorks(): HasMany
