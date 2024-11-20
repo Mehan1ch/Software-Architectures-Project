@@ -20,19 +20,19 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCommentRequest $request): CommentResource
-    {
-        $comment = Comment::create($request->validated());
-        return new CommentResource($comment);
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Comment $comment): CommentResource
     {
+        return new CommentResource($comment);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreCommentRequest $request): CommentResource
+    {
+        $comment = $request->user()->comments()->create($request->validated());
         return new CommentResource($comment);
     }
 

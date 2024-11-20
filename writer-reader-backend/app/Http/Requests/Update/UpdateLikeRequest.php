@@ -26,7 +26,6 @@ class UpdateLikeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "user_id" => "required|uuid|exists:users,id",
             //TODO: Check if this works
             "likeable_id" => ["required", "string", new MorphIdRule],
             "likeable_type" => [Rule::in(["App\Models\Work", "App\Models\Collection","App\Models\Comment"]), "required", "string"],

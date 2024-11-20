@@ -25,7 +25,6 @@ class StoreWorkRequest extends FormRequest
         return [
             'title' => 'required|string|max:100',
             'content' => 'required|string',
-            'creator_id' => 'required|uuid|exists:users,id',
             'moderator_id' => 'optional|uuid|exists:users,id',
             'rating_id' => 'optional|uuid|exists:ratings,id',
             'language_id' => 'optional|uuid|exists:languages,id',

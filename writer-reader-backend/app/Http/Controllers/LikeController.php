@@ -24,7 +24,7 @@ class LikeController extends Controller
      */
     public function store(StoreLikeRequest $request): LikeResource
     {
-        $like = Like::create($request->validated());
+        $like = $request->user()->likes()->create($request->validated());
         return new LikeResource($like);
     }
 

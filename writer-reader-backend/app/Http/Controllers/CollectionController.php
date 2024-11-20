@@ -25,7 +25,7 @@ class CollectionController extends Controller
      */
     public function store(StoreCollectionRequest $request): CollectionResource
     {
-        $collection = Collection::create($request->validated());
+        $collection = $request->user()->collections()->create($request->validated());
         $works = $request->input('works');
         $collection->works()->attach($works);
         return new CollectionResource($collection);

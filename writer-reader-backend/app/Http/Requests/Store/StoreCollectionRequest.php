@@ -25,7 +25,6 @@ class StoreCollectionRequest extends FormRequest
         return [
             "name" => "required|string|max:100",
             "description" => "required|string",
-            "user_id" => "required|uuid|exists:users,id",
             'works' => 'optional|array',
             'works.*' => 'uuid|exists:works,id',
         ];

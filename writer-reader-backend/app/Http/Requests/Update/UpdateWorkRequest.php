@@ -27,7 +27,6 @@ class UpdateWorkRequest extends FormRequest
         return [
             'title' => 'required|string|max:100',
             'content' => 'required|string',
-            'creator_id' => 'required|uuid|exists:users,id',
             'moderation_status' => [Rule::enum(ModerationEnum::class), 'required'],
             'moderator_id' => 'optional|uuid|exists:users,id',
             'rating_id' => 'optional|uuid|exists:ratings,id',
