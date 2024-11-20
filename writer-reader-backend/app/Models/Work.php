@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property string id
  * @property string title
  * @property string content
- * @property int creator_id
+ * @property int user_id
  * @property ModerationEnum moderation_status
  * @property int moderator_id
  * @property int rating_id
@@ -49,7 +49,7 @@ class Work extends Model
     protected $fillable = [
         'title',
         'content',
-        'creator_id',
+        'user_id',
         'moderation_status',
         'moderator_id',
         'rating_id',
@@ -106,7 +106,7 @@ class Work extends Model
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function moderator(): BelongsTo

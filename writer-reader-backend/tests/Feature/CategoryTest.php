@@ -34,6 +34,10 @@ test('create a category', function () {
     $response = $this->actingAs($this->user)->post('/api/categories', $category);
 
     $response->assertCreated();
+    $this->assertDatabaseHas('categories', [
+        'name' => $category['name'],
+        'description' => $category['description'],
+    ]);
 });
 
 

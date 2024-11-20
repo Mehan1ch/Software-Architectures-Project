@@ -24,7 +24,7 @@ class WorkFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'content' => $this->faker->paragraphs(3, true),
-            'creator_id' => User::all()->random()->id,
+            'user_id' => User::all()->random()->id,
             'moderation_status' => $this->faker->randomElement(ModerationEnum::values()),
             'moderator_id' => User::all()->random()->id,
             'rating_id' => Rating::all()->random()->id,
