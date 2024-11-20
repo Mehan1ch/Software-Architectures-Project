@@ -1,15 +1,8 @@
 <?php
 
 use App\Enums\RolesEnum;
-use App\Http\Requests\Store\StoreCategoryRequest;
-use App\Http\Requests\Update\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-uses(RefreshDatabase::class);
-
-
 
 beforeEach(function () {
     // Only add the necessary role for the test
