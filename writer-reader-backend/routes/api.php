@@ -36,54 +36,54 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // Category routes
     Route::post('/categories', [CategoryController::class, 'store'])->can('create', Category::class);
-    Route::put('/categories/{category}', [CategoryController::class, 'update'])->can('update', Category::class);
-    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->can('delete', Category::class);
+    Route::put('/categories/{category}', [CategoryController::class, 'update'])->can('update', 'category');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->can('delete', 'category');
 
     Route::post('/chapters', [ChapterController::class, 'store'])->can('create', Chapter::class);
-    Route::put('/chapters/{chapter}', [ChapterController::class, 'update'])->can('update', Chapter::class);
-    Route::delete('/chapters/{chapter}', [ChapterController::class, 'destroy'])->can('delete', Chapter::class);
+    Route::put('/chapters/{chapter}', [ChapterController::class, 'update'])->can('update', 'chapter');
+    Route::delete('/chapters/{chapter}', [ChapterController::class, 'destroy'])->can('delete', 'chapter');
 
     Route::post('/characters', [CharacterController::class, 'store'])->can('create', Character::class);
-    Route::put('/characters/{character}', [CharacterController::class, 'update'])->can('update', Character::class);
-    Route::delete('/characters/{character}', [CharacterController::class, 'destroy'])->can('delete', Character::class);
+    Route::put('/characters/{character}', [CharacterController::class, 'update'])->can('update', 'character');
+    Route::delete('/characters/{character}', [CharacterController::class, 'destroy'])->can('delete', 'character');
 
     Route::post('/collections', [CollectionController::class, 'store'])->can('create', Collection::class);
-    Route::put('/collections/{collection}', [CollectionController::class, 'update'])->can('update', Collection::class);
-    Route::delete('/collections/{collection}', [CollectionController::class, 'destroy'])->can('delete', Collection::class);
+    Route::put('/collections/{collection}', [CollectionController::class, 'update'])->can('update', 'collection');
+    Route::delete('/collections/{collection}', [CollectionController::class, 'destroy'])->can('delete', 'collection');
 
     Route::post('/comments', [CommentController::class, 'store'])->can('create', Comment::class);
-    Route::put('/comments/{comment}', [CommentController::class, 'update'])->can('update', Comment::class);
-    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->can('delete', Comment::class);
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->can('update', 'comment');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->can('delete', 'comment');
 
     Route::post('/likes', [LikeController::class, 'store'])->can('create', Like::class);
-    Route::put('/likes/{like}', [LikeController::class, 'update'])->can('update', Like::class);
-    Route::delete('/likes/{like}', [LikeController::class, 'destroy'])->can('delete', Like::class);
+    Route::put('/likes/{like}', [LikeController::class, 'update'])->can('update', 'like');
+    Route::delete('/likes/{like}', [LikeController::class, 'destroy'])->can('delete', 'like');
 
     Route::get('/messages', [MessageController::class, 'index'])->can('view', Message::class);
     Route::get('/messages/{message}', [MessageController::class, 'show'])->can('view', Message::class);
     Route::post('/messages', [MessageController::class, 'store'])->can('create', Message::class);
-    Route::put('/messages/{message}', [MessageController::class, 'update'])->can('update', Message::class);
-    Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->can('delete', Message::class);
+    Route::put('/messages/{message}', [MessageController::class, 'update'])->can('update', 'message');
+    Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->can('delete', 'message');
 
     Route::post('/ratings', [RatingController::class, 'store'])->can('create', Rating::class);
-    Route::put('/ratings/{rating}', [RatingController::class, 'update'])->can('update',Rating::class);
-    Route::delete('/ratings/{rating}', [RatingController::class, 'destroy'])->can('delete', Rating::class);
+    Route::put('/ratings/{rating}', [RatingController::class, 'update'])->can('update','rating');
+    Route::delete('/ratings/{rating}', [RatingController::class, 'destroy'])->can('delete', 'rating');
 
     Route::post('/tags', [TagController::class, 'store'])->can('create', Tag::class);
-    Route::put('/tags/{tag}', [TagController::class, 'update'])->can('update', Tag::class);
-    Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->can('delete', Tag::class);
+    Route::put('/tags/{tag}', [TagController::class, 'update'])->can('update', 'tag');
+    Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->can('delete', 'tag');
 
     Route::post('/users', [UserController::class, 'store'])->can('create', User::class);
-    Route::put('/users/{user}', [UserController::class, 'update'])->can('update', User::class);
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->can('delete', User::class);
+    Route::put('/users/{user}', [UserController::class, 'update'])->can('update', 'user');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->can('delete', 'user');
 
     Route::post('/warnings', [WarningController::class, 'store'])->can('create', Warning::class);
-    Route::put('/warnings/{warning}', [WarningController::class, 'update'])->can('update', Warning::class);
-    Route::delete('/warnings/{warning}', [WarningController::class, 'destroy'])->can('delete', Warning::class);
+    Route::put('/warnings/{warning}', [WarningController::class, 'update'])->can('update', 'warning');
+    Route::delete('/warnings/{warning}', [WarningController::class, 'destroy'])->can('delete', 'warning');
 
     Route::post('/works', [WorkController::class, 'store'])->can('create', Work::class);
-    Route::put('/works/{work}', [WorkController::class, 'update'])->can('update', Work::class);
-    Route::delete('/works/{work}', [WorkController::class, 'destroy'])->can('delete', Work::class);
+    Route::put('/works/{work}', [WorkController::class, 'update'])->can('update', 'work');
+    Route::delete('/works/{work}', [WorkController::class, 'destroy'])->can('delete', 'work');
 });
 
 /*
