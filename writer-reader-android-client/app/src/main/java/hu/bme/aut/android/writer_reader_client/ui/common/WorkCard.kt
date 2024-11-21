@@ -38,7 +38,7 @@ fun WorkCard(
     authorName: String,
     modifier: Modifier = Modifier,
     creationYear: String,
-    category: String,
+    category: List<String>,
     language: String
 ) {
     Box(
@@ -85,9 +85,8 @@ fun WorkCard(
                     modifier = modifier.weight(1f),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    // Genre
                     Text(
-                        text = "${stringResource(id = R.string.string_genre)}  : $category",
+                        text = "${stringResource(id = R.string.string_category)} : ${category.joinToString(", ")}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = colorScheme.onSurface.copy(alpha = 0.7f)
                     )
@@ -106,89 +105,6 @@ fun WorkCard(
 }
 
 
-/*
-
-@Composable
-fun WorkCard2(
-    title: String,
-    authorName: String,
-    profileImageUrl: String,
-    modifier: Modifier = Modifier,
-    creationYear: String,
-    genre: String,
-    characters: List<String>,
-    language: String
-
-) {
-    Column(
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .background(colorScheme.surface, RoundedCornerShape(8.dp))
-            .padding(16.dp)
-    ) {
-        // Author profile section
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier.padding(bottom = 8.dp)
-        ) {
-            AsyncImage(
-                model = profileImageUrl,
-                contentDescription = "Author Profile Image",
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-            )
-
-            Spacer(modifier = modifier.width(8.dp))
-            Column {
-                Text(
-                    text = authorName,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = creationYear,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-            }
-            Spacer(modifier = modifier.weight(1f))
-            LikesTracker(likes = 5)
-        }
-
-        // Title of the book
-        Text(
-            text = title,
-            style = MaterialTheme.typography.headlineLarge,
-            modifier = modifier.padding(bottom = 8.dp)
-        )
-
-        // Genre
-        Text(
-            text = "C: $genre",
-            style = MaterialTheme.typography.bodyMedium,
-            color = colorScheme.onSurface.copy(alpha = 0.7f)
-        )
-
-        // Characters
-        Text(
-            text = "Characters: ${characters.joinToString(", ")}",
-            style = MaterialTheme.typography.bodyMedium,
-            color = colorScheme.onSurface.copy(alpha = 0.7f)
-        )
-
-        // Language
-        Text(
-            text = "Language: $language",
-            style = MaterialTheme.typography.bodyMedium,
-            color = colorScheme.onSurface.copy(alpha = 0.7f)
-        )
-        LikesTracker(likes = 5, modifier = modifier.align(Alignment.End))
-    }
-}
-*/
-
 @Preview
 @Composable
 fun TestWorkCard()
@@ -198,7 +114,7 @@ fun TestWorkCard()
         authorName = "F. Scott Fitzgerald",
         modifier = Modifier,
         creationYear = "1925",
-        category = "Regény",
+        category = listOf("Regény","asdfasd"),
         language = "Magyar"
     )
 }

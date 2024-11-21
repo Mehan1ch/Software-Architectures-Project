@@ -33,7 +33,7 @@ class UserListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val loadedWorks = api.getUsers()
-                val users = loadedWorks.body()?.data ?: emptyList()
+                val users = loadedWorks.body()?: emptyList()
                 _state.update {
                     it.copy(
                         users = users,
@@ -77,8 +77,6 @@ class UserListViewModel(
             }
         }
     }
-
-
 
 
     companion object {

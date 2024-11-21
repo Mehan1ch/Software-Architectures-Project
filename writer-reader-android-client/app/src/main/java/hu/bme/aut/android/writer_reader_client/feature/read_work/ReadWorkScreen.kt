@@ -43,7 +43,7 @@ fun ReadWork(
         initialPageOffsetFraction = 0f,
         pageCount = { state.work.chapters.size + 1 }
     )
-    val coroutineScope = rememberCoroutineScope()
+   // val coroutineScope = rememberCoroutineScope()
 
     HorizontalPager(
         modifier = modifier

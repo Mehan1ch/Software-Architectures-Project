@@ -8,9 +8,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
-import hu.bme.aut.android.writer_reader_client.data.model.Work
+import hu.bme.aut.android.writer_reader_client.data.model.get.Work
 import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
-import hu.bme.aut.android.writer_reader_client.feature.work_details.Work2
 import hu.bme.aut.android.writer_reader_client.feature.work_details.WorkDetailViewModel
 import hu.bme.aut.android.writer_reader_client.feature.work_details.WorkDetailViewState
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class ReadWorkState(
-    val work: Work2,
+    val work: Work = Work(),
 )
 
 
@@ -44,9 +43,9 @@ class ReadWorkViewModel(
             _state.update { it.copy(isLoading = true) }
             try {
                 val loadedWork = api.getWork(workId)
-                val work = loadedWork.body()?:Work()
+                val work = loadedWork.body()?.data ?: Work()
                 _state.update { it.copy(
-                    work = Work2(),
+                    work = work,
                     isLoading = false
                 ) }
 

@@ -15,7 +15,11 @@ data class Collection(
     val likes: Int,
     @Json(name = "is_liked") val isLiked: Boolean,
     val works: WorksData,
-    val comments: List<Comment>
+    val comments: CommentsData
+)
+
+data class CommentsData(
+    val data: List<Comment>
 )
 
 data class WorksData(

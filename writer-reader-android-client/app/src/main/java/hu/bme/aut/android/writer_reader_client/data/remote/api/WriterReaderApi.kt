@@ -5,6 +5,7 @@ import hu.bme.aut.android.writer_reader_client.data.model.get.Collection
 import hu.bme.aut.android.writer_reader_client.data.model.get.Comment
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionsResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.User
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorkResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorksResponse
 import retrofit2.Response
@@ -114,7 +115,7 @@ interface WriterReaderApi {
 
     @GET("/languages/{id}")
     suspend fun getLanguage(@Path("id") id: String): Response<Language>
-*/
+*/ /*
     // Likes
     @GET("/likes")
     suspend fun getLikes(): Response<List<Like>>
@@ -146,6 +147,8 @@ interface WriterReaderApi {
 
     @DELETE("/messages/{id}")
     suspend fun deleteMessage(@Path("id") id: String): Response<Void>
+
+    */
 /*
     // Ratings
     @GET("/ratings")
@@ -179,6 +182,7 @@ interface WriterReaderApi {
     @DELETE("/tags/{id}")
     suspend fun deleteTag(@Path("id") id: String): Response<Void>
 */
+
     // Users
     @GET("/users")
     suspend fun getUsers(): Response<List<User>>
@@ -194,6 +198,9 @@ interface WriterReaderApi {
 
     @DELETE("/users/{id}")
     suspend fun deleteUser(@Path("id") id: String): Response<Void>
+
+
+
 /*
     // Warnings
     @GET("/warnings")
@@ -210,7 +217,33 @@ interface WriterReaderApi {
 
     @DELETE("/warnings/{id}")
     suspend fun deleteWarning(@Path("id") id: String): Response<Void>
+*/
+
+    // Authentication
+    @POST("/register")
+    suspend fun register(@Body request: RegisterRequest): Response<RegisterResponse>
+
+    @POST("/login")
+    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
+
+    @POST("/forgot-password")
+    suspend fun forgotPassword(@Body request: ForgotPasswordRequest): Response<ForgotPasswordResponse>
+
+    @POST("/reset-password")
+    suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<ResetPasswordResponse>
+
+    @GET("/verify-email/{id}/{hash}")
+    suspend fun verifyEmail(@Path("id") id: String, @Path("hash") hash: String): Response<VerifyEmailResponse>
+
+    @POST("/email/verification-notification")
+    suspend fun sendVerificationNotification(): Response<VerificationNotificationResponse>
+
+    @POST("/logout")
+    suspend fun logout(): Response<LogoutResponse>
+
+    // ... other API calls
+}
+
 
 }
 
-*/

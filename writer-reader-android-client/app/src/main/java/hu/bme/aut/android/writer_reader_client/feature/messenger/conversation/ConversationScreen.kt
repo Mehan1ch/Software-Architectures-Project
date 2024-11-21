@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hu.bme.aut.android.writer_reader_client.R
 import hu.bme.aut.android.writer_reader_client.data.model.get.Message
+
 import hu.bme.aut.android.writer_reader_client.ui.common.Comment
 import hu.bme.aut.android.writer_reader_client.ui.common.NormalTextField
 

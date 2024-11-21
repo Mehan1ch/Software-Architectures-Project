@@ -26,15 +26,15 @@ data class Link(
 
 //-----------------------------/api/works-------------------------------
 data class WorksListItem(
-    val id: String,
-    val title: String,
-    @Json(name = "creator_id") val creatorId: String,
-    @Json(name = "creator_name") val creatorName: String,
-    @Json(name = "created_at") val createdAt: String,
-    @Json(name = "updated_at") val updatedAt: String,
-    val language: String,
-    val category: List<String>,
-    val likes: Int
+    val id: String = "",
+    val title: String = "",
+    @Json(name = "creator_id") val creatorId: String = "",
+    @Json(name = "creator_name") val creatorName: String = "",
+    @Json(name = "created_at") val createdAt: String = "",
+    @Json(name = "updated_at") val updatedAt: String = "",
+    val language: String = "",
+    val category: List<String> = listOf(""),
+    val likes: Int = 0
 )
 data class WorksResponse(
     val data: List<WorksListItem>,
@@ -87,14 +87,7 @@ data class Like (
     @Json(name = "updated_at") val updatedAt: String
 )
 
-data class Message(
-    val id: String,
-    val content: String,
-    @Json(name = "sent_by_id") val sentById: String,
-    @Json(name = "sent_to_id") val sentToId: String,
-    @Json(name = "created_at") val createdAt: String,
-    @Json(name = "updated_at") val updatedAt: String
-)
+
 
 data class Rating(
     val id: String,
@@ -111,14 +104,7 @@ data class Tag(
     @Json(name = "updated_at") val updatedAt: String
 )
 
-data class User(
-    val id: String,
-    val name: String,
-    val email: String,
-    @Json(name = "email_verified_at: String") val emailVerifiedAt: String,
-    @Json(name = "created_at") val createdAt: String,
-    @Json(name = "updated_at") val updatedAt: String
-)
+
 
 data class Warning(
     val id: String,

@@ -163,7 +163,7 @@ fun Details(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            onClick = { onReadButtonClick },
+            onClick = { onReadButtonClick() },
             modifier = Modifier.fillMaxWidth()
         ){
             Text(text = stringResource(id = R.string.button_read_work))

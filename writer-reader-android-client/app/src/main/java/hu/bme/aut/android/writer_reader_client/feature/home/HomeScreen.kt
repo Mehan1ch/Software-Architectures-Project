@@ -56,14 +56,6 @@ fun HomeScreen(
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    /*
-    val refreshState = rememberPullRefreshState(
-        refreshing = state.isLoading,
-        onRefresh = viewModel::refreshWorks
-    )
-    val lazyCollumnState = rememberLazyListState()
-*/
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -82,10 +74,10 @@ fun HomeScreen(
                     val work = state.works[index]
                     WorkCard(
                         title = work.title,
-                        authorName = work.id,
+                        authorName = work.creatorName,
                         creationYear = work.createdAt,
-                        category = work.moderationStatus,
-                        language = work.languageId,
+                        category = work.category,
+                        language = work.language,
                         modifier = modifier.clickable {
                             navHostController.navigate(Screen.WorkDetails.passWorkId(work.id))
                         }

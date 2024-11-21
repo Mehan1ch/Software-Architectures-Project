@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
 import hu.bme.aut.android.writer_reader_client.data.model.get.Chapter
-import hu.bme.aut.android.writer_reader_client.data.model.Work
+import hu.bme.aut.android.writer_reader_client.data.model.get.Work
 import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
 import hu.bme.aut.android.writer_reader_client.ui.common.Comment
 import kotlinx.coroutines.Dispatchers
@@ -18,8 +18,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
-data class Work2(
+/*
+data class// Work2(
     val id: String = "",
     val title: String = "ASDASD",
     val creatorName: String = "xyz",
@@ -39,15 +39,12 @@ data class Work2(
         "asd",
         "asd",
         "asd",
-        "asd",
-        "asd",
-        "asd",
     )
     ),
     val content: String = "asdkhjfb askldjv ajklsdhfl kajsnd vdbflkja sdkljvfan dsflakdna fsndékjf adfknja nldskfjéals dnmfélas dvékjadéf lkasdnév nékadn féjasd vékjdnfém dfékjnéadsf a. ksdn éad flansél dfnaé fdkjadf hnfkasd fn asdkfasl kdfja",
     val comments: List<Comment> = emptyList(),
 )
-
+*/
 data class WorkDetailViewState(
     val comments: List<Comment> = listOf(Comment(),Comment()),
     val newComment: String = "",
@@ -61,7 +58,7 @@ data class WorkDetailViewState(
     val isError: Boolean = false,
     val throwable: Throwable? = null,
 
-    val work: Work2 = Work2(),
+    val work: Work = Work(),
 )
 
 
@@ -95,9 +92,9 @@ class WorkDetailViewModel (
             _state.update { it.copy(isLoading = true) }
             try {
                 val loadedWork = api.getWork(workId)
-                val work = loadedWork.body()?:Work()
+                val work = loadedWork.body()?.data ?:Work()
                 _state.update { it.copy(
-                    work = Work2(),
+                    work = work,
                     isLoading = false
                 ) }
 

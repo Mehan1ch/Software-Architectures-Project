@@ -5,7 +5,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import hu.bme.aut.android.writer_reader_client.data.model.Work
 import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
 import kotlinx.coroutines.flow.Flow
 /*

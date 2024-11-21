@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
-import hu.bme.aut.android.writer_reader_client.data.model.Work
+import hu.bme.aut.android.writer_reader_client.data.model.get.WorksListItem
 import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +37,7 @@ class HomeViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val loadedWorks = api.getWorks()
-                val works = loadedWorks.body()?.data ?: emptyList()
+                val works = loadedWorks.body()?.data ?: listOf(WorksListItem())
                 _state.update {
                     it.copy(
                         works = works,
@@ -65,7 +65,7 @@ class HomeViewModel(
         searchWorks(state.value.searchText)
     }
 
-    fun searchWorks(query: String) {
+    private fun searchWorks(query: String) {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -117,9 +117,8 @@ class HomeViewModel(
 
 data class HomeViewState(
     val isLoading: Boolean = false,
-    val works: List<Work> = emptyList(),
+    val works: List<WorksListItem> = emptyList(),
     val searchText: String = "",
-  //  val work: Work = Work(),
     val isError: Boolean = false,
     val throwable: Throwable? = null
 )

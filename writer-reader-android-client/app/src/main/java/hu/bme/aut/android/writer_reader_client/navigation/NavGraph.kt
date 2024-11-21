@@ -16,6 +16,7 @@ import androidx.navigation.navArgument
 import androidx.paging.ExperimentalPagingApi
 import hu.bme.aut.android.writer_reader_client.feature.home.HomeScreen
 import hu.bme.aut.android.writer_reader_client.feature.login.LoginScreen
+import hu.bme.aut.android.writer_reader_client.feature.messenger.conversation.ConversationScreen
 import hu.bme.aut.android.writer_reader_client.feature.messenger.user_list.UserListScreen
 import hu.bme.aut.android.writer_reader_client.feature.read_work.ReadWork
 import hu.bme.aut.android.writer_reader_client.feature.register.RegisterScreen
@@ -39,8 +40,8 @@ fun NavGraph(
         composable(Screen.Login.route){
             LoginScreen(
                 onSuccessfulLogin = {
-                 //   navHostController.navigate(Screen.Home.route)
-                    navHostController.navigate(Screen.ReadWork.passWorkId("workId"))
+                    navHostController.navigate(Screen.Home.route)
+                 //   navHostController.navigate(Screen.ReadWork.passWorkId("workId"))
                 },
                 onRegisterButtonClicked = {
                     navHostController.navigate(Screen.Register.route)
@@ -90,7 +91,7 @@ fun NavGraph(
                 }
             )
         ){
-            ConversationScreen()
+           // ConversationScreen()
         }
 
     }

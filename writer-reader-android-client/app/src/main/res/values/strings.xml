@@ -11,7 +11,7 @@
     <string name="snackbar_label_register_failed">Sikertelen regisztráció!</string>
     <string name="text_sign_up">Fiók létrehozása</string>
     <string name="search_bar_placeholder_text">Keresés</string>
-    <string name="string_genre">Műfaj</string>
+    <string name="string_category">Kategória</string>
     <string name="string_language">Nyelv</string>
     <string name="language_tag">hu</string>
     <string name ="textfield_label_comment">Írj megjegyzést</string>
