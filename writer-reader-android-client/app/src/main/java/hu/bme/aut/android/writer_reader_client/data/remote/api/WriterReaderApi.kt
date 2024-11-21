@@ -1,19 +1,12 @@
 package hu.bme.aut.android.writer_reader_client.data.remote.api
 
-import hu.bme.aut.android.writer_reader_client.data.model.Category
-import hu.bme.aut.android.writer_reader_client.data.model.Chapter
-import hu.bme.aut.android.writer_reader_client.data.model.Character
-import hu.bme.aut.android.writer_reader_client.data.model.Collection
-import hu.bme.aut.android.writer_reader_client.data.model.Comment
-import hu.bme.aut.android.writer_reader_client.data.model.Language
-import hu.bme.aut.android.writer_reader_client.data.model.Like
-import hu.bme.aut.android.writer_reader_client.data.model.Message
-import hu.bme.aut.android.writer_reader_client.data.model.Rating
-import hu.bme.aut.android.writer_reader_client.data.model.Tag
-import hu.bme.aut.android.writer_reader_client.data.model.User
-import hu.bme.aut.android.writer_reader_client.data.model.Warning
-import hu.bme.aut.android.writer_reader_client.data.model.Work
-import hu.bme.aut.android.writer_reader_client.data.model.WorksResponse
+
+import hu.bme.aut.android.writer_reader_client.data.model.get.Collection
+import hu.bme.aut.android.writer_reader_client.data.model.get.Comment
+import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionsResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.WorkResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.WorksResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -21,7 +14,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface WriterReaderApi {
     //WORKS
@@ -29,72 +21,14 @@ interface WriterReaderApi {
     suspend fun getWorks(): Response<WorksResponse>
 
     @GET("/api/works/{id}")
-    suspend fun getWork(@Path("id") id: String): Response<Work>
-
-    @POST("/works")
-    suspend fun createWork(@Body work: Work): Response<Work>
-
-    @PUT("/works/{id}")
-    suspend fun updateWork(@Path("id") id: String, @Body work: Work): Response<Work>
-
-    @DELETE("/works/{id}")
-    suspend fun deleteWork(@Path("id") id: String): Response<Void>
-
-
-    // Categories
-    @GET("/categories")
-    suspend fun getCategories(): Response<List<Category>>
-
-    @GET("/categories/{id}")
-    suspend fun getCategory(@Path("id") id: String): Response<Category>
-
-    @POST("/categories")
-    suspend fun createCategory(@Body category: Category): Response<Category>
-
-    @PUT("/categories/{id}")
-    suspend fun updateCategory(@Path("id") id: String, @Body category: Category): Response<Category>
-
-    @DELETE("/categories/{id}")
-    suspend fun deleteCategory(@Path("id") id: String): Response<Void>
-
-    // Chapters
-    @GET("/chapters")
-    suspend fun getChapters(): Response<List<Chapter>>
-
-    @GET("/chapters/{id}")
-    suspend fun getChapter(@Path("id") id: String): Response<Chapter>
-
-    @POST("/chapters")
-    suspend fun createChapter(@Body chapter: Chapter): Response<Chapter>
-
-    @PUT("/chapters/{id}")
-    suspend fun updateChapter(@Path("id") id: String, @Body chapter: Chapter): Response<Chapter>
-
-    @DELETE("/chapters/{id}")
-    suspend fun deleteChapter(@Path("id") id: String): Response<Void>
-
-    // Characters
-    @GET("/characters")
-    suspend fun getCharacters(): Response<List<Character>>
-
-    @GET("/characters/{id}")
-    suspend fun getCharacter(@Path("id") id: String): Response<Character>
-
-    @POST("/characters")
-    suspend fun createCharacter(@Body character: Character): Response<Character>
-
-    @PUT("/characters/{id}")
-    suspend fun updateCharacter(@Path("id") id: String, @Body character: Character): Response<Character>
-
-    @DELETE("/characters/{id}")
-    suspend fun deleteCharacter(@Path("id") id: String): Response<Void>
+    suspend fun getWork(@Path("id") id: String): Response<WorkResponse>
 
     // Collections
     @GET("/collections")
-    suspend fun getCollections(): Response<List<Collection>>
+    suspend fun getCollections(): Response<CollectionsResponse>
 
     @GET("/collections/{id}")
-    suspend fun getCollection(@Path("id") id: String): Response<Collection>
+    suspend fun getCollection(@Path("id") id: String): Response<CollectionResponse>
 
     @POST("/collections")
     suspend fun createCollection(@Body collection: Collection): Response<Collection>
@@ -104,6 +38,59 @@ interface WriterReaderApi {
 
     @DELETE("/collections/{id}")
     suspend fun deleteCollection(@Path("id") id: String): Response<Void>
+
+
+
+
+    /*
+     // Categories
+     @GET("/categories")
+     suspend fun getCategories(): Response<List<Category>>
+
+     @GET("/categories/{id}")
+     suspend fun getCategory(@Path("id") id: String): Response<Category>
+
+     @POST("/categories")
+     suspend fun createCategory(@Body category: Category): Response<Category>
+
+     @PUT("/categories/{id}")
+     suspend fun updateCategory(@Path("id") id: String, @Body category: Category): Response<Category>
+
+     @DELETE("/categories/{id}")
+     suspend fun deleteCategory(@Path("id") id: String): Response<Void>
+
+     // Chapters
+     @GET("/chapters")
+     suspend fun getChapters(): Response<List<Chapter>>
+
+     @GET("/chapters/{id}")
+     suspend fun getChapter(@Path("id") id: String): Response<Chapter>
+
+     @POST("/chapters")
+     suspend fun createChapter(@Body chapter: Chapter): Response<Chapter>
+
+     @PUT("/chapters/{id}")
+     suspend fun updateChapter(@Path("id") id: String, @Body chapter: Chapter): Response<Chapter>
+
+     @DELETE("/chapters/{id}")
+     suspend fun deleteChapter(@Path("id") id: String): Response<Void>
+
+     // Characters
+     @GET("/characters")
+     suspend fun getCharacters(): Response<List<Character>>
+
+     @GET("/characters/{id}")
+     suspend fun getCharacter(@Path("id") id: String): Response<Character>
+
+     @POST("/characters")
+     suspend fun createCharacter(@Body character: Character): Response<Character>
+
+     @PUT("/characters/{id}")
+     suspend fun updateCharacter(@Path("id") id: String, @Body character: Character): Response<Character>
+
+     @DELETE("/characters/{id}")
+     suspend fun deleteCharacter(@Path("id") id: String): Response<Void>
+ */
 
     // Comments
     @GET("/comments")
@@ -120,14 +107,14 @@ interface WriterReaderApi {
 
     @DELETE("/comments/{id}")
     suspend fun deleteComment(@Path("id") id: String): Response<Void>
-
+/*
     // Languages
     @GET("/languages")
     suspend fun getLanguages(): Response<List<Language>>
 
     @GET("/languages/{id}")
     suspend fun getLanguage(@Path("id") id: String): Response<Language>
-
+*/
     // Likes
     @GET("/likes")
     suspend fun getLikes(): Response<List<Like>>
@@ -159,7 +146,7 @@ interface WriterReaderApi {
 
     @DELETE("/messages/{id}")
     suspend fun deleteMessage(@Path("id") id: String): Response<Void>
-
+/*
     // Ratings
     @GET("/ratings")
     suspend fun getRatings(): Response<List<Rating>>
@@ -191,7 +178,7 @@ interface WriterReaderApi {
 
     @DELETE("/tags/{id}")
     suspend fun deleteTag(@Path("id") id: String): Response<Void>
-
+*/
     // Users
     @GET("/users")
     suspend fun getUsers(): Response<List<User>>
@@ -207,7 +194,7 @@ interface WriterReaderApi {
 
     @DELETE("/users/{id}")
     suspend fun deleteUser(@Path("id") id: String): Response<Void>
-
+/*
     // Warnings
     @GET("/warnings")
     suspend fun getWarnings(): Response<List<Warning>>
@@ -225,3 +212,5 @@ interface WriterReaderApi {
     suspend fun deleteWarning(@Path("id") id: String): Response<Void>
 
 }
+
+*/

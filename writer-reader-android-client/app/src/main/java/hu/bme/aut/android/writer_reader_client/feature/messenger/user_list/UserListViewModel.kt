@@ -1,13 +1,12 @@
 package hu.bme.aut.android.writer_reader_client.feature.messenger.user_list
 import android.util.Log
-import androidx.compose.animation.core.copy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
-import hu.bme.aut.android.writer_reader_client.data.model.User
+import hu.bme.aut.android.writer_reader_client.data.model.get.User
 import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,8 @@
+package hu.bme.aut.android.writer_reader_client.data.model.get
+
 import com.squareup.moshi.Json
+
+//-----------------------------/api/works/{id}---------------------------
 
 data class Work(
     val id: String = "",

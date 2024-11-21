@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
-import hu.bme.aut.android.writer_reader_client.data.model.Chapter
+import hu.bme.aut.android.writer_reader_client.data.model.get.Chapter
 import hu.bme.aut.android.writer_reader_client.data.model.Work
 import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
 import hu.bme.aut.android.writer_reader_client.ui.common.Comment
@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 
 data class Work2(
@@ -35,14 +34,16 @@ data class Work2(
     val tags: List<String> = emptyList(),
     val likes: Int = 0,
 
-    val chapters: List<Chapter> = listOf(Chapter(
+    val chapters: List<Chapter> = listOf(
+        Chapter(
         "asd",
         "asd",
         "asd",
         "asd",
         "asd",
         "asd",
-    )),
+    )
+    ),
     val content: String = "asdkhjfb askldjv ajklsdhfl kajsnd vdbflkja sdkljvfan dsflakdna fsndékjf adfknja nldskfjéals dnmfélas dvékjadéf lkasdnév nékadn féjasd vékjdnfém dfékjnéadsf a. ksdn éad flansél dfnaé fdkjadf hnfkasd fn asdkfasl kdfja",
     val comments: List<Comment> = emptyList(),
 )
