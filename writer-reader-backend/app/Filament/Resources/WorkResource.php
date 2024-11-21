@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\ModerationEnum;
 use App\Enums\PermissionsEnum;
+use App\Enums\RolesEnum;
 use App\Filament\Resources\WorkResource\Pages;
 use App\Filament\Resources\WorkResource\RelationManagers;
 use App\Models\Rating;
@@ -15,7 +16,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class WorkResource extends Resource
 {
@@ -62,15 +65,22 @@ class WorkResource extends Resource
                     ->label('ID')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('creator.name')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('moderation_status'),
+                Tables\Columns\TextColumn::make('moderation_status')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('moderator.name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rating.details')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('language.name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -144,5 +154,20 @@ class WorkResource extends Resource
             'view' => Pages\ViewWork::route('/{record}'),
             'edit' => Pages\EditWork::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
     }
 }

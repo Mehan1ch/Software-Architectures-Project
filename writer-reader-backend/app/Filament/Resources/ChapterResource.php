@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RolesEnum;
 use App\Filament\Resources\ChapterResource\Pages;
 use App\Filament\Resources\ChapterResource\RelationManagers;
 use App\Models\Chapter;
@@ -11,7 +12,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class ChapterResource extends Resource
 {
@@ -84,5 +87,20 @@ class ChapterResource extends Resource
             'view' => Pages\ViewChapter::route('/{record}'),
             'edit' => Pages\EditChapter::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
     }
 }

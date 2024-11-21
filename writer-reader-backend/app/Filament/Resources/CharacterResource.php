@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RolesEnum;
 use App\Filament\Resources\CharacterResource\Pages;
 use App\Filament\Resources\CharacterResource\RelationManagers;
 use App\Models\Character;
@@ -11,7 +12,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class CharacterResource extends Resource
 {
@@ -81,5 +84,19 @@ class CharacterResource extends Resource
             'view' => Pages\ViewCharacter::route('/{record}'),
             'edit' => Pages\EditCharacter::route('/{record}/edit'),
         ];
+    }
+    public static function canCreate(): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()->hasRole(RolesEnum::ADMIN->value);
     }
 }
