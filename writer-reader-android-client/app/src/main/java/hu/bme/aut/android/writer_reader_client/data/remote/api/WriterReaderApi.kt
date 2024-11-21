@@ -1,6 +1,13 @@
 package hu.bme.aut.android.writer_reader_client.data.remote.api
 
 
+import hu.bme.aut.android.writer_reader_client.data.model.auth.ForgotPasswordRequest
+import hu.bme.aut.android.writer_reader_client.data.model.auth.ForgotPasswordResponse
+import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginRequest
+import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
+import hu.bme.aut.android.writer_reader_client.data.model.auth.ResetPasswordRequest
+import hu.bme.aut.android.writer_reader_client.data.model.auth.ResetPasswordResponse
+import hu.bme.aut.android.writer_reader_client.data.model.auth.VerificationNotificationResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.Collection
 import hu.bme.aut.android.writer_reader_client.data.model.get.Comment
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionResponse
@@ -241,7 +248,6 @@ interface WriterReaderApi {
     @POST("/logout")
     suspend fun logout(): Response<LogoutResponse>
 
-    // ... other API calls
 }
 
 
