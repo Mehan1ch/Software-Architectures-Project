@@ -33,6 +33,7 @@ class CollectionResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
+                    ->searchable()
                     ->required(),
             ]);
     }

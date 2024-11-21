@@ -32,12 +32,21 @@ class CommentResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('commentable_type')
+                Forms\Components\Select::make('commentable_type')
+                    ->options([
+                        'App\Models\Work' => 'Work',
+                        'App\Models\Collection' => 'Collection',
+                    ])
+                    ->live()
+                    ->searchable()
+                    ->required(),
+                Forms\Components\Select::make('commentable_id')
+                    ->options(function (Forms\Get $get) {
+                        return $get('commentable_type')::all()->pluck('id')->toArray();
+                    })
+                    ->live()
+                    ->searchable()
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('commentable_id')
-                    ->required()
-                    ->maxLength(36),
             ]);
     }
 

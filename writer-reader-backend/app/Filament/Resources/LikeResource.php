@@ -36,9 +36,15 @@ class LikeResource extends Resource
                         'App\Models\Work' => 'Work',
                         'App\Models\Collection' => 'Collection'
                     ])
+                    ->searchable()
+                    ->live()
                     ->required(),
                 Forms\Components\Select::make('likeable_id')
-                    ->relationship('likeable', 'id')
+                    //->relationship('likeable', 'id')
+                    ->options(function (Forms\Get $get) {
+                        return $get('likeable_type')::all()->pluck('id')->toArray();
+                    })
+                    ->live()
                     ->searchable()
                     ->required()
             ]);

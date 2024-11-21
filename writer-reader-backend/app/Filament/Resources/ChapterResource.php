@@ -34,6 +34,7 @@ class ChapterResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Select::make('work_id')
                     ->relationship('work', 'title')
+                    ->searchable()
                     ->required(),
             ]);
     }
