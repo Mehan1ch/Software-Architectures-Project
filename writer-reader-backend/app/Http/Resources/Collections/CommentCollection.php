@@ -23,6 +23,8 @@ class CommentCollection extends ResourceCollection
                     'user_name' => $comment->user->name,
                     'created_at' => $comment->created_at,
                     'updated_at' => $comment->updated_at,
+                    'commentable_id' => $comment->commentable_id,
+                    'commentable_type' => $comment->commentable_type,
                     'likes' => $comment->likes->count(),
                     'is_liked' => $comment->likes->contains('user_id', auth()->id()),
                 ];
