@@ -9,6 +9,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarningController;
 use App\Http\Controllers\WorkController;
@@ -125,6 +126,9 @@ Route::get('/warnings/{warning}', [WarningController::class, 'show'])->can('view
 
 Route::get('/works', [WorkController::class, 'index'])->can('view', Work::class);
 Route::get('/works/{work}', [WorkController::class, 'show'])->can('view', Work::class);
+
+Route::post('/login', [TokenController::class, 'store'])->middleware('guest');
+Route::post('/logout', [TokenController::class, 'destroy'])->middleware('auth:sanctum');
 
 //TODO: email notifications on moderation state change -> see Work.php for more
 //TODO: language seeding for production (eg: laraworld) see LanguageFatcory.php for more
