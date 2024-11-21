@@ -13,7 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import SvgIcon from "@mui/material/SvgIcon";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["Művek", "Gyűjtemények", "Szerzők"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function LogoSvgIcon() {
@@ -59,16 +59,11 @@ function NavBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/*}  src={LogoImg}
-            height={"45px"}
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-          />*/}
           <LogoSvgIcon />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -116,7 +111,6 @@ function NavBar() {
               ))}
             </Menu>
           </Box>
-          {/*<AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />*/}
           <Typography
             variant="h5"
             noWrap
@@ -140,7 +134,12 @@ function NavBar() {
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                  fontWeight: "bold",
+                }}
               >
                 {page}
               </Button>
