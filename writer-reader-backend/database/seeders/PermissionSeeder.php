@@ -117,7 +117,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => PermissionsEnum::UPDATE_WORKS->value]);
         Permission::create(['name' => PermissionsEnum::DELETE_WORKS->value]);
 
+        // Moderation and admin related permissions
+
         Permission::create(['name' => PermissionsEnum::ACCESS_ADMIN_PANEL->value]);
+        Permission::create(['name' => PermissionsEnum::MODERATE_WORKS->value]);
 
         // Assign permissions to roles
 
@@ -215,6 +218,7 @@ class PermissionSeeder extends Seeder
             PermissionsEnum::UPDATE_WORKS->value,
             PermissionsEnum::DELETE_WORKS->value,
             PermissionsEnum::ACCESS_ADMIN_PANEL->value,
+            PermissionsEnum::MODERATE_WORKS->value,
         ]);
     }
 }

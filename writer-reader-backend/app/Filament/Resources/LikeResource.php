@@ -25,13 +25,14 @@ class LikeResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
+                    ->searchable()
                     ->required(),
-                Forms\Components\TextInput::make('likeable_type')
+                Forms\Components\Select::make('likeable_type')
+                    ->required(),
+                Forms\Components\Select::make('likeable_id')
+                    ->relationship('likeable', 'id')
+                    ->searchable()
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('likeable_id')
-                    ->required()
-                    ->maxLength(36),
             ]);
     }
 

@@ -28,6 +28,7 @@ class TagResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
+                    ->searchable()
                     ->required(),
             ]);
     }

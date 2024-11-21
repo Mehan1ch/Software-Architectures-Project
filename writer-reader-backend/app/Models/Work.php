@@ -82,7 +82,7 @@ class Work extends Model
 
             /** @var ModerationEnum $status */
             $status = $work->getOriginal('moderation_status');
-            if ($status->ableToTransferTo($work->moderation_status)) {
+            if (!$status->ableToTransferTo($work->moderation_status)) {
                 throw new StateMachineException("[{$status->name}] cannot transfer into [{$work->moderation_status->name}].");
             }
 
@@ -92,7 +92,7 @@ class Work extends Model
                 //Tip: Gmail SMTP server is a good option for development, just need to create a random google account, and an app password, limitation: 500 emails per day
                 //See: https://www.iankumu.com/blog/laravel-send-emails/
                 $user = $work->creator?? auth()->user();
-                Mail::to($user->email)->send(new ModerationMail($work, $user));
+                //Mail::to($user->email)->send(new ModerationMail($work, $user));
             }
         });
 

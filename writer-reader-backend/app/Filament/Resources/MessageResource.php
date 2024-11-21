@@ -26,12 +26,14 @@ class MessageResource extends Resource
                 Forms\Components\Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('sent_by_id')
-                    ->required()
-                    ->maxLength(36),
-                Forms\Components\TextInput::make('sent_to_id')
-                    ->required()
-                    ->maxLength(36),
+                Forms\Components\Select::make('sent_by_id')
+                    ->relationship('sender', 'name')
+                    ->searchable()
+                    ->required(),
+                Forms\Components\Select::make('sent_to_id')
+                    ->relationship('receiver', 'name')
+                    ->searchable()
+                    ->required(),
             ]);
     }
 
@@ -42,9 +44,9 @@ class MessageResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sent_by_id')
+                Tables\Columns\TextColumn::make('sender.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sent_to_id')
+                Tables\Columns\TextColumn::make('receiver.name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
