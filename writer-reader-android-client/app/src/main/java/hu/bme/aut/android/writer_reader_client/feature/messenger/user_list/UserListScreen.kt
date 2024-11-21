@@ -88,6 +88,6 @@ fun UserListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun HomeScreenPreview() {
+fun UserListScreenPreview() {
     //  HomeScreen(navHostController = NavHostController(LocalContext.current))
 }

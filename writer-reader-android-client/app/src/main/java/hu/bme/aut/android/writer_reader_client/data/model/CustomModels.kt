@@ -75,6 +75,7 @@ data class Comment(
     @Json(name = "created_at") val createdAt: String = "",
     @Json(name = "updated_at") val updatedAt: String = "",
     val likes: Int = 0,
+    val isLiked: Boolean = false,
 )
 
 */

@@ -6,22 +6,12 @@ import com.squareup.moshi.Json
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun formatTimestamp(timestampString: String): String {
-    val instant = Instant.parse(timestampString)
-    val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")
-    return formatter.format(instant)
-}
-
-
 data class Links(
     val first: String,
     val last: String,
     val prev: String?,
     val next: String?
 )
-
 data class Meta(
     @Json(name = "current_page") val currentPage: Int,
     val from: Int,
@@ -32,32 +22,31 @@ data class Meta(
     val to: Int,
     val total: Int
 )
-
 data class Link(
     val url: String?,
     val label: String,
     val active: Boolean
 )
 
-
-data class Work (
-    val id: String = "",
-    val title: String = "",
-    val content: String = "",
-    @Json(name = "creator_id") val creatorId: String = "",
-    @Json(name = "moderation_status") val moderationStatus: String = "",
-    @Json(name = "moderator_id") val moderatorId: String = "",
-    @Json(name = "rating_id") val ratingId: String = "",
-    @Json(name = "language_id") val languageId: String = "",
-    @Json(name = "created_at") val createdAt: String = "",
-    @Json(name = "updated_at") val updatedAt: String = ""
+//-----------------------------/api/works-------------------------------
+data class WorksListItem(
+    val id: String,
+    val title: String,
+    val creator_id: String,
+    val creator_name: String,
+    val created_at: String,
+    val updated_at: String,
+    val language: String,
+    val category: List<String>,
+    val likes: Int
 )
-
 data class WorksResponse(
-    val data: List<Work>,
+    val data: List<WorksListItem>,
     val links: Links,
     val meta: Meta
 )
+//-----------------------------/api/works/{id}---------------------------
+data class
 
 data class WorkResponse(
     val data: Work
