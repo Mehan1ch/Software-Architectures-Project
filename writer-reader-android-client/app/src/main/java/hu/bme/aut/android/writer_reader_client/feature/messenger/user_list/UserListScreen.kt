@@ -1,7 +1,4 @@
-@file:OptIn(ExperimentalPagingApi::class, ExperimentalMaterialApi::class)
-
-package hu.bme.aut.android.writer_reader_client.feature.home
-
+package hu.bme.aut.android.writer_reader_client.feature.messenger.user_list
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -24,7 +21,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.Card
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -49,21 +48,12 @@ import hu.bme.aut.android.writer_reader_client.ui.common.WorkCard
 @ExperimentalMaterialApi
 @ExperimentalPagingApi
 @Composable
-fun HomeScreen(
+fun UserListScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+    viewModel: UserListViewModel = viewModel(factory = UserListViewModel.Factory)
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
-
-    /*
-    val refreshState = rememberPullRefreshState(
-        refreshing = state.isLoading,
-        onRefresh = viewModel::refreshWorks
-    )
-    val lazyCollumnState = rememberLazyListState()
-*/
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -78,17 +68,17 @@ fun HomeScreen(
         Box(modifier = modifier.padding(it)) {
             LazyColumn(
             ) {
-                items(state.works.size) { index ->
-                    val work = state.works[index]
-                    WorkCard(
-                        title = work.title,
-                        authorName = work.id,
-                        creationYear = work.createdAt,
-                        category = work.moderationStatus,
-                        language = work.languageId,
-                        modifier = modifier.clickable {
-                            navHostController.navigate(Screen.WorkDetails.passWorkId(work.id))
-                        }
+                items(state.users.size) { index ->
+                    val user = state.users[index]
+                    ListItem(
+                        headlineContent = { Text(text = user.name) },
+                        supportingContent = { Text(text = user.email) },
+                        modifier = modifier
+                            .clickable {
+                                navHostController.navigate(Screen.Conversation.passUserId(user.id))
+                            }
+                            .padding(16.dp)
+                            .fillMaxWidth()
                     )
                 }
             }
@@ -99,5 +89,5 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPreview() {
-  //  HomeScreen(navHostController = NavHostController(LocalContext.current))
+    //  HomeScreen(navHostController = NavHostController(LocalContext.current))
 }

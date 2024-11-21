@@ -15,6 +15,7 @@
     <string name="string_language">Nyelv</string>
     <string name="language_tag">hu</string>
     <string name ="textfield_label_comment">Írj megjegyzést</string>
-
+    <string name="button_read_work">Elolvasom</string>
+    <string name="chapter_number">%d. fejezet</string>
 
 </resources>

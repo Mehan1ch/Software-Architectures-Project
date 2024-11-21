@@ -1,5 +1,7 @@
-package hu.bme.aut.android.writer_reader_client.feature.read_work
+package hu.bme.aut.android.writer_reader_client.feature.work_details
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,16 +39,21 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.bme.aut.android.writer_reader_client.R
-import hu.bme.aut.android.writer_reader_client.feature.login.LoginViewModel
+import hu.bme.aut.android.writer_reader_client.navigation.Screen
+import hu.bme.aut.android.writer_reader_client.ui.common.CommentSection
 import hu.bme.aut.android.writer_reader_client.ui.common.NormalTextField
-
-
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import kotlin.text.format
 
 
 @Composable
-fun WorkDetailScreen(
+fun WorkDetailsScreen(
     modifier: Modifier = Modifier,
+  //  onNavigateBack: () -> Unit,
     viewModel: WorkDetailViewModel = viewModel(factory = WorkDetailViewModel.Factory),
+    onNavigateToReadWork: (String) -> Unit
 ){
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
@@ -69,6 +77,9 @@ fun WorkDetailScreen(
                     isLiked = state.isLiked,
                     onLikeClick = {
                         //TODO
+                    },
+                    onReadButtonClick = {
+                        onNavigateToReadWork(state.work.id)
                     }
                 )
 
@@ -78,7 +89,13 @@ fun WorkDetailScreen(
                 CommentSection(
                     comments = state.comments,
                     newComment = state.newComment,
+                    onCommentChange = {
+                        //TODO
+                    },
                     onSendNewComment = {
+                        //TODO
+                    },
+                    onCommentLike = {
                         //TODO
                     }
                 )
@@ -99,7 +116,8 @@ fun Details(
     category: String,
     tags: List<String>,
     isLiked: Boolean,
-    onLikeClick: () -> Unit
+    onLikeClick: () -> Unit,
+    onReadButtonClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -143,134 +161,22 @@ fun Details(
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = if (isLiked) "Liked" else "Like")
         }
-    }
-}
-/*
-
-@Composable
-fun MarkdownText(
-    text: String,
-    modifier: Modifier = Modifier
-) {
-    val markdown = remember { Markdown() }
-    AndroidView(
-        modifier = modifier,
-        factory = { context ->
-            TextView(context).apply {
-                movementMethod = LinkMovementMethod.getInstance()
-            }
-        },
-        update = { textView ->
-            textView.text = HtmlCompat.fromHtml(markdown.parse(text), HtmlCompat.FROM_HTML_MODE_COMPACT)
-        }
-    )
-}
-*/
-data class Comment(
-    val author: String,
-    val timestamp: String,
-    val text: String
-)
-
-@Composable
-fun CommentSection(
-    modifier: Modifier = Modifier,
-    comments: List<Comment>,
-    newComment: String = "",
-    onSendNewComment: (String) -> Unit
-) {
-    Column(modifier = modifier) {
-        NormalTextField(
-            modifier = modifier.fillMaxWidth(),
-            value = newComment,
-            label = stringResource(id = R.string.textfield_label_comment),
-            onValueChange = { /*TODO*/ },
-            trailingIcon = {
-                IconButton(onClick = { onSendNewComment }) {
-                    Icon(imageVector = Icons.Filled.Send, contentDescription = "Send")
-                }
-            },
-            onDone = { onSendNewComment }
-
-        )
-
-
-        LazyColumn(
-            modifier = Modifier.weight(1f)
-        ) {
-            items(comments) { comment ->
-                CommentItem(
-                    author = comment.author,
-                    timestamp = comment.timestamp,
-                    text = comment.text
-                )
-            }
-        }
-    }
-}
-
-
-
-
-@Composable
-fun CommentItem(author: String, timestamp: String, text: String, modifier: Modifier = Modifier) {
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { onReadButtonClick },
+            modifier = Modifier.fillMaxWidth()
         ){
-            Text(
-                text = author,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = modifier.width(4.dp))
-            Text(
-                text = timestamp,
-                style = MaterialTheme.typography.labelMedium,
-                color = Color.Gray
-            )
+            Text(text = stringResource(id = R.string.button_read_work))
         }
-
-        Spacer(modifier = modifier.height(8.dp))
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium
-        )
     }
 }
 
 @Preview
 @Composable
 fun WorkDetailScreenPreview() {
-    WorkDetailScreen()
-}
-
-
-@Preview
-@Composable
-fun CommentSectionPreview() {
-    val comments = listOf(
-        Comment(
-            author = "John Doe",
-            timestamp = "2021. ápr. 01. 12:00",
-            text = "This is a comment."
-        ),
-        Comment(
-            author = "John Doe",
-            timestamp = "2021. ápr. 01. 12:00",
-            text = "This is a comment."
-        )
+    WorkDetailsScreen(
+        onNavigateToReadWork = {},
     )
-    CommentSection(comments = comments, onSendNewComment = {})
-
-
-
-
-
-
 }
+
+

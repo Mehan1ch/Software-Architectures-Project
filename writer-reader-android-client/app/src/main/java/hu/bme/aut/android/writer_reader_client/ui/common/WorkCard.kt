@@ -36,13 +36,10 @@ import hu.bme.aut.android.writer_reader_client.R
 fun WorkCard(
     title: String,
     authorName: String,
-    profileImageUrl: String,
     modifier: Modifier = Modifier,
     creationYear: String,
-    genre: String,
-    characters: List<String>,
+    category: String,
     language: String
-
 ) {
     Box(
         modifier = modifier
@@ -90,7 +87,7 @@ fun WorkCard(
                 ) {
                     // Genre
                     Text(
-                        text = "${stringResource(id = R.string.string_genre)}  : $genre",
+                        text = "${stringResource(id = R.string.string_genre)}  : $category",
                         style = MaterialTheme.typography.bodyMedium,
                         color = colorScheme.onSurface.copy(alpha = 0.7f)
                     )
@@ -109,7 +106,7 @@ fun WorkCard(
 }
 
 
-
+/*
 
 @Composable
 fun WorkCard2(
@@ -169,7 +166,7 @@ fun WorkCard2(
 
         // Genre
         Text(
-            text = "Genre: $genre",
+            text = "C: $genre",
             style = MaterialTheme.typography.bodyMedium,
             color = colorScheme.onSurface.copy(alpha = 0.7f)
         )
@@ -190,35 +187,7 @@ fun WorkCard2(
         LikesTracker(likes = 5, modifier = modifier.align(Alignment.End))
     }
 }
-
-@Composable
-private fun LikesTracker(
-    likes: Int,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .padding(5.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.ThumbUp,
-            contentDescription = null,
-            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp, start = 5.dp)
-        )
-        Text(
-            text = "$likes",
-            modifier = Modifier.padding(5.dp),
-        )
-    }
-}
-
-@Preview
-@Composable
-fun LikesTracker_Preview() {
-    LikesTracker(likes = 5)
-}
-
+*/
 
 @Preview
 @Composable
@@ -227,11 +196,9 @@ fun TestWorkCard()
     WorkCard(
         title = "The Great Gatsby",
         authorName = "F. Scott Fitzgerald",
-        profileImageUrl = "https://www.clipartmax.com/png/middle/58-589213_user-profile-avatar-scalable-vector-graphics-icon-profile-girl-avatar.png",
         modifier = Modifier,
         creationYear = "1925",
-        genre = "Regény",
-        characters = listOf("The Great Gatsby", "Fitzgerald"),
+        category = "Regény",
         language = "Magyar"
     )
 }
