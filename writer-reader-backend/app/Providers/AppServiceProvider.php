@@ -34,19 +34,5 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole(RolesEnum::ADMIN->value) ? true : null;
         });
-
-        Validator::extend('morph_exists', function ($attribute, $value, $parameters, $validator) {
-            if (! $type = Arr::get($validator->getData(), $parameters[0], false)) {
-                return false;
-            }
-
-            $type = Relation::getMorphedModel($type) ?? $type;
-
-            if (!class_exists($type)) {
-                return false;
-            }
-
-            return resolve($type)->where('id', $value)->exists();
-        });
     }
 }
