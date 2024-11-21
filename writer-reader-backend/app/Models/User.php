@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\PermissionsEnum;
+use App\Enums\RolesEnum;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +46,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'password',
     ];
 
     /**
@@ -70,7 +73,14 @@ class User extends Authenticatable
     }
 
     protected static function boot():void {
+
         parent::boot();
+
+        static::creating(function($user) {
+            // Assign the default role to the user
+            $user->assignRole(RolesEnum::REGISTERED->value);
+        });
+
         static::deleting(function($user) {
             $user->works()->delete();
             $user->collections()->delete();
@@ -81,12 +91,13 @@ class User extends Authenticatable
             //$user->receivedMessages()->delete();
             //$user->moderatedWorks()->delete();
             //$user->characters()->delete();
+            //$user->tags()->delete();
         });
     }
 
     public function works(): HasMany
     {
-        return $this->hasMany(Work::class);
+        return $this->hasMany(Work::class,'user_id');
     }
 
     public function collections(): HasMany
@@ -106,12 +117,12 @@ class User extends Authenticatable
 
     public function sentMessages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class,'sent_by_id');
     }
 
     public function receivedMessages(): HasMany
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class,'sent_to_id');
     }
 
     public function moderatedWorks(): HasMany
@@ -122,5 +133,10 @@ class User extends Authenticatable
     public function characters(): HasMany
     {
         return $this->hasMany(Character::class);
+    }
+
+    public function tags(): HasMany
+    {
+        return $this->hasMany(Tag::class);
     }
 }

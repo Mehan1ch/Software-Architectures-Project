@@ -24,7 +24,7 @@ class WorkController extends Controller
      */
     public function store(StoreWorkRequest $request): WorkResource
     {
-        $work = Work::create($request->validated());
+        $work = $request->user()->works()->create($request->validated());
         $categories = $request->input('categories');
         $work->categories()->attach($categories);
         $tags = $request->input('tags');

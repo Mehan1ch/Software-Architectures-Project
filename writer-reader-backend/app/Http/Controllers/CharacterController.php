@@ -24,7 +24,7 @@ class CharacterController extends Controller
      */
     public function store(StoreCharacterRequest $request): CharacterResource
     {
-        $character = Character::create($request->validated());
+        $character = $request->user()->characters()->create($request->validated());
         return new CharacterResource($character);
     }
 

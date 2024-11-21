@@ -24,12 +24,12 @@ class CommentResource extends JsonResource
         return [
             'id' => $this->id,
             'content' => $this->content,
-            'user' => UserResource::make($this->user),
-            'commentable_id' => $this->commentable_id,
-            'commentable_type' => $this->commentable_type,
-            'likes' => LikeCollection::make($this->likes),
+            'user_id' => $this->user->id,
+            'user_name' => $this->user->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'likes' => $this->likes->count(),
+            'is_liked' => $this->likes->contains('user_id', auth()->id()),
         ];
     }
 }

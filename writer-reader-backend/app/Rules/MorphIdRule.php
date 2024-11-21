@@ -24,7 +24,6 @@ class MorphIdRule implements DataAwareRule, ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        //TODO: test if this works
         $patternType = '/able_type$/';
         $patternId = '/able_id$/';
 
@@ -48,6 +47,11 @@ class MorphIdRule implements DataAwareRule, ValidationRule
 
         if (!$class || !$id) {
             $fail("The :attribute is invalid.");
+            return;
+        }
+        if(!class_exists($class)) {
+            $fail("The :attribute is invalid.");
+            return;
         }
 
         if (!$class::find($id)) {

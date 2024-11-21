@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ModerationEnum;
 use App\Exceptions\StateMachineException;
+use App\Mail\ModerationMail;
 use Database\Factories\WorkFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Mail;
 
 
 /**
@@ -20,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property string id
  * @property string title
  * @property string content
- * @property int creator_id
+ * @property int user_id
  * @property ModerationEnum moderation_status
  * @property int moderator_id
  * @property int rating_id
@@ -49,11 +51,11 @@ class Work extends Model
     protected $fillable = [
         'title',
         'content',
-        'creator_id',
+        'user_id',
         'moderation_status',
         'moderator_id',
         'rating_id',
-        'languages_id',
+        'language_id',
         'created_at',
         'updated_at',
     ];
@@ -89,6 +91,8 @@ class Work extends Model
                 // TODO: Send email to the creator
                 //Tip: Gmail SMTP server is a good option for development, just need to create a random google account, and an app password, limitation: 500 emails per day
                 //See: https://www.iankumu.com/blog/laravel-send-emails/
+                $user = $work->creator?? auth()->user();
+                Mail::to($user->email)->send(new ModerationMail($work, $user));
             }
         });
 
@@ -106,7 +110,7 @@ class Work extends Model
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'creator_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function moderator(): BelongsTo

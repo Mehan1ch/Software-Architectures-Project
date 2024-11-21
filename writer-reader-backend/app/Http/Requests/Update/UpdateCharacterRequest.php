@@ -24,7 +24,6 @@ class UpdateCharacterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'user_id' => 'required|exists:users,id',
         ];
     }
 }

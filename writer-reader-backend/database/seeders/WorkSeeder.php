@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Chapter;
 use App\Models\Character;
+use App\Models\Collection;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Tag;

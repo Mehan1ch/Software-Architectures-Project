@@ -24,7 +24,6 @@ class UpdateMessageRequest extends FormRequest
     {
         return [
             "content" => "required|string",
-            "sent_by_id" => "required|uuid|exists:users,id",
             "sent_to_id" => "required|uuid|exists:users,id",
         ];
     }

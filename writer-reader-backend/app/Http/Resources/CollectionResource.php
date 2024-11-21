@@ -27,12 +27,14 @@ class CollectionResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'user' => UserResource::make($this->user),
-            'works' => WorkCollection::make($this->works),
-            'likes' => LikeCollection::make($this->likes),
-            'comments' => CommentCollection::make($this->comments),
+            'creator_id' => $this->user_id,
+            'creator_name' => $this->user->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'likes' => $this->likes->count(),
+            'is_liked' => $this->likes->contains('user_id', auth()->id()),
+            'works' => WorkCollection::make($this->works),
+            'comments' => CommentCollection::make($this->comments),
         ];
     }
 }

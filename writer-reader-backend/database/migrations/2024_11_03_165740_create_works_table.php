@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->text('content');
-            $table->foreignUuid('creator_id')->constrained('users');
+            $table->foreignUuid('user_id')->constrained('users');
             $table->enum('moderation_status', ModerationEnum::values())->default(ModerationEnum::PENDING);
             $table->foreignUuid('moderator_id')->nullable()->constrained('users');
             $table->foreignUuid('rating_id')->nullable()->constrained('ratings');

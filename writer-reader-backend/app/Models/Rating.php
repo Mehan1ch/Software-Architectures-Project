@@ -40,7 +40,8 @@ class Rating extends Model
         parent::boot();
 
         static::deleting(function($rating) {
-            $rating->works()->detach();
+            //Should be delete but that would delete works, for time saving purposes won't do anything
+            //$rating->works()->detach();
         });
     }
 

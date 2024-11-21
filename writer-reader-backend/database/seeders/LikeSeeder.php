@@ -17,21 +17,21 @@ class LikeSeeder extends Seeder
      */
     public function run(): void
     {
-        Like::factory(10)
+        Like::factory(50)
             ->recycle(User::all())
             ->recycle(Work::all())
             //->for(User::factory())
             //->for(Work::factory()->count(fake()->numberBetween(1,10)), 'likeable')
             ->create();
 
-        Like::factory(10)
+        Like::factory(50)
             ->recycle(User::all())
             ->recycle(Comment::all())
             //->for(User::factory())
             //->for(Comment::factory()->count(fake()->numberBetween(1,10)), 'likeable')
             ->create();
 
-        Like::factory(10)
+        Like::factory(50)
             ->recycle(User::all())
             ->recycle(Collection::all())
             //->for(User::factory()->create())

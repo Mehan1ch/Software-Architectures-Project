@@ -24,7 +24,7 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request): TagResource
     {
-        $tag = Tag::create($request->validated());
+        $tag = $request->user()->tags()->create($request->validated());
         return new TagResource($tag);
     }
 

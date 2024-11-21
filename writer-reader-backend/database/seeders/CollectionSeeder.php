@@ -15,7 +15,7 @@ class CollectionSeeder extends Seeder
     public function run(): void
     {
         Collection::factory(20)
-            ->recycle(Work::all())
+            ->has(Work::factory()->count(fake()->numberBetween(1,10)))
             ->recycle(User::all())
             //->for(User::factory())
             //->has(Work::factory()->count(fake()->numberBetween(1, 10)))

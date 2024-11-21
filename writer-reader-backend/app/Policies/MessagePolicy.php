@@ -5,10 +5,15 @@ namespace App\Policies;
 use App\Enums\PermissionsEnum;
 use App\Models\Message;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class MessagePolicy
 {
+
+    public function viewAny(User $user): bool
+    {
+        return $user->can(PermissionsEnum::VIEW_MESSAGES->value);
+    }
+
     /**
      * Determine whether the user can view the model.
      */

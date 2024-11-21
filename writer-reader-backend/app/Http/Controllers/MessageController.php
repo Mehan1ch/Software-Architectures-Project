@@ -16,7 +16,12 @@ class MessageController extends Controller
      */
     public function index(): MessageCollection
     {
-        return new MessageCollection(Message::paginate());
+        return new MessageCollection(
+            Message::query()
+                ->where('sent_by_id',auth()->id())
+                ->orWhere('sent_to_id',auth()->id())
+                ->paginate()
+        );
     }
 
     /**
@@ -24,7 +29,7 @@ class MessageController extends Controller
      */
     public function store(StoreMessageRequest $request): MessageResource
     {
-        $message = Message::create($request->validated());
+        $message = $request->user()->sentMessages()->create($request->validated());
         return new MessageResource($message);
     }
 
