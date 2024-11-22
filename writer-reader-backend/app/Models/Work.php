@@ -82,7 +82,7 @@ class Work extends Model
 
             /** @var ModerationEnum $status */
             $status = $work->getOriginal('moderation_status');
-            if ($status->ableToTransferTo($work->moderation_status)) {
+            if (!$status->ableToTransferTo($work->moderation_status)) {
                 throw new StateMachineException("[{$status->name}] cannot transfer into [{$work->moderation_status->name}].");
             }
 

@@ -6,6 +6,8 @@ namespace App\Models;
 use App\Enums\PermissionsEnum;
 use App\Enums\RolesEnum;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -33,12 +35,16 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Message[] receivedMessages
  * @property Work[] moderatedWorks
  */
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory;
+    use Notifiable;
+    use HasUuids;
     use HasApiTokens;
     use HasRoles;
+
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -140,5 +146,10 @@ class User extends Authenticatable
     public function tags(): HasMany
     {
         return $this->hasMany(Tag::class);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->can(PermissionsEnum::ACCESS_ADMIN_PANEL->value);
     }
 }

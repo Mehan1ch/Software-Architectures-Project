@@ -74,5 +74,6 @@ enum PermissionsEnum:string
     case UPDATE_WORKS = 'update works';
     case DELETE_WORKS = 'delete works';
 
-
+    case ACCESS_ADMIN_PANEL = 'access admin panel';
+    case MODERATE_WORKS = 'moderate works';
 }

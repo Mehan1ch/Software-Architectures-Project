@@ -130,8 +130,4 @@ Route::get('/works/{work}', [WorkController::class, 'show'])->can('view', Work::
 Route::post('/login', [TokenController::class, 'store'])->middleware('guest');
 Route::post('/logout', [TokenController::class, 'destroy'])->middleware('auth:sanctum');
 
-//TODO: email notifications on moderation state change -> see Work.php for more
 //TODO: language seeding for production (eg: laraworld) see LanguageFatcory.php for more
-//TODO: optional api documentation (OpenAPI spec / Swagger) -> if there is time left
-//TODO: optional method comments -> if there is time left looks good, extremely low priority
-//TODO: filament admin panel -> after testing main priority -> see: https://filamentphp.com

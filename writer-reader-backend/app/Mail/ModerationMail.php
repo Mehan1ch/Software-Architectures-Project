@@ -10,6 +10,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 
 class ModerationMail extends Mailable
@@ -47,7 +48,7 @@ class ModerationMail extends Mailable
             with:[
                 'work' => $this->work,
                 'creator' => $this->user,
-                'work_url' => URL::route('works.show', $this->work->id)
+                'work_url' => '/api/works/' . $this->work->id,
             ]
         );
     }
