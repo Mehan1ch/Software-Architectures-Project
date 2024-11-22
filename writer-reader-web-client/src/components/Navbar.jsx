@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import SvgIcon from "@mui/material/SvgIcon";
 import { Link as RouterLink } from "react-router-dom";
+import { Divider } from "@mui/material";
 
 //const pages = ["Művek", "Gyűjtemények", "Szerzők"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -118,6 +119,7 @@ function NavBar() {
               >
                 <Typography sx={{ textAlign: "center" }}>Művek</Typography>
               </MenuItem>
+              <Divider />
               <MenuItem
                 key="Collections"
                 onClick={handleCloseNavMenu}
