@@ -142,7 +142,10 @@ class WorkResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ChaptersRelationManager::class,
+            RelationManagers\CharactersRelationManager::class,
+            RelationManagers\TagsRelationManager::class,
+            RelationManagers\WarningsRelationManager::class,
         ];
     }
 
