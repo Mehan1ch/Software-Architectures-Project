@@ -29,7 +29,7 @@ const cardContent = (
         sx={{ justifyContent: "space-between", alignItems: "center" }}
       >
         <Typography variant="overline" component="div">
-          Sci-fi, magyar
+          dicta, quaerat, ad, voluptas, voluptatum, earum, aut
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <ThumbUp sx={{ width: 20 }} />

@@ -51,7 +51,7 @@ export default function Works() {
   );
 
   return (
-    <Container>
+    <>
       <div
         style={{
           display: "flex",
@@ -90,6 +90,6 @@ export default function Works() {
           <WorkCard />
         </Grid2>
       </Grid2>
-    </Container>
+    </>
   );
 }
