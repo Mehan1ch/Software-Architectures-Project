@@ -12,8 +12,9 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import SvgIcon from "@mui/material/SvgIcon";
+import { Link as RouterLink } from "react-router-dom";
 
-const pages = ["Művek", "Gyűjtemények", "Szerzők"];
+//const pages = ["Művek", "Gyűjtemények", "Szerzők"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function LogoSvgIcon() {
@@ -104,11 +105,29 @@ function NavBar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
+              {/*pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography sx={{ textAlign: "center" }}>{page}</Typography>
                 </MenuItem>
-              ))}
+              ))*/}
+              <MenuItem
+                key="Works"
+                onClick={handleCloseNavMenu}
+                component={RouterLink}
+                to="/works"
+              >
+                <Typography sx={{ textAlign: "center" }}>Művek</Typography>
+              </MenuItem>
+              <MenuItem
+                key="Collections"
+                onClick={handleCloseNavMenu}
+                component={RouterLink}
+                to="/collections"
+              >
+                <Typography sx={{ textAlign: "center" }}>
+                  Gyűjtemények
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -130,7 +149,7 @@ function NavBar() {
             Író-Olvasó
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {/*pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -143,7 +162,35 @@ function NavBar() {
               >
                 {page}
               </Button>
-            ))}
+            ))*/}
+            <Button
+              key="Works"
+              onClick={handleCloseNavMenu}
+              component={RouterLink}
+              to="/works"
+              sx={{
+                my: 2,
+                color: "white",
+                display: "block",
+                fontWeight: "bold",
+              }}
+            >
+              Művek
+            </Button>
+            <Button
+              key="Collections"
+              onClick={handleCloseNavMenu}
+              component={RouterLink}
+              to="/collections"
+              sx={{
+                my: 2,
+                color: "white",
+                display: "block",
+                fontWeight: "bold",
+              }}
+            >
+              Gyűjtemények
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
