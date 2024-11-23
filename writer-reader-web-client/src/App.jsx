@@ -9,6 +9,8 @@ import Login from "./pages/Login.jsx";
 import Profile from "./pages/Profile.jsx";
 import Works from "./pages/Works.jsx";
 import Account from "./pages/Account.jsx";
+import MyWorks from "./components/MyWorks.jsx";
+import MyCollections from "./components/MyCollections.jsx";
 
 function App() {
   return (
@@ -21,7 +23,10 @@ function App() {
               <Route path="/" element={<Navigate to="/works" />} />
               <Route path="/works" element={<Works />} />
               <Route path="/collections" element={<Collections />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<Profile />}>
+                <Route path="myworks" element={<MyWorks />} />
+                <Route path="mycollections" element={<MyCollections />} />
+              </Route>
               <Route path="/account" element={<Account />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
