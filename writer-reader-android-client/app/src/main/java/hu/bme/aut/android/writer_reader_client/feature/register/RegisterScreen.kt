@@ -122,7 +122,7 @@ fun RegisterScreen(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-
+/*
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
                     checked = state.isTermsAndConditionsChecked,
@@ -132,9 +132,11 @@ fun RegisterScreen(
                 )
                 Text(text = stringResource(id = R.string.checkbox_label_terms_and_conditions))
             }
-
+*/
             Button(
-                onClick = {/*TODO*/},
+                onClick = {
+                    viewModel.onIntent(RegisterViewIntent.RegisterButtonClicked)
+                },
                 modifier = Modifier.width(TextFieldDefaults.MinWidth)
             ) {
                 Text(text = stringResource(id = R.string.button_label_register))

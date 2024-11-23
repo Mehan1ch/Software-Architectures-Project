@@ -26,17 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hu.bme.aut.android.writer_reader_client.R
+import hu.bme.aut.android.writer_reader_client.data.model.get.Comment
 
-
-data class Comment(
-    val id: String = "a",
-    val content: String = "baasdfbasdmnfn asldkbfklajsndflkjansdlkjnadlfkjvnalkdjfnv.a,dfnv.,adn flvkjnadsflv",
-    val userId: String = "c",
-    val userName: String = "d",
-    val createdAt: String = "2",
-    val updatedAt: String = "3",
-    val likes: Int = 0,
-)
 
 @Composable
 fun CommentSection(

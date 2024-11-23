@@ -4,6 +4,7 @@ package hu.bme.aut.android.writer_reader_client.data.remote.api
 import hu.bme.aut.android.writer_reader_client.data.model.auth.ForgotPasswordRequest
 import hu.bme.aut.android.writer_reader_client.data.model.auth.ForgotPasswordResponse
 import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginRequest
+import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginResponse
 import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
 import hu.bme.aut.android.writer_reader_client.data.model.auth.ResetPasswordRequest
 import hu.bme.aut.android.writer_reader_client.data.model.auth.ResetPasswordResponse
@@ -19,6 +20,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -32,19 +34,19 @@ interface WriterReaderApi {
     suspend fun getWork(@Path("id") id: String): Response<WorkResponse>
 
     // Collections
-    @GET("/collections")
+    @GET("api/collections")
     suspend fun getCollections(): Response<CollectionsResponse>
 
-    @GET("/collections/{id}")
+    @GET("api/collections/{id}")
     suspend fun getCollection(@Path("id") id: String): Response<CollectionResponse>
 
-    @POST("/collections")
+    @POST("api/collections")
     suspend fun createCollection(@Body collection: Collection): Response<Collection>
 
-    @PUT("/collections/{id}")
+    @PUT("api/collections/{id}")
     suspend fun updateCollection(@Path("id") id: String, @Body collection: Collection): Response<Collection>
 
-    @DELETE("/collections/{id}")
+    @DELETE("api/collections/{id}")
     suspend fun deleteCollection(@Path("id") id: String): Response<Void>
 
 
@@ -101,19 +103,19 @@ interface WriterReaderApi {
  */
 
     // Comments
-    @GET("/comments")
+    @GET("api/comments")
     suspend fun getComments(): Response<List<Comment>>
 
-    @GET("/comments/{id}")
+    @GET("api/comments/{id}")
     suspend fun getComment(@Path("id") id: String): Response<Comment>
 
-    @POST("/comments")
+    @POST("api/comments")
     suspend fun createComment(@Body comment: Comment): Response<Comment>
 
-    @PUT("/comments/{id}")
+    @PUT("api/comments/{id}")
     suspend fun updateComment(@Path("id") id: String, @Body comment: Comment): Response<Comment>
 
-    @DELETE("/comments/{id}")
+    @DELETE("api/comments/{id}")
     suspend fun deleteComment(@Path("id") id: String): Response<Void>
 /*
     // Languages
@@ -191,19 +193,19 @@ interface WriterReaderApi {
 */
 
     // Users
-    @GET("/users")
+    @GET("api/users")
     suspend fun getUsers(): Response<List<User>>
 
-    @GET("/users/{id}")
-    suspend fun getUser(@Path("id") id: String): Response<User>
+  //  @GET("api/users/{id}")
+  // suspend fun getUser(@Path("id") id: String): Response<User>
 
-    @POST("/users")
+    @POST("api/users")
     suspend fun createUser(@Body user: User): Response<User>
 
-    @PUT("/users/{id}")
+    @PUT("api/users/{id}")
     suspend fun updateUser(@Path("id") id: String, @Body user: User): Response<User>
 
-    @DELETE("/users/{id}")
+    @DELETE("api/users/{id}")
     suspend fun deleteUser(@Path("id") id: String): Response<Void>
 
 
@@ -228,28 +230,34 @@ interface WriterReaderApi {
 
     // Authentication
     @POST("/register")
-    suspend fun register(@Body request: RegisterRequest): Response<RegisterResponse>
+    suspend fun register(@Body request: RegisterRequest): Response<Void?>
 
-    @POST("/login")
+    @POST("api/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 
+    @GET("api/user")
+    suspend fun getUser(@Header("Authorization") authHeader: String): Response<Any>
+
+    @POST("api/logout")
+    suspend fun logout(@Header("Authorization") authHeader: String): Response<Any>
+
+   // @GET("/verify-email/{id}/{hash}")
+  //  suspend fun verifyEmail(@Path("id") id: String, @Path("hash") hash: String): Response<VerifyEmailResponse>
+
+  //  @POST("/email/verification-notification")
+    //suspend fun sendVerificationNotification(): Response<VerificationNotificationResponse>
+
+   // @POST("/logout")
+   // suspend fun logout(): Response<LogoutResponse>
+
+
+    /*
     @POST("/forgot-password")
     suspend fun forgotPassword(@Body request: ForgotPasswordRequest): Response<ForgotPasswordResponse>
 
     @POST("/reset-password")
     suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<ResetPasswordResponse>
-
-    @GET("/verify-email/{id}/{hash}")
-    suspend fun verifyEmail(@Path("id") id: String, @Path("hash") hash: String): Response<VerifyEmailResponse>
-
-    @POST("/email/verification-notification")
-    suspend fun sendVerificationNotification(): Response<VerificationNotificationResponse>
-
-    @POST("/logout")
-    suspend fun logout(): Response<LogoutResponse>
-
+*/
 }
 
-
-}
 

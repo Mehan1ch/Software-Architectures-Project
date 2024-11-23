@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,6 +48,7 @@ fun LoginScreen(
    // val state by viewModel.state.collectAsStateWithLifecycle()
     val state = viewModel.state.collectAsStateWithLifecycle().value
     val hostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
 
     LaunchedEffect(key1 = true) {
@@ -91,10 +93,10 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(26.dp))
 
             NormalTextField(
-                value = state.username,
-                label = stringResource(id = R.string.textfield_label_username),
+                value = state.email,
+                label = stringResource(id = R.string.textfield_label_email),
                 onValueChange = { newValue ->
-                    viewModel.onIntent(LoginViewIntent.UsernameChanged(newValue))
+                    viewModel.onIntent(LoginViewIntent.EmailChanged(newValue))
                 },
                 isError = state.isUsernameError,
 
@@ -133,7 +135,8 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.onIntent(LoginViewIntent.LoginButtonClicked)},
+                onClick = { viewModel.onIntent(LoginViewIntent.LoginButtonClicked(context = context)
+                )},
                 modifier = Modifier.width(TextFieldDefaults.MinWidth)
             ) {
                 Text(text = stringResource(id = R.string.button_label_login))

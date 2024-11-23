@@ -69,14 +69,14 @@ fun WorkDetailsScreen(
         ) {
             Box(modifier = Modifier.weight(1f)){
                 Details(
-                    title = state.title,
-                    author = state.author,
-                    date = state.date,
-                    category = state.category,
-                    tags = state.tags,
+                    title = state.work.title,
+                    author = state.work.creatorName,
+                    date = state.work.createdAt,
+                    categories = state.work.categories,
+                    tags = state.work.tags,
                     isLiked = state.isLiked,
                     onLikeClick = {
-                        //TODO
+                        viewModel.onIntent(WorkDetailViewIntent.LikeWorkButtonClicked)
                     },
                     onReadButtonClick = {
                         onNavigateToReadWork(state.work.id)
@@ -87,16 +87,16 @@ fun WorkDetailsScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Box(modifier = Modifier.weight(1f)) {
                 CommentSection(
-                    comments = state.comments,
+                    comments = state.work.comments,
                     newComment = state.newComment,
-                    onCommentChange = {
-                        //TODO
+                    onCommentChange = {newValue ->
+                        viewModel.onIntent(WorkDetailViewIntent.CommentChanged(newValue))
                     },
                     onSendNewComment = {
-                        //TODO
+                        viewModel.onIntent(WorkDetailViewIntent.CommentSendButtonClicked)
                     },
                     onCommentLike = {
-                        //TODO
+                        viewModel.onIntent(WorkDetailViewIntent.LikeCommentButtonClicked(it))
                     }
                 )
             }
@@ -113,7 +113,7 @@ fun Details(
     title: String,
     author: String,
     date: String,
-    category: String,
+    categories: List<String>,
     tags: List<String>,
     isLiked: Boolean,
     onLikeClick: () -> Unit,
@@ -136,15 +136,17 @@ fun Details(
             color = Color.Gray
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = category,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray
-        )
+        FlowRow() {
+            categories.forEach { category ->
+                Chip(onClick = {}) {
+                    Text(text = category)
+                }
+            }
+        }
         Spacer(modifier = Modifier.height(4.dp))
         FlowRow() {
             tags.forEach { tag ->
-                Chip(onClick = { /*TODO*/ }) {
+                Chip(onClick = {}) {
                     Text(text = tag)
                 }
             }

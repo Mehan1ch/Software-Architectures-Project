@@ -2,17 +2,23 @@ package hu.bme.aut.android.writer_reader_client.feature.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
+import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
+import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 sealed class RegisterViewIntent {
     data class UsernameChanged(val username: String) : RegisterViewIntent()
     data class EmailChanged(val email: String) : RegisterViewIntent()
     data class PasswordChanged(val password: String) : RegisterViewIntent()
     data class ConfirmPasswordChanged(val confirmPassword: String) : RegisterViewIntent()
-    data class TermsAndConditionsChanged(val isTermsAndConditionsChecked: Boolean) : RegisterViewIntent()
     object TogglePasswordVisibility : RegisterViewIntent()
     object ToggleConfirmPasswordVisibility : RegisterViewIntent()
     object RegisterButtonClicked : RegisterViewIntent()
@@ -30,7 +36,6 @@ data class RegisterViewState (
     val confirmPassword: String = "",
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false,
-    val isTermsAndConditionsChecked: Boolean = false,
     val isUsernameError: Boolean = false,
     val isEmailError: Boolean = false,
     val isPasswordError: Boolean = false,
@@ -38,9 +43,16 @@ data class RegisterViewState (
 )
 
 
-class RegisterViewModel: ViewModel() {
+class RegisterViewModel(
+    private val api: WriterReaderApi
+): ViewModel() {
     private val _state = MutableStateFlow(RegisterViewState())
     val state = _state.asStateFlow()
+
+    private val _event = Channel<RegisterUiEvent>()
+    val event = _event.receiveAsFlow()
+
+
 
     fun onIntent(intent: RegisterViewIntent) {
         when (intent) {
@@ -70,11 +82,7 @@ class RegisterViewModel: ViewModel() {
                 )
             }
 
-            is RegisterViewIntent.TermsAndConditionsChanged -> {
-                _state.value = _state.value.copy(
-                    isTermsAndConditionsChecked = intent.isTermsAndConditionsChecked
-                )
-            }
+
 
             is RegisterViewIntent.TogglePasswordVisibility -> {
                 _state.value = _state.value.copy(
@@ -91,21 +99,51 @@ class RegisterViewModel: ViewModel() {
             is RegisterViewIntent.RegisterButtonClicked -> {
                 register()
             }
+        }
+    }
 
+
+    private fun register() {
+        viewModelScope.launch {
+            try {
+                val request = RegisterRequest(
+                    name = _state.value.username,
+                    email = _state.value.email,
+                    password = _state.value.password,
+                    passwordConfirmation = _state.value.confirmPassword
+                )
+                println(_state.value.email)
+                println(_state.value.password)
+                val response = api.register(request)
+                println("Fostömlődés megnyitása")
+
+                if (response.isSuccessful) {
+                    //TODO: save token
+                    println("Registration successful!")
+                    _event.send(RegisterUiEvent.RegisterSuccessful)
+                } else {
+                    println("Login failed: ${response.errorBody()?.string()}")
+                    _event.send(RegisterUiEvent.RegisterFailed(response.errorBody()?.string() ?: "Unknown error"))
+
+                }
+
+            }catch (e: Exception) {
+                _event.send(RegisterUiEvent.RegisterFailed(e.message ?: "Unknown error"))
+            }
 
         }
     }
+
 
 
     companion object{
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                RegisterViewModel()
+                RegisterViewModel(
+                    api = WriterReaderApplication.api
+                )
             }
         }
     }
 
-    fun register(){
-        /*TODO*/
-    }
 }

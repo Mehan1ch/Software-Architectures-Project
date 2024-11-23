@@ -87,4 +87,5 @@ dependencies {
     implementation(libs.androidx.paging)
     implementation(libs.moshi.kotlin)
     implementation(libs.coil)
+    implementation(libs.androidx.datastore.preferences)
 }

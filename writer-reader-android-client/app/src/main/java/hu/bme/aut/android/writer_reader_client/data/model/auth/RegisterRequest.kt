@@ -1,9 +1,11 @@
 package hu.bme.aut.android.writer_reader_client.data.model.auth
 
+import com.squareup.moshi.Json
+
 // RegisterRequest.kt
 data class RegisterRequest(
     val name: String,
     val email: String,
     val password: String,
-    val password_confirmation: String // Laravel expects password confirmation
+    @Json(name = "password_confirmation") val passwordConfirmation: String
 )

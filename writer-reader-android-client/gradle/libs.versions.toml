@@ -18,6 +18,7 @@ ksp = "2.0.20-1.0.25"
 moshi = "1.15.1"
 pagingCommonAndroid = "3.3.4"
 uiDesktop = "1.7.0"
+datastore-preferences = "1.1.1"
 
 
 [libraries]
@@ -53,6 +54,8 @@ moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.re
 androidx-paging-common-android = { group = "androidx.paging", name = "paging-common-android", version.ref = "pagingCommonAndroid" }
 androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
 
+
+androidx-datastore-preferences = {group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences"}
 
 
 [plugins]
