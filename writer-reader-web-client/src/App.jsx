@@ -18,7 +18,7 @@ function App() {
       <ContextProvider>
         <BrowserRouter>
           <NavBar />
-          <Container sx={{ marginY: 5 }}>
+          <Container sx={{ marginY: 3 }}>
             <Routes>
               <Route path="/" element={<Navigate to="/works" />} />
               <Route path="/works" element={<Works />} />
