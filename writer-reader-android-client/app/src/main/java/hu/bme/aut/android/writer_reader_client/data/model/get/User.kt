@@ -2,7 +2,16 @@ package hu.bme.aut.android.writer_reader_client.data.model.get
 
 import com.squareup.moshi.Json
 
-data class User(
+
+data class UsersResponse(
+    val data: List<UsersData>,
+    val links: Links,
+    val meta: Meta
+
+)
+
+
+data class UsersData(
     val id: String,
     val name: String,
     val email: String,

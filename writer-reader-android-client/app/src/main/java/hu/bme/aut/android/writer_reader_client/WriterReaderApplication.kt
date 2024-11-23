@@ -7,6 +7,8 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import hu.bme.aut.android.writer_reader_client.data.model.post.LikeRequest
 import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
+import hu.bme.aut.android.writer_reader_client.data.repository.ApiManager
+import hu.bme.aut.android.writer_reader_client.data.repository.ApiRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
@@ -20,6 +22,7 @@ import java.util.concurrent.TimeUnit
 class WriterReaderApplication: Application() {
     companion object {
         lateinit var api: WriterReaderApi
+        lateinit var apiManager: ApiManager
 
     }
 
@@ -41,6 +44,7 @@ class WriterReaderApplication: Application() {
         api = retrofit.create(WriterReaderApi::class.java)
 
 
+        apiManager = ApiManager(ApiRepository(api))
 
     }
 }

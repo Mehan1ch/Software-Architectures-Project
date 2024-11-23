@@ -20,6 +20,8 @@ import hu.bme.aut.android.writer_reader_client.data.model.post.CommentRequest
 import hu.bme.aut.android.writer_reader_client.data.model.post.CommentResponse
 import retrofit2.Callback
 import hu.bme.aut.android.writer_reader_client.data.model.post.LikeRequest
+import hu.bme.aut.android.writer_reader_client.data.model.post.LikeResponse
+import hu.bme.aut.android.writer_reader_client.data.repository.ApiManager
 import retrofit2.Call
 import retrofit2.Response
 
@@ -47,7 +49,8 @@ sealed class LoginUiEvent {
 }
 
 class LoginViewModel(
-    private val api: WriterReaderApi
+    private val api: WriterReaderApi,
+    private val apiManager: ApiManager
 ): ViewModel() {
     private val _state = MutableStateFlow(LoginViewState())
     val state = _state.asStateFlow()
@@ -141,7 +144,7 @@ class LoginViewModel(
                             //  test comment
                           //  val commentResponse = api.postComment("Bearer $token", CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146a-cd7f-4bbd-81de-8c55378f0e7b"))
                            // println("Comment response: ${commentResponse.isSuccessful}, Body: ${commentResponse.body()}")
-                            api.postComment("Bearer $token",CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146a-cd7f-4bbd-81de-8c55378f0e7b"))
+                            /*api.postComment("Bearer $token",CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146a-cd7f-4bbd-81de-8c55378f0e7b"))
                                 .enqueue(object : Callback<CommentResponse> {
                                     override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
 
@@ -162,24 +165,44 @@ class LoginViewModel(
                             // test like
 
                             api.postLike("Bearer $token",LikeRequest(likeableType = "App\\Models\\Work", likeableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e"))
-                                .enqueue(object : Callback<Any> {
-                                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                                .enqueue(object : Callback<LikeResponse> {
+                                    override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
 
                                         if (response.isSuccessful) {
-                                            val commentData = response.body()
+                                            val commentData = response.body()?.data
                                             println("Comment posted successfully: $commentData")
                                         } else {
                                             println("Error: ${response.errorBody()?.string()}")
                                         }
                                     }
 
-                                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                                    override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
                                         println("Failure: ${t.message}")
                                     }
 
                                 })
 
-
+*/
+                            apiManager.postLike(
+                                token = token?:"",
+                                likeRequest = LikeRequest(likeableType = "App\\Models\\Work", likeableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e"),
+                                onSuccess = { likeResponse ->
+                                    println("Like posted successfully: ${likeResponse.data}")
+                                },
+                                onError = { errorMessage ->
+                                    println("Error: $errorMessage")
+                                }
+                            )
+                            apiManager.postComment(
+                                token = token?:"",
+                                commentRequest = CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e"),
+                                onSuccess = { commentResponse ->
+                                    println("Like posted successfully: ${commentResponse.data}")
+                                },
+                                onError = { errorMessage ->
+                                    println("Error: $errorMessage")
+                                }
+                            )
 
 
 
@@ -230,7 +253,8 @@ class LoginViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 LoginViewModel(
-                    api = WriterReaderApplication.api
+                    api = WriterReaderApplication.api,
+                    apiManager = WriterReaderApplication.apiManager
                 )
             }
         }

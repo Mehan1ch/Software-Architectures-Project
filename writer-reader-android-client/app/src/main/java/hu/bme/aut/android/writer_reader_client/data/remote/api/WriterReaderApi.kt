@@ -8,12 +8,13 @@ import hu.bme.aut.android.writer_reader_client.data.model.get.Collection
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionsResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.Comment
-import hu.bme.aut.android.writer_reader_client.data.model.get.User
+import hu.bme.aut.android.writer_reader_client.data.model.get.UsersResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorkResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorksResponse
 import hu.bme.aut.android.writer_reader_client.data.model.post.CommentRequest
 import hu.bme.aut.android.writer_reader_client.data.model.post.CommentResponse
 import hu.bme.aut.android.writer_reader_client.data.model.post.LikeRequest
+import hu.bme.aut.android.writer_reader_client.data.model.post.LikeResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
@@ -41,40 +42,11 @@ interface WriterReaderApi {
     suspend fun getCollection(@Path("id") id: String): Response<CollectionResponse>
 
     @POST("/api/collections")
-    suspend fun createCollection(@Body collection: Collection): Response<Collection>
-
-    @PUT("/api/collections/{id}")
-    suspend fun updateCollection(@Path("id") id: String, @Body collection: Collection): Response<Collection>
-
-    @DELETE("/api/collections/{id}")
-    suspend fun deleteCollection(@Path("id") id: String): Response<Void>
+    suspend fun createCollection(@Body collection: Collection): Response<CollectionResponse>
 
 
 
 
-    /*
-     // Categories
-     @GET("/categories")
-     suspend fun getCategories(): Response<List<Category>>
-
-     @GET("/categories/{id}")
-     suspend fun getCategory(@Path("id") id: String): Response<Category>
-
-     @POST("/categories")
-     suspend fun createCategory(@Body category: Category): Response<Category>
-
-     @PUT("/categories/{id}")
-     suspend fun updateCategory(@Path("id") id: String, @Body category: Category): Response<Category>
-
-     @DELETE("/categories/{id}")
-     suspend fun deleteCategory(@Path("id") id: String): Response<Void>
-
-
-
- */
-    // Comments
-    @GET("/api/comments")
-    suspend fun getComments(): Response<List<Comment>>
 
     @POST("/api/comments")
     fun postComment(
@@ -87,7 +59,7 @@ interface WriterReaderApi {
     fun postLike(
         @Header("Authorization") authHeader: String,
         @Body body: LikeRequest
-        ): Call<Any>
+        ): Call<LikeResponse>
 
 
     @DELETE("/api/likes/{id}")
@@ -95,28 +67,12 @@ interface WriterReaderApi {
         @Path("id") likeId: String,
         @Header("Authorization") token: String
     ): Response<Void>
-/*
-    // Messages
-    @GET("/messages")
-    suspend fun getMessages(): Response<List<Message>>
 
-    @GET("/messages/{id}")
-    suspend fun getMessage(@Path("id") id: String): Response<Message>
-
-    @POST("/messages")
-    suspend fun createMessage(@Body message: Message): Response<Message>
-
-    @PUT("/messages/{id}")
-    suspend fun updateMessage(@Path("id") id: String, @Body message: Message): Response<Message>
-
-    @DELETE("/messages/{id}")
-    suspend fun deleteMessage(@Path("id") id: String): Response<Void>
-
-    */
 
     // Users
     @GET("/api/users")
-    suspend fun getUsers(): Response<List<User>>
+    suspend fun getUsers(): Response<UsersResponse>
+
 
 
 
@@ -135,4 +91,28 @@ interface WriterReaderApi {
 
 }
 
+
+//@GET("/api/users/{id}")
+// suspend fun getUser(@Path("id") id: String): Response<UserResponse>
+
+
+
+/*
+    // Messages
+    @GET("/messages")
+    suspend fun getMessages(): Response<List<Message>>
+
+    @GET("/messages/{id}")
+    suspend fun getMessage(@Path("id") id: String): Response<Message>
+
+    @POST("/messages")
+    suspend fun createMessage(@Body message: Message): Response<Message>
+
+    @PUT("/messages/{id}")
+    suspend fun updateMessage(@Path("id") id: String, @Body message: Message): Response<Message>
+
+    @DELETE("/messages/{id}")
+    suspend fun deleteMessage(@Path("id") id: String): Response<Void>
+
+    */
 

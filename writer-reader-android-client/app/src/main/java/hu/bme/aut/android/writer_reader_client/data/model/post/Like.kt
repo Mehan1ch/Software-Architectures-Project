@@ -13,7 +13,7 @@ data class LikeResponse(
 
 data class LikeData(
     val id: String,
-    val user: LikeUser,
+    @Json(name = "user_id") val userId: String,
     @Json(name = "likeable_id") val likeableId: String,
     @Json(name = "likeable_type") val likeableType: String,
     @Json(name = "created_at") val createdAt: String,
