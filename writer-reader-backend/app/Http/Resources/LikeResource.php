@@ -22,7 +22,7 @@ class LikeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => UserResource::make($this->user),
+            'user_id' => $this->user->id,
             'likeable_id' => $this->likeable_id,
             'likeable_type' => $this->likeable_type,
             'created_at' => $this->created_at,
