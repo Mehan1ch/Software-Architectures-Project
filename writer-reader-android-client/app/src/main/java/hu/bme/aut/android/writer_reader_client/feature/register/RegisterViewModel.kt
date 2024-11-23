@@ -118,7 +118,6 @@ class RegisterViewModel(
                 println("Fostömlődés megnyitása")
 
                 if (response.isSuccessful) {
-                    //TODO: save token
                     println("Registration successful!")
                     _event.send(RegisterUiEvent.RegisterSuccessful)
                 } else {

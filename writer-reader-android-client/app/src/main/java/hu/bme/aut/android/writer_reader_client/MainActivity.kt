@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WriterReaderClientTheme {
                 NavGraph(
-
+              //      startDestination = "home",
                 )
 
 

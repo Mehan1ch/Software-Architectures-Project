@@ -7,7 +7,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
 import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginRequest
-import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
 import hu.bme.aut.android.writer_reader_client.data.preferences.DataStoreManager
 import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
 import kotlinx.coroutines.channels.Channel
@@ -16,7 +15,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import android.content.Context
-import androidx.compose.ui.platform.LocalContext
+import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
+import hu.bme.aut.android.writer_reader_client.data.model.post.CommentRequest
+import hu.bme.aut.android.writer_reader_client.data.model.post.CommentResponse
+import retrofit2.Callback
+import hu.bme.aut.android.writer_reader_client.data.model.post.LikeRequest
+import retrofit2.Call
+import retrofit2.Response
 
 
 sealed class LoginViewIntent {
@@ -49,6 +54,7 @@ class LoginViewModel(
 
     private val _event = Channel<LoginUiEvent>()
     val event = _event.receiveAsFlow()
+
 
 
     fun onIntent(intent: LoginViewIntent) {
@@ -84,7 +90,34 @@ class LoginViewModel(
 
     private fun login(context: Context) {
         viewModelScope.launch {
-            /*
+
+
+
+
+
+          /*  try {
+                println("Createafsddddddddddddddddddddddddddddddddddddddddddddddddddddddddd like")
+
+
+                val createLikeResponse = api.createLike(
+                    body = LikeRequest(
+                        likeableId = "9d8d146a-cd7f-4bbd-81de-8c55378f0e7b",
+                        likeableType = "App\\Models\\Work"
+                    ),
+                    token = "12|dQP7xlgz0z1e5F8n7bTi7j5Hhfhp1qRtZ47Dr2PW8dba9465"
+
+                )
+                if (createLikeResponse.isSuccessful) {
+                    val responseBody = createLikeResponse.body()?.string()
+                    println("Response body: $responseBody")
+                } else {
+                    println("Create like failed")
+                }
+
+            }catch (e: Exception){
+                println("Error: ${e.message}")
+            }*/
+
             try {
                 // 1. Register
                 val registerResponse = api.register(RegisterRequest("kurva", "kurva@anyad.com", "password", "password"))
@@ -104,9 +137,59 @@ class LoginViewModel(
                             val userResponse = api.getUser("Bearer $token")
                             println("User response: ${userResponse.isSuccessful}, Body: ${userResponse.body()}")
 
+
+                            //  test comment
+                          //  val commentResponse = api.postComment("Bearer $token", CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146a-cd7f-4bbd-81de-8c55378f0e7b"))
+                           // println("Comment response: ${commentResponse.isSuccessful}, Body: ${commentResponse.body()}")
+                            api.postComment("Bearer $token",CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146a-cd7f-4bbd-81de-8c55378f0e7b"))
+                                .enqueue(object : Callback<CommentResponse> {
+                                    override fun onResponse(call: Call<CommentResponse>, response: Response<CommentResponse>) {
+
+                                        if (response.isSuccessful) {
+                                            val commentData = response.body()?.data
+                                            println("Comment posted successfully: $commentData")
+                                        } else {
+                                            println("Error: ${response.errorBody()?.string()}")
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<CommentResponse>, t: Throwable) {
+                                        println("Failure: ${t.message}")
+                                    }
+
+                                })
+
+                            // test like
+
+                            api.postLike("Bearer $token",LikeRequest(likeableType = "App\\Models\\Work", likeableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e"))
+                                .enqueue(object : Callback<Any> {
+                                    override fun onResponse(call: Call<Any>, response: Response<Any>) {
+
+                                        if (response.isSuccessful) {
+                                            val commentData = response.body()
+                                            println("Comment posted successfully: $commentData")
+                                        } else {
+                                            println("Error: ${response.errorBody()?.string()}")
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Any>, t: Throwable) {
+                                        println("Failure: ${t.message}")
+                                    }
+
+                                })
+
+
+
+
+
+
+
+
                             // 4. Logout
-                            val logoutResponse = api.logout("Bearer $token")
-                            println("Logout response: ${logoutResponse.isSuccessful}")
+                            //val logoutResponse = api.logout("Bearer $token")
+                            //println("Logout response: ${logoutResponse.isSuccessful}")
+
                         }
 
                     }
@@ -114,12 +197,14 @@ class LoginViewModel(
                         println("Error storing token: ${e.message}")
                     }
                 }
+
+
             } catch (e: Exception) {
                 println("Error: ${e.message}")
             }
-*/
 
 
+            /*
             try {
                 val response = api.login(LoginRequest(email = _state.value.email, password = _state.value.password))
                 println("Login response: ${response.isSuccessful}")
@@ -129,14 +214,14 @@ class LoginViewModel(
                     DataStoreManager.storeUserToken(context, loginApiToken)
                     DataStoreManager.storeUserEmail(context, _state.value.email)
                     _event.send(LoginUiEvent.LoginSuccessful)
-                    println("Login successful")
+                    println("Login successful : $loginApiToken")
                 } else {
                     println("Login failed: ${response.errorBody()?.string()}")
                     _event.send(LoginUiEvent.LoginFailed(response.errorBody()?.string() ?: "Unknown error"))
                 }
             }catch (e: Exception) {
                 _event.send(LoginUiEvent.LoginFailed(e.message ?: "Unknown error"))
-            }
+            }*/
 
         }
     }

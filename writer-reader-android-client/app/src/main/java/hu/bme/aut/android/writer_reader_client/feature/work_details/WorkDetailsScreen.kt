@@ -9,19 +9,24 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Chip
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,8 +45,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.bme.aut.android.writer_reader_client.R
+import hu.bme.aut.android.writer_reader_client.data.model.get.Work
 import hu.bme.aut.android.writer_reader_client.navigation.Screen
 import hu.bme.aut.android.writer_reader_client.ui.common.CommentSection
+import hu.bme.aut.android.writer_reader_client.ui.common.LikesTracker
 import hu.bme.aut.android.writer_reader_client.ui.common.NormalTextField
 import java.time.Instant
 import java.time.ZoneId
@@ -51,30 +59,33 @@ import kotlin.text.format
 @Composable
 fun WorkDetailsScreen(
     modifier: Modifier = Modifier,
-  //  onNavigateBack: () -> Unit,
-    viewModel: WorkDetailViewModel = viewModel(factory = WorkDetailViewModel.Factory),
+    onNavigateBack: () -> Unit,
+    viewModel: WorkDetailViewModel = viewModel(factory = WorkDetailViewModel.Factory(context = LocalContext.current)),
     onNavigateToReadWork: (String) -> Unit
 ){
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
     Scaffold(
+        modifier = modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
-            //TODO
+            TopAppBar(
+                title = { Text(text = stringResource(id = R.string.work_details_title)) },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(imageVector = Icons.Sharp.ArrowBack, contentDescription = "navigate back")
+                    }
+                },
+            )
        }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            Box(modifier = Modifier.weight(1f)){
+            item {
                 Details(
-                    title = state.work.title,
-                    author = state.work.creatorName,
-                    date = state.work.createdAt,
-                    categories = state.work.categories,
-                    tags = state.work.tags,
-                    isLiked = state.isLiked,
+                    work = state.work,
                     onLikeClick = {
                         viewModel.onIntent(WorkDetailViewIntent.LikeWorkButtonClicked)
                     },
@@ -82,10 +93,13 @@ fun WorkDetailsScreen(
                         onNavigateToReadWork(state.work.id)
                     }
                 )
-
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Box(modifier = Modifier.weight(1f)) {
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            item {
                 CommentSection(
                     comments = state.work.comments,
                     newComment = state.newComment,
@@ -110,12 +124,7 @@ fun WorkDetailsScreen(
 @Composable
 fun Details(
     modifier: Modifier = Modifier,
-    title: String,
-    author: String,
-    date: String,
-    categories: List<String>,
-    tags: List<String>,
-    isLiked: Boolean,
+    work: Work,
     onLikeClick: () -> Unit,
     onReadButtonClick: () -> Unit
 ) {
@@ -125,19 +134,19 @@ fun Details(
             .padding(16.dp)
     ) {
         Text(
-            text = title,
+            text = work.title,
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "$author • $date",
+            text = "${work.creatorName} • ${work.createdAt}",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
         Spacer(modifier = Modifier.height(8.dp))
         FlowRow() {
-            categories.forEach { category ->
+            work.categories.forEach { category ->
                 Chip(onClick = {}) {
                     Text(text = category)
                 }
@@ -145,7 +154,7 @@ fun Details(
         }
         Spacer(modifier = Modifier.height(4.dp))
         FlowRow() {
-            tags.forEach { tag ->
+            work.tags.forEach { tag ->
                 Chip(onClick = {}) {
                     Text(text = tag)
                 }
@@ -155,13 +164,12 @@ fun Details(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = if (isLiked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
-                contentDescription = if (isLiked) "Unlike" else "Like",
+            LikesTracker(
+                likes = work.likes,
+                isLiked = work.isLiked,
                 modifier = Modifier.clickable { onLikeClick() }
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = if (isLiked) "Liked" else "Like")
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
@@ -178,6 +186,7 @@ fun Details(
 fun WorkDetailScreenPreview() {
     WorkDetailsScreen(
         onNavigateToReadWork = {},
+        onNavigateBack = {}
     )
 }
 

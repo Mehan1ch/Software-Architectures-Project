@@ -64,6 +64,9 @@ fun NavGraph(
             WorkDetailsScreen(
                 onNavigateToReadWork = {
                     navHostController.navigate(Screen.ReadWork.passWorkId(it))
+                },
+                onNavigateBack = {
+                    navHostController.popBackStack()
                 }
             )
         }

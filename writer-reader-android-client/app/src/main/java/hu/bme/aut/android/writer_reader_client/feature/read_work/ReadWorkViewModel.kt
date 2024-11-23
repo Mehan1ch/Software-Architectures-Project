@@ -38,7 +38,7 @@ class ReadWorkViewModel(
         loadWork(workId)
     }
 
-    fun loadWork(workId: String) {
+    private fun loadWork(workId: String) {
         viewModelScope.launch(Dispatchers.IO){
             _state.update { it.copy(isLoading = true) }
             try {
@@ -65,7 +65,7 @@ class ReadWorkViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val savedStateHandle = createSavedStateHandle()
-                WorkDetailViewModel(
+                ReadWorkViewModel(
                     savedStateHandle = savedStateHandle,
                     api = WriterReaderApplication.api
                 )

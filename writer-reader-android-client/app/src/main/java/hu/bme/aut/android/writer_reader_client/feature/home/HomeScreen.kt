@@ -57,10 +57,9 @@ fun HomeScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             SearchTopAppBar(
-                modifier = modifier.windowInsetsPadding(WindowInsets.statusBars),
                 text = state.searchText,
                 onTextChange = viewModel::onSearchTextChange,
             )
