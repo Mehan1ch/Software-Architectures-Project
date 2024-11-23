@@ -80,7 +80,7 @@ export default function Register() {
   };
 
   const handleSubmit = (event) => {
-    if (usernameError || passwordError) {
+    if (usernameError || passwordError || confirmPasswordError || emailError) {
       event.preventDefault();
       return;
     }
