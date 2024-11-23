@@ -11,6 +11,8 @@ import Works from "./pages/Works.jsx";
 import Account from "./pages/Account.jsx";
 import MyWorks from "./components/MyWorks.jsx";
 import MyCollections from "./components/MyCollections.jsx";
+import Reader from "./pages/Reader.jsx";
+import Collection from "./pages/Collection.jsx";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
               <Route path="/account" element={<Account />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/reader" element={<Reader />} />
+              <Route path="/collection" element={<Collection />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Container>
