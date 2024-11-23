@@ -23,6 +23,11 @@ function App() {
               <Route path="/" element={<Navigate to="/works" />} />
               <Route path="/works" element={<Works />} />
               <Route path="/collections" element={<Collections />} />
+              <Route
+                exact
+                path="/profile"
+                element={<Navigate to="/profile/myworks" />}
+              />
               <Route path="/profile" element={<Profile />}>
                 <Route path="myworks" element={<MyWorks />} />
                 <Route path="mycollections" element={<MyCollections />} />
