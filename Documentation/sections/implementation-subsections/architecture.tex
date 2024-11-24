@@ -2,4 +2,17 @@
 
 A szoftver egészében és komponenseiben is rétzegzett architektúrát valósít mmeg.
 
+--- Backend ----
+\\
 
+
+
+
+\noindent A mobilos kliens 4 fő rétegre osztható:
+
+\begin{itemize}
+    \item  Adatlekérdezés, Rest api hívások implementációja, adatok objektumokba való konvertálása
+    \item  Adatelérés: Egy ApiManager objektum  egységes elérést és hibakezelést biztosít a hálózati hívások kezelésére
+    \item  UI üzleti logika (View Model) : A felhasználói felület állapotának és eseményeinek kezelése
+    \item  Megjelenítés (View): a felhasználói felület megjelenítése, események kezelése
+\end{itemize}
