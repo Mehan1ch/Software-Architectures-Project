@@ -80,7 +80,7 @@ interface WriterReaderApi {
 
     // Authentication
     @POST("/register")
-    suspend fun register(@Body request: RegisterRequest): Response<Void>
+    suspend fun register(@Body request: RegisterRequest): Response<Void?>
 
     @POST("/api/login")
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>

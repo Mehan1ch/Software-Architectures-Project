@@ -182,8 +182,8 @@ class ApiManager(private val repository: ApiRepository) {
         } catch (e: Exception) {
             onError(e.message ?: "Network error")
         }
-    }
-*/
+    }*/
+
     // Authentication
     suspend fun register(
        request: RegisterRequest,
@@ -205,6 +205,32 @@ class ApiManager(private val repository: ApiRepository) {
             onError(e.message ?: "Network error")
         }
     }
+/*
+    fun register(
+        request: RegisterRequest,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        repository.register(request, object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200) {
+                        onSuccess()
+                    } else {
+                        onError(response.errorBody()?.string() ?: "Unknown error")
+                    }
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                onError(t.message ?: "Network error")
+            }
+        })
+    }
+
+*/
 
     suspend fun login(
         request: LoginRequest,

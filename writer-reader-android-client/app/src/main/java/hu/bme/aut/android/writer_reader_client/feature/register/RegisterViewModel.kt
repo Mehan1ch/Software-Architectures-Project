@@ -112,13 +112,12 @@ class RegisterViewModel(
 
             apiManager.register(
                 request = RegisterRequest(
-                    name = "leonidas",
-                    email = "leonidas@asd.com",
-                    password = "asdasd",
-                    passwordConfirmation = "asdasd"
+                    name = _state.value.username,
+                    email = _state.value.email,
+                    password =_state.value.password,
+                    passwordConfirmation = _state.value.confirmPassword
                 ),
                 onSuccess = { response ->
-
                     _event.trySend(RegisterUiEvent.RegisterSuccessful)
                     println("Registration response: $response")
                     println("Registration successful!")
