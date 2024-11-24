@@ -14,9 +14,9 @@ import MenuItem from "@mui/material/MenuItem";
 import SvgIcon from "@mui/material/SvgIcon";
 import { Link as RouterLink } from "react-router-dom";
 import { Divider } from "@mui/material";
-
-//const pages = ["Művek", "Gyűjtemények", "Szerzők"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { useAuthContext } from "../contexts/ContextProvider";
+import axios from "../api/axios";
+import Cookies from "js-cookie";
 
 function LogoSvgIcon() {
   return (
@@ -41,6 +41,7 @@ function LogoSvgIcon() {
 function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { user, setUser, updateUser } = useAuthContext();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -55,6 +56,33 @@ function NavBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  React.useEffect(() => {
+    if (!user) {
+      updateUser();
+    }
+  }, []);
+
+  const getXSRFCookie = () => {
+    return Cookies.get("XSRF-TOKEN");
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post("/logout", null, {
+        headers: {
+          "X-XSRF-TOKEN": getXSRFCookie(),
+        },
+      });
+      console.log(JSON.stringify(response));
+      if (response.status === 204) {
+        setUser(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    handleCloseUserMenu();
   };
 
   return (
@@ -78,11 +106,9 @@ function NavBar() {
           >
             Író-Olvasó
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
-              aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
@@ -106,11 +132,6 @@ function NavBar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {/*pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
-              ))*/}
               <MenuItem
                 key="Works"
                 onClick={handleCloseNavMenu}
@@ -136,7 +157,6 @@ function NavBar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -151,20 +171,6 @@ function NavBar() {
             Író-Olvasó
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {/*pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: "white",
-                  display: "block",
-                  fontWeight: "bold",
-                }}
-              >
-                {page}
-              </Button>
-            ))*/}
             <Button
               key="Works"
               onClick={handleCloseNavMenu}
@@ -194,37 +200,57 @@ function NavBar() {
               Gyűjtemények
             </Button>
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+          {user && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title={user?.name}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={user?.name} src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem
+                  key="profile"
+                  onClick={handleCloseUserMenu}
+                  component={RouterLink}
+                  to="/profile"
+                >
                   <Typography sx={{ textAlign: "center" }}>
-                    {setting}
+                    Saját profilom
                   </Typography>
                 </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+                <MenuItem
+                  key="account"
+                  onClick={handleCloseUserMenu}
+                  component={RouterLink}
+                  to="/account"
+                >
+                  <Typography sx={{ textAlign: "center" }}>
+                    Fiókbeállítások
+                  </Typography>
+                </MenuItem>
+                <MenuItem key="logout" onClick={handleLogout}>
+                  <Typography sx={{ textAlign: "center" }}>
+                    Kijelentkezés
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

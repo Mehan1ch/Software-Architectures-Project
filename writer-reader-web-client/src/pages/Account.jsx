@@ -23,7 +23,7 @@ export default function Account() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
   if (!user) {
-    return <Navigate to="/register" />;
+    return <Navigate to="/login" />;
   }
 
   const validateInputs = () => {

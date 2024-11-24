@@ -12,12 +12,18 @@ export default function Profile() {
   };
 
   if (!user) {
-    return <Navigate to="/register" />;
+    return <Navigate to="/login" />;
   }
 
   return (
     <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-      <Tabs value={value} onChange={handleChange} centered role="navigation">
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        centered
+        role="navigation"
+        sx={{ marginBottom: 2 }}
+      >
         <Tab
           label="Saját műveim"
           LinkComponent={RouterLink}

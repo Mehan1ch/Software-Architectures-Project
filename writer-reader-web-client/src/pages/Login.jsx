@@ -10,23 +10,32 @@ import {
   CardContent,
   Container,
   Link,
+  Alert,
 } from "@mui/material";
 import { useState } from "react";
+import axios from "../api/axios";
+import Cookies from "js-cookie";
 
 export default function Login() {
-  const { user } = useAuthContext();
+  const { user, updateUser } = useAuthContext();
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-  const [usernameError, setUsernameError] = useState(false);
-  const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [loginErrors, setLoginErrors] = useState([]);
+  const [invalidCred, setInvalidCred] = useState(false);
 
   if (user) {
     return <Navigate to="/" />;
   }
 
+  const getXSRFCookie = () => {
+    return Cookies.get("XSRF-TOKEN");
+  };
+
   const validateInputs = () => {
     const password = document.getElementById("password");
-    const username = document.getElementById("username");
+    const email = document.getElementById("email");
 
     let isValid = true;
 
@@ -39,28 +48,50 @@ export default function Login() {
       setPasswordErrorMessage("");
     }
 
-    if (!username.value || username.value.length < 1) {
-      setUsernameError(true);
-      setUsernameErrorMessage("A felhasználónév megadása szükséges.");
+    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
+      setEmailError(true);
+      setEmailErrorMessage("Érvénytelen e-mail cím.");
       isValid = false;
     } else {
-      setUsernameError(false);
-      setUsernameErrorMessage("");
+      setEmailError(false);
+      setEmailErrorMessage("");
     }
 
     return isValid;
   };
 
-  const handleSubmit = (event) => {
-    if (usernameError || passwordError) {
-      event.preventDefault();
+  const handleLogin = async (event) => {
+    setLoginErrors([]);
+    setInvalidCred(false);
+    event.preventDefault();
+    if (emailError || passwordError) {
       return;
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
+    const formData = new FormData(event.currentTarget);
+    try {
+      const response = await axios.post(
+        "/login",
+        JSON.stringify({
+          email: formData.get("email"),
+          password: formData.get("password"),
+        }),
+        {
+          headers: {
+            "X-XSRF-TOKEN": getXSRFCookie(),
+          },
+        }
+      );
+      console.log(JSON.stringify(response));
+      if (response.status === 204) {
+        updateUser();
+      }
+    } catch (error) {
+      if (error.response.status === 422) {
+        setLoginErrors(error.response.data.errors);
+      } else if (error.response.status === 401) {
+        setInvalidCred(true);
+      }
+    }
   };
 
   return (
@@ -78,20 +109,20 @@ export default function Login() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleLogin}
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <TextField
-              label="Felhasználónév"
-              autoComplete="username"
-              name="username"
+              label="E-mail cím"
+              autoComplete="email"
+              name="email"
               required
               fullWidth
-              id="username"
+              id="email"
               variant="outlined"
-              error={usernameError}
-              helperText={usernameErrorMessage}
-              color={usernameError ? "error" : "primary"}
+              error={emailError}
+              helperText={emailErrorMessage}
+              color={emailError ? "error" : "primary"}
             />
             <TextField
               label="Jelszó"
@@ -106,6 +137,12 @@ export default function Login() {
               helperText={passwordErrorMessage}
               color={passwordError ? "error" : "primary"}
             />
+            {loginErrors.email && (
+              <Alert severity="error">Érvénytelen e-mail cím.</Alert>
+            )}
+            {invalidCred && (
+              <Alert severity="error">Hibás e-mail cím vagy jelszó!</Alert>
+            )}
             <Button
               type="submit"
               fullWidth

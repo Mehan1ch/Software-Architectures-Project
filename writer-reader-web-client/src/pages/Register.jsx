@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link as RouterLink, Navigate } from "react-router-dom";
+import { Link as RouterLink, redirect } from "react-router-dom";
 import { useAuthContext } from "../contexts/ContextProvider";
 import {
   Box,
@@ -12,9 +12,11 @@ import {
   Container,
   Link,
 } from "@mui/material";
+import axios from "../api/axios";
+import Cookies from "js-cookie";
 
 export default function Register() {
-  const { user } = useAuthContext();
+  const { user, updateUser } = useAuthContext();
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
@@ -28,6 +30,10 @@ export default function Register() {
   if (user) {
     return <Navigate to="/" />;
   }
+
+  const getXSRFCookie = () => {
+    return Cookies.get("XSRF-TOKEN");
+  };
 
   const validateInputs = () => {
     const password = document.getElementById("password");
@@ -79,16 +85,36 @@ export default function Register() {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
+  const handleRegister = async (event) => {
+    //TODO: set any signup error states to null/default
+    event.preventDefault();
     if (usernameError || passwordError || confirmPasswordError || emailError) {
-      event.preventDefault();
       return;
     }
-    const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
+    const formData = new FormData(event.currentTarget);
+    try {
+      const response = await axios.post(
+        "/register",
+        JSON.stringify({
+          name: formData.get("username"),
+          email: formData.get("email"),
+          password: formData.get("password"),
+          password_confirmation: formData.get("confirmPassword"),
+        }),
+        {
+          headers: {
+            "X-XSRF-TOKEN": getXSRFCookie(),
+          },
+        }
+      );
+      console.log(JSON.stringify(response));
+      if (response.status === 204) {
+        // TODO: redirect to login site
+        updateUser();
+      }
+    } catch (error) {
+      // TODO: display signup errors via state
+    }
   };
 
   return (
@@ -106,7 +132,7 @@ export default function Register() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleRegister}
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <TextField
@@ -149,7 +175,7 @@ export default function Register() {
             <TextField
               label="Jelszó megerősítése"
               name="confirmPassword"
-              type="confirmPassword"
+              type="password"
               required
               fullWidth
               id="confirmPassword"
