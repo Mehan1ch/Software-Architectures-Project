@@ -200,7 +200,7 @@ function NavBar() {
               Gyűjtemények
             </Button>
           </Box>
-          {user && (
+          {user ? (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={user?.name}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -250,6 +250,20 @@ function NavBar() {
                 </MenuItem>
               </Menu>
             </Box>
+          ) : (
+            <Button
+              key="Login"
+              component={RouterLink}
+              to="/login"
+              sx={{
+                my: 2,
+                color: "white",
+                display: "block",
+                fontWeight: "bold",
+              }}
+            >
+              Bejelentkezés
+            </Button>
           )}
         </Toolbar>
       </Container>
