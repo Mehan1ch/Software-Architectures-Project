@@ -2,4 +2,39 @@
 
 \subsection{Feladatkiírás}
 A feladat egy író-olvasó oldal elkészítése. Az oldalon a regisztrált felhasználók olvashatják egymás megosztott történeteit, azokhoz megjegyzéseket, kritikákat fűzhetnek. A történeteket legyen lehetőség gyűjteményekbe, a fejezeteket regényekbe szervezni. A feltöltött történetek minden esetben moderátori ellenőrzésen esnek át, csak ez után érhetőek el publikusan. A moderálás eredményéről a felhasználót mindenképpen értesíteni kell. A történeteket el lehet látni jellemzőkkel, illetve meg lehet jelölni a kategóriájukat, a benne szereplő karaktereket, valamint figyelmeztetéseket és korhatárt lehet rájuk beállítani. Ezen kívül a regisztrált felhasználóknak lehetőségük van egymással privát üzenetben kommunikálni. A rendszerhez webes és mobilos kliens készítése is szükséges.
-A részletes követelmények a \it{Specifikáció} dokumentumban találhatók.
+A részletes követelmények a \textit{Specifikáció} dokumentumban találhatók.
+Mi a feladatkiírástól némileg eltérő nevezéktant használtunk: a továbbiekban a \textit{történet} helyett a \textit{mű} szót használjuk.
+
+\subsection{A rendszer által biztosított funkciók}
+
+A specifikáció alapján a platform a következő főbb funkciókat hivatott biztosítani. 
+(Az egyes funkciók különböző szintű jogosultságokhoz kötöttek lehetnek.):
+\begin{itemize}
+    \item  Regisztráció
+    \item  Bejelentkezés
+    \item  Művekkel kapcsolatos funkciók:
+    \begin{itemize}
+        \item Történetek böngészése
+        \item Történetek keresése
+        \item Történetek olvasása
+        \item Történetek létrehozása
+        \item Történetek szerkesztése, fejezetekre osztása
+        \item Történetek moderálása
+
+    \end{itemize}
+    \item  Gyűjteményekkel kapcsolatos funkciók:
+    \begin{itemize}
+        \item Gyűjtemények böngészése
+        \item Gyűjtemények keresése
+        \item Gyűjtemények megtekintése
+        \item Gyűjtemények létrehozása 
+    \end{itemize}
+    \item  Hozzászólás írása Művekhez vgy Gyűjteményekhez
+    \item  Művek, Gyűjtemények, Hozzászólások kedvelése
+    \item  Privát üzenetek küldése
+\end{itemize}
+
+A rendszer az alábbi szerepköröket különbözteti meg: látogató, regisztrált felhasználó, moderátor, adminisztrátor. 
+A látogatók csak a megosztott tartalmakat tekinthetik meg, a regisztrált felhasználók létrehozhatnak saját tartalmat, kommentelhetnek, kedvelhetnek és üzeneteket küldhetnek.
+A moderátorok a moderálási jogosultságokkal rendelkeznek, az adminisztrátorok pedig a teljes rendszer felett rendelkeznek, kezelik a jogosultságokat.
+
