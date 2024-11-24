@@ -84,18 +84,6 @@ class LoginViewModel(
 
     private fun login(context: Context, onSuccessfulLogin: () -> Unit) {
         viewModelScope.launch {
-            apiManager.postComment(
-                token = "30|WMaTzuHLwbo5mtzJ0MxJYQlRAdABXgqCtOQ0Wheea8ea1eb7",
-                commentRequest = CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e"),
-                onSuccess = { commentResponse ->
-                    println("comment posted successfully: ${commentResponse.data}")
-                },
-                onError = { errorMessage ->
-                    println("Error: $errorMessage")
-                }
-            )
-
-
             apiManager.login(
                 LoginRequest(
                     email = _state.value.email,

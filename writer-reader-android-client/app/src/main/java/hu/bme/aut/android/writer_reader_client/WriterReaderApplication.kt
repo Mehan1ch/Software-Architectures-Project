@@ -30,8 +30,8 @@ class WriterReaderApplication: Application() {
         super.onCreate()
 
         val client = OkHttpClient.Builder()
-            .readTimeout(15, TimeUnit.SECONDS)
-            .connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(25, TimeUnit.SECONDS)
+            .connectTimeout(25, TimeUnit.SECONDS)
             .build()
 
         val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()

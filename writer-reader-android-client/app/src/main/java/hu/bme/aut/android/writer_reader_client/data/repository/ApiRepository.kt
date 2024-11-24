@@ -69,7 +69,7 @@ class ApiRepository(private val api: WriterReaderApi) {
     }
 
     // Authentication
-    suspend fun register(request: RegisterRequest): Response<Void?> {
+    suspend fun register(request: RegisterRequest): Response<Void> {
         return api.register(request)
     }
 

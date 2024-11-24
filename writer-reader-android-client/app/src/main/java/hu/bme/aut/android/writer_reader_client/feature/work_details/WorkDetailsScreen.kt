@@ -3,6 +3,7 @@ package hu.bme.aut.android.writer_reader_client.feature.work_details
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Chip
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -41,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.bme.aut.android.writer_reader_client.R
+import hu.bme.aut.android.writer_reader_client.data.model.convertStringToMyTimestamp
 import hu.bme.aut.android.writer_reader_client.data.model.get.Work
 import hu.bme.aut.android.writer_reader_client.ui.common.CommentSection
 import hu.bme.aut.android.writer_reader_client.ui.common.LikesTracker
@@ -57,7 +60,9 @@ fun WorkDetailsScreen(
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
     Scaffold(
-        modifier = modifier.fillMaxSize().windowInsetsPadding(WindowInsets.statusBars),
+        modifier = modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.statusBars),
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(id = R.string.work_details_title)) },
@@ -69,52 +74,64 @@ fun WorkDetailsScreen(
                 backgroundColor = Color.LightGray
             )
        }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-        ) {
-            item {
-                Details(
-                    work = state.work,
-                    onLikeClick = {
-                        viewModel.onIntent(WorkDetailViewIntent.LikeWorkButtonClicked)
+    ) {  paddingValues ->
+        Box() {
+            if (state.isLoading) {
+                // Töltő animáció
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f)), // Átlátszó fekete háttér
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize()
+                ) {
+                    item {
+                        Details(
+                            work = state.work,
+                            onLikeClick = {
+                                viewModel.onIntent(WorkDetailViewIntent.LikeWorkButtonClicked)
 
-                    },
-                    onReadButtonClick = {
-                        onNavigateToReadWork(state.work.id)
-                        println("Read button clickedÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉ")
+                            },
+                            onReadButtonClick = {
+                                onNavigateToReadWork(state.work.id)
+                                println("Read button clicked")
+                            }
+                        )
                     }
-                )
-            }
-
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            item {
-                CommentSection(
-                    comments = state.work.comments,
-                    newComment = state.newComment,
-                    onCommentChange = {newValue ->
-                        viewModel.onIntent(WorkDetailViewIntent.CommentChanged(newValue))
-                    },
-                    onSendNewComment = {
-                        viewModel.onIntent(WorkDetailViewIntent.CommentSendButtonClicked)
-                    },
-                    onCommentLike = {
-                        viewModel.onIntent(WorkDetailViewIntent.LikeCommentButtonClicked(it))
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
-                )
+                    item {
+                        CommentSection(
+                            comments = state.work.comments,
+                            newComment = state.newComment,
+                            onCommentChange = {newValue ->
+                                viewModel.onIntent(WorkDetailViewIntent.CommentChanged(newValue))
+                            },
+                            onSendNewComment = {
+                                viewModel.onIntent(WorkDetailViewIntent.CommentSendButtonClicked)
+                            },
+                            onCommentLike = {
+                                viewModel.onIntent(WorkDetailViewIntent.LikeCommentButtonClicked(it))
+                            }
+                        )
+                    }
+                }
             }
-
         }
     }
 }
 
-/*
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
+
 @Composable
 fun Details(
     modifier: Modifier = Modifier,
@@ -127,73 +144,22 @@ fun Details(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text(text = "${stringResource(id = R.string.language)}: ${work.language}", style = MaterialTheme.typography.bodyMedium)
-        Text(text = "${stringResource(id = R.string.age_rating)}: ${work.rating}", style = MaterialTheme.typography.bodyMedium)
+        Text(text = work.title, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold))
+        Spacer(modifier = Modifier.height(8.dp))
+        val date = convertStringToMyTimestamp(work.createdAt)
+        Text(text = "${date.year}.${date.month}.${date.day}.", style = MaterialTheme.typography.bodyMedium)
 
-        if (work.warnings.isNotEmpty() && work.warnings.any { it.isNotBlank() }) {
-            Text(text = "${stringResource(id = R.string.warnings)}:", style = MaterialTheme.typography.bodyMedium)
-            work.warnings.filter { it.isNotBlank() }.forEach { warning ->
-                Text(text = "- $warning", style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-
-        if (work.characters.isNotEmpty() && work.characters.any { it.isNotBlank() }) {
-            Text(text = "${stringResource(id = R.string.characters)}:", style = MaterialTheme.typography.bodyMedium)
-            work.characters.filter { it.isNotBlank() }.forEach { character ->
-                Text(text = "-$character", style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-
-        if (work.tags.isNotEmpty() && work.tags.any { it.isNotBlank() }) {
-            Text(text = "${stringResource(id = R.string.tags)}:", style = MaterialTheme.typography.bodyMedium)
-            work.tags.filter { it.isNotBlank() }.forEach { tag ->
-                Text(text = "- $tag", style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-
-        if (work.categories.isNotEmpty() && work.categories.any { it.isNotBlank() }) {
-            Text(text = "${stringResource(id = R.string.categories)}:", style = MaterialTheme.typography.bodyMedium)
-            work.categories.filter { it.isNotBlank() }.forEach { category ->
-                Text(text = "- $category", style = MaterialTheme.typography.bodyMedium)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            LikesTracker(
-                likes = work.likes,
-                isLiked = work.isLiked,
-                modifier = Modifier.clickable { onLikeClick() }
+        DetailItem(
+            label = stringResource(id = R.string.author),
+            value = work.creatorName
+        )
+        if (work.chapters.isNotEmpty()){
+            DetailItem(
+                label = stringResource(id = R.string.number_of_chapters),
+                value = work.chapters.size.toString()
             )
-            Spacer(modifier = Modifier.width(8.dp))
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = { onReadButtonClick() },
-            modifier = Modifier.fillMaxWidth()
-        ){
-            Text(text = stringResource(id = R.string.button_read_work))
-        }
-    }
-}
-
-
-*/
-@Composable
-fun Details(
-    modifier: Modifier = Modifier,
-    work: Work,
-    onLikeClick: () -> Unit,
-    onReadButtonClick: () -> Unit
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-
+        Spacer(modifier = Modifier.height(12.dp))
 
         DetailItem(
             label = stringResource(id = R.string.language),
@@ -266,7 +232,7 @@ fun DetailItem(label: String, value: String) {
     Row(modifier = Modifier.padding(vertical = 4.dp)) {
         Text(
             text = "$label: ",
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.primary
         )
         Text(
@@ -281,8 +247,8 @@ fun DetailGroup(title: String, items: List<String>) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
             text = "$title:",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.secondary
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.primary
         )
         items.filter { it.isNotBlank() }.forEach { item ->
             Text(

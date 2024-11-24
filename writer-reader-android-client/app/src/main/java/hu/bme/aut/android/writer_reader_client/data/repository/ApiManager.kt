@@ -187,13 +187,17 @@ class ApiManager(private val repository: ApiRepository) {
     // Authentication
     suspend fun register(
        request: RegisterRequest,
-       onSuccess: () -> Unit,
+       onSuccess: (Any) -> Unit,
        onError: (String) -> Unit
     ) {
         try {
             val response = repository.register(request)
             if (response.isSuccessful) {
-                onSuccess()
+                if (response.code() == 200) {
+                    onSuccess(response.code())
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
+                }
             } else {
                 onError(response.errorBody()?.string() ?: "Unknown error")
             }

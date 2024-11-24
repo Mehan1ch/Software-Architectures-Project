@@ -105,14 +105,22 @@ class RegisterViewModel(
 
     private fun register() {
         viewModelScope.launch {
+            println(_state.value.username)
+            println(_state.value.email)
+            println(_state.value.password)
+            println(_state.value.confirmPassword)
+
             apiManager.register(
                 request = RegisterRequest(
-                    name = _state.value.username,
-                    email = _state.value.email,
-                    password = _state.value.password,
-                    passwordConfirmation = _state.value.confirmPassword),
-                onSuccess = {
+                    name = "leonidas",
+                    email = "leonidas@asd.com",
+                    password = "asdasd",
+                    passwordConfirmation = "asdasd"
+                ),
+                onSuccess = { response ->
+
                     _event.trySend(RegisterUiEvent.RegisterSuccessful)
+                    println("Registration response: $response")
                     println("Registration successful!")
                 },
                 onError = { errorMessage ->

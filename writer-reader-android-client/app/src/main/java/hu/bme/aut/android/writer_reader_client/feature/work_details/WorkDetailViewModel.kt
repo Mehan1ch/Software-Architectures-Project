@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 data class WorkDetailViewState(
     val newComment: String = "",
     val isLoading: Boolean = false,
@@ -34,15 +33,11 @@ data class WorkDetailViewState(
     val userEmail: String = ""
 )
 
-
 sealed class WorkDetailViewIntent {
     object LikeWorkButtonClicked : WorkDetailViewIntent()
     data class CommentChanged(val text: String) : WorkDetailViewIntent()
     object CommentSendButtonClicked : WorkDetailViewIntent()
     data class LikeCommentButtonClicked(val commentId: String) : WorkDetailViewIntent()
-
-
-
 }
 
 @OptIn(FlowPreview::class)
@@ -66,7 +61,6 @@ class WorkDetailViewModel (
                 } else {
                     Log.d("DataStore", "Token successfully loaded: ${_state.value.userToken}")
                 }
-
             }
         }
         loadWork(workId)
@@ -146,14 +140,17 @@ class WorkDetailViewModel (
                         _state.update { it.copy(newComment = intent.text) }
                     }
                     is WorkDetailViewIntent.CommentSendButtonClicked -> {
+                        val newComment = _state.value.newComment
                         launch {
                             println(_state.value.userToken)
+                            println(newComment)
+                            _state.update { it.copy(isLoading = true) }
 
                             apiManager.postComment(
                                 token = _state.value.userToken,
                                 commentRequest = CommentRequest(
-                                    content = _state.value.newComment,
-                                    commentableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e",
+                                    content = newComment,
+                                    commentableId = _state.value.work.id,
                                     commentableType = "App\\Models\\Work"
                                 ),
                                 onSuccess = { commentResponse ->
