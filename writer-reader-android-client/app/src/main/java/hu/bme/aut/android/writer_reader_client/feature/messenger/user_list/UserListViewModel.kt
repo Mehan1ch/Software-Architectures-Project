@@ -94,7 +94,9 @@ data class UserListState(
     val users: List<UsersData> = emptyList(),
     val searchText: String = "",
     val isError: Boolean = false,
-    val throwable: Throwable? = null
+    val throwable: Throwable? = null,
+    val token: String = ""
+  //  val User
 )
 
 

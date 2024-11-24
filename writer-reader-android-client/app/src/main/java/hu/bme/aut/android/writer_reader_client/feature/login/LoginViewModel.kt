@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import android.content.Context
-import hu.bme.aut.android.writer_reader_client.data.model.post.CommentRequest
+import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
+import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
 import hu.bme.aut.android.writer_reader_client.data.repository.ApiManager
 
 
@@ -41,6 +42,7 @@ sealed class LoginUiEvent {
 }
 
 class LoginViewModel(
+    private val api: WriterReaderApi,
     private val apiManager: ApiManager
 ): ViewModel() {
     private val _state = MutableStateFlow(LoginViewState())
@@ -108,6 +110,58 @@ class LoginViewModel(
                     println(_event)
                 }
             )
+
+/*
+                // 1. Register
+
+                apiManager.register(
+                    request = RegisterRequest(
+                        name = "TestUser",
+                        email = "test@example.com",
+                        password = "asdasd",
+                        passwordConfirmation = "asdasd"
+                    ),
+                    onSuccess = {
+                        println("Register successful: $it")
+                    },
+                    onError = { errorMessage ->
+                        println("Error: $errorMessage")
+                    }
+                )*/
+            try {
+                val registerResponse = api.register(RegisterRequest("TestUser", "test@example.com", "password", "password"))
+                println("Register response: ${registerResponse.isSuccessful}")
+
+                // 2. Login
+                val loginResponse = api.login(LoginRequest("test@example.com", "password"))
+                val token1 = loginResponse.body()?.token
+                println("Login response: ${loginResponse.isSuccessful}, Token: $token1")
+
+                // 3. Get User (if login was successful)
+                if (token1 != null) {
+                    try {
+                        DataStoreManager.storeUserToken(context, token1)
+                        DataStoreManager.getUserTokenFlow(context).collect {
+                                token ->
+                            val userResponse = api.getUser("Bearer $token")
+                            println("User response: ${userResponse.isSuccessful}, Body: ${userResponse.body()}")
+                           // 4. Logout
+                            val logoutResponse = api.logout("Bearer $token")
+                            println("Logout response: ${logoutResponse.isSuccessful}")
+
+                        }
+
+                    }
+                    catch (e: Exception) {
+                        println("Error storing token: ${e.message}")
+                    }
+                }
+
+
+            } catch (e: Exception) {
+                println("Error: ${e.message}")
+            }
+
         }
     }
 
@@ -135,27 +189,8 @@ class LoginViewModel(
                 println("Error: ${e.message}")
             }*/
 
-     /*       try {
-                // 1. Register
-                val registerResponse = api.register(RegisterRequest("kurva", "kurva@anyad.com", "password", "password"))
-                println("Register response: ${registerResponse.isSuccessful}")
 
-                // 2. Login
-                val loginResponse = api.login(LoginRequest("kurva@anyad.com", "password"))
-                val token1 = loginResponse.body()?.token
-                println("Login response: ${loginResponse.isSuccessful}, Token: $token1")
-
-                // 3. Get User (if login was successful)
-                if (token1 != null) {
-                    try {
-                        DataStoreManager.storeUserToken(context, token1)
-                        DataStoreManager.getUserTokenFlow(context).collect {
-                            token ->
-                            val userResponse = api.getUser("Bearer $token")
-                            println("User response: ${userResponse.isSuccessful}, Body: ${userResponse.body()}")
-
-
-                            //  test comment
+/* //  test comment
                           //  val commentResponse = api.postComment("Bearer $token", CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146a-cd7f-4bbd-81de-8c55378f0e7b"))
                            // println("Comment response: ${commentResponse.isSuccessful}, Body: ${commentResponse.body()}")
                             /*api.postComment("Bearer $token",CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146a-cd7f-4bbd-81de-8c55378f0e7b"))
@@ -208,30 +243,6 @@ class LoginViewModel(
                                 }
                             )
 
-
-
-
-
-
-
-                            // 4. Logout
-                            //val logoutResponse = api.logout("Bearer $token")
-                            //println("Logout response: ${logoutResponse.isSuccessful}")
-
-                        }
-
-                    }
-                    catch (e: Exception) {
-                        println("Error storing token: ${e.message}")
-                    }
-                }
-
-
-            } catch (e: Exception) {
-                println("Error: ${e.message}")
-            }
-
-
             /*
             try {
                 val response = api.login(LoginRequest(email = _state.value.email, password = _state.value.password))
@@ -258,6 +269,7 @@ class LoginViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 LoginViewModel(
+                    api = WriterReaderApplication.api,
                     apiManager = WriterReaderApplication.apiManager
                 )
             }

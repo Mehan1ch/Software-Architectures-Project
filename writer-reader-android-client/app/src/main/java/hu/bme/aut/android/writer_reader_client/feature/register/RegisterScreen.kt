@@ -30,8 +30,10 @@ fun RegisterScreen(
     viewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory),
 ) {
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
+   // val state by viewModel.state.collectAsStateWithLifecycle()
+    val state = viewModel.state.collectAsStateWithLifecycle().value
     val hostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
 
     LaunchedEffect(key1 = true) {
@@ -162,7 +164,7 @@ fun RegisterScreen(
 */
             Button(
                 onClick = {
-                    viewModel.onIntent(RegisterViewIntent.RegisterButtonClicked)
+                    viewModel.onIntent(RegisterViewIntent.RegisterButtonClicked(context = context))
                 },
                 modifier = Modifier.width(TextFieldDefaults.MinWidth)
             ) {

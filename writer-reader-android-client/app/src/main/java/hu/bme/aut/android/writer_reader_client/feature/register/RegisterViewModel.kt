@@ -1,5 +1,6 @@
 package hu.bme.aut.android.writer_reader_client.feature.register
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
 import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
 import hu.bme.aut.android.writer_reader_client.data.repository.ApiManager
+import hu.bme.aut.android.writer_reader_client.feature.login.LoginViewState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +23,7 @@ sealed class RegisterViewIntent {
     data class ConfirmPasswordChanged(val confirmPassword: String) : RegisterViewIntent()
     object TogglePasswordVisibility : RegisterViewIntent()
     object ToggleConfirmPasswordVisibility : RegisterViewIntent()
-    object RegisterButtonClicked : RegisterViewIntent()
+    data class RegisterButtonClicked(val context: Context) : RegisterViewIntent()
 }
 
 sealed class RegisterUiEvent {
@@ -48,6 +50,7 @@ class RegisterViewModel(
 ): ViewModel() {
     private val _state = MutableStateFlow(RegisterViewState())
     val state = _state.asStateFlow()
+
 
     private val _event = Channel<RegisterUiEvent>()
     val event = _event.receiveAsFlow()
@@ -97,30 +100,28 @@ class RegisterViewModel(
             }
 
             is RegisterViewIntent.RegisterButtonClicked -> {
-                register()
+                register(context = intent.context)
             }
         }
     }
 
 
-    private fun register() {
+    private fun register(
+        context: Context
+    ) {
+        val currentState = _state.value
+        val request = RegisterRequest(
+            name = currentState.username,
+            email = currentState.email,
+            password = currentState.password,
+            passwordConfirmation = currentState.confirmPassword
+        )
         viewModelScope.launch {
-            println(_state.value.username)
-            println(_state.value.email)
-            println(_state.value.password)
-            println(_state.value.confirmPassword)
-
             apiManager.register(
-                request = RegisterRequest(
-                    name = _state.value.username,
-                    email = _state.value.email,
-                    password =_state.value.password,
-                    passwordConfirmation = _state.value.confirmPassword
-                ),
+                request = request,
                 onSuccess = { response ->
-                    _event.trySend(RegisterUiEvent.RegisterSuccessful)
                     println("Registration response: $response")
-                    println("Registration successful!")
+                    _event.trySend(RegisterUiEvent.RegisterSuccessful)
                 },
                 onError = { errorMessage ->
                     _event.trySend(RegisterUiEvent.RegisterFailed(errorMessage))
@@ -129,6 +130,30 @@ class RegisterViewModel(
             )
         }
     }
+
+
+    /* launch {
+              apiManager.login(
+                  request = LoginRequest(
+                      email = _state.value.email,
+                      password = _state.value.password
+                  ),
+                  onSuccess = { loginResponse ->
+                      launch {
+                          DataStoreManager.storeUserToken(context, loginResponse.token)
+                          DataStoreManager.storeUserEmail(context, _state.value.email)
+                          DataStoreManager.getUserTokenFlow(context).collect{ token ->
+                              println("Token: $token")
+                          }
+                      }
+                      println("Login successful: $loginResponse")
+                      _event.trySend(RegisterUiEvent.RegisterSuccessful)
+                  },
+                  onError = { errorMessage ->
+                      println("Login failed: $errorMessage")
+                  }
+              )
+          }*/
 
 
 
