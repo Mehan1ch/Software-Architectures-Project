@@ -32,7 +32,7 @@ import hu.bme.aut.android.writer_reader_client.feature.work_details.WorkDetailVi
 @Composable
 fun ReadWork(
     modifier: Modifier = Modifier,
-    viewModel: WorkDetailViewModel = viewModel(factory = ReadWorkViewModel.Factory),
+    viewModel: ReadWorkViewModel = viewModel(factory = ReadWorkViewModel.Factory),
 ) {
 
     val state = viewModel.state.collectAsStateWithLifecycle().value

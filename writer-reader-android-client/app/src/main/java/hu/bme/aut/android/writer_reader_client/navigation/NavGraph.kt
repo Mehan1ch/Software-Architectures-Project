@@ -5,8 +5,6 @@ package hu.bme.aut.android.writer_reader_client.navigation
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,7 +14,6 @@ import androidx.navigation.navArgument
 import androidx.paging.ExperimentalPagingApi
 import hu.bme.aut.android.writer_reader_client.feature.home.HomeScreen
 import hu.bme.aut.android.writer_reader_client.feature.login.LoginScreen
-import hu.bme.aut.android.writer_reader_client.feature.messenger.conversation.ConversationScreen
 import hu.bme.aut.android.writer_reader_client.feature.messenger.user_list.UserListScreen
 import hu.bme.aut.android.writer_reader_client.feature.read_work.ReadWork
 import hu.bme.aut.android.writer_reader_client.feature.register.RegisterScreen
@@ -50,7 +47,11 @@ fun NavGraph(
 
         }
         composable(Screen.Register.route) {
-            RegisterScreen()
+            RegisterScreen(
+                onSuccessfulRegister = {
+                    navHostController.navigate(Screen.Login.route)
+                }
+            )
         }
 
         composable(
@@ -67,6 +68,9 @@ fun NavGraph(
                 },
                 onNavigateBack = {
                     navHostController.popBackStack()
+                },
+                onNavigateToLogin = {
+                    navHostController.navigate(Screen.Login.route)
                 }
             )
         }

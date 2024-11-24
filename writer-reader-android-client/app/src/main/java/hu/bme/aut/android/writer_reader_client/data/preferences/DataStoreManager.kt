@@ -20,9 +20,9 @@ object DataStoreManager {
     val USER_TOKEN_KEY = stringPreferencesKey("user_token")
     val USER_EMAIL_KEY = stringPreferencesKey("user_email")
 
-    suspend fun storeUserToken(context: Context, token: String) {
+    suspend fun storeUserToken(context: Context, token: String?) {
         context.userPreferencesDataStore.edit { preferences ->
-            preferences[USER_TOKEN_KEY] = token
+            preferences[USER_TOKEN_KEY] = token?:""
         }
     }
     suspend fun storeUserEmail(context: Context, email: String) {

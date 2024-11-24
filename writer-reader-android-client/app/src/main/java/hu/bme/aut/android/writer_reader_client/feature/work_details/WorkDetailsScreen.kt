@@ -1,9 +1,8 @@
 package hu.bme.aut.android.writer_reader_client.feature.work_details
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -18,14 +17,10 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Chip
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -33,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,22 +42,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.bme.aut.android.writer_reader_client.R
 import hu.bme.aut.android.writer_reader_client.data.model.get.Work
-import hu.bme.aut.android.writer_reader_client.navigation.Screen
 import hu.bme.aut.android.writer_reader_client.ui.common.CommentSection
 import hu.bme.aut.android.writer_reader_client.ui.common.LikesTracker
-import hu.bme.aut.android.writer_reader_client.ui.common.NormalTextField
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import kotlin.text.format
 
 
 @Composable
 fun WorkDetailsScreen(
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit,
-    viewModel: WorkDetailViewModel = viewModel(factory = WorkDetailViewModel.Factory(context = LocalContext.current)),
-    onNavigateToReadWork: (String) -> Unit
+    onNavigateToLogin: () -> Unit,
+    viewModel: WorkDetailViewModel = viewModel(factory = WorkDetailViewModel.Factory(context = LocalContext.current, onNavigateToLogin)),
+    onNavigateToReadWork: (String) -> Unit,
 ){
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
@@ -75,6 +66,7 @@ fun WorkDetailsScreen(
                         Icon(imageVector = Icons.Sharp.ArrowBack, contentDescription = "navigate back")
                     }
                 },
+                backgroundColor = Color.LightGray
             )
        }
     ) { paddingValues ->
@@ -88,9 +80,11 @@ fun WorkDetailsScreen(
                     work = state.work,
                     onLikeClick = {
                         viewModel.onIntent(WorkDetailViewIntent.LikeWorkButtonClicked)
+
                     },
                     onReadButtonClick = {
                         onNavigateToReadWork(state.work.id)
+                        println("Read button clickedÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉÉ")
                     }
                 )
             }
@@ -119,7 +113,7 @@ fun WorkDetailsScreen(
     }
 }
 
-
+/*
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun Details(
@@ -133,33 +127,37 @@ fun Details(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Text(
-            text = work.title,
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = "${work.creatorName} • ${work.createdAt}",
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        FlowRow() {
-            work.categories.forEach { category ->
-                Chip(onClick = {}) {
-                    Text(text = category)
-                }
+        Text(text = "${stringResource(id = R.string.language)}: ${work.language}", style = MaterialTheme.typography.bodyMedium)
+        Text(text = "${stringResource(id = R.string.age_rating)}: ${work.rating}", style = MaterialTheme.typography.bodyMedium)
+
+        if (work.warnings.isNotEmpty() && work.warnings.any { it.isNotBlank() }) {
+            Text(text = "${stringResource(id = R.string.warnings)}:", style = MaterialTheme.typography.bodyMedium)
+            work.warnings.filter { it.isNotBlank() }.forEach { warning ->
+                Text(text = "- $warning", style = MaterialTheme.typography.bodyMedium)
             }
         }
-        Spacer(modifier = Modifier.height(4.dp))
-        FlowRow() {
-            work.tags.forEach { tag ->
-                Chip(onClick = {}) {
-                    Text(text = tag)
-                }
+
+        if (work.characters.isNotEmpty() && work.characters.any { it.isNotBlank() }) {
+            Text(text = "${stringResource(id = R.string.characters)}:", style = MaterialTheme.typography.bodyMedium)
+            work.characters.filter { it.isNotBlank() }.forEach { character ->
+                Text(text = "-$character", style = MaterialTheme.typography.bodyMedium)
             }
         }
+
+        if (work.tags.isNotEmpty() && work.tags.any { it.isNotBlank() }) {
+            Text(text = "${stringResource(id = R.string.tags)}:", style = MaterialTheme.typography.bodyMedium)
+            work.tags.filter { it.isNotBlank() }.forEach { tag ->
+                Text(text = "- $tag", style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+
+        if (work.categories.isNotEmpty() && work.categories.any { it.isNotBlank() }) {
+            Text(text = "${stringResource(id = R.string.categories)}:", style = MaterialTheme.typography.bodyMedium)
+            work.categories.filter { it.isNotBlank() }.forEach { category ->
+                Text(text = "- $category", style = MaterialTheme.typography.bodyMedium)
+            }
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -181,12 +179,131 @@ fun Details(
     }
 }
 
+
+*/
+@Composable
+fun Details(
+    modifier: Modifier = Modifier,
+    work: Work,
+    onLikeClick: () -> Unit,
+    onReadButtonClick: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+
+
+        DetailItem(
+            label = stringResource(id = R.string.language),
+            value = work.language
+        )
+
+        DetailItem(
+            label = stringResource(id = R.string.age_rating),
+            value = work.rating
+        )
+
+        // Figyelmeztetések
+        if (work.warnings.isNotEmpty() && work.warnings.any { it.isNotBlank() }) {
+            DetailGroup(
+                title = stringResource(id = R.string.warnings),
+                items = work.warnings
+            )
+        }
+
+        // Karakterek
+        if (work.characters.isNotEmpty() && work.characters.any { it.isNotBlank() }) {
+            DetailGroup(
+                title = stringResource(id = R.string.characters),
+                items = work.characters
+            )
+        }
+
+        // Címkék
+        if (work.tags.isNotEmpty() && work.tags.any { it.isNotBlank() }) {
+            DetailGroup(
+                title = stringResource(id = R.string.tags),
+                items = work.tags
+            )
+        }
+
+        // Kategóriák
+        if (work.categories.isNotEmpty() && work.categories.any { it.isNotBlank() }) {
+            DetailGroup(
+                title = stringResource(id = R.string.categories),
+                items = work.categories
+            )
+        }
+
+        // Interaktív elemek
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            LikesTracker(
+                likes = work.likes,
+                isLiked = work.isLiked,
+                modifier = Modifier.clickable { onLikeClick() }
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(
+            onClick = { onReadButtonClick() },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = stringResource(id = R.string.button_read_work))
+        }
+    }
+}
+
+@Composable
+fun DetailItem(label: String, value: String) {
+    Row(modifier = Modifier.padding(vertical = 4.dp)) {
+        Text(
+            text = "$label: ",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+@Composable
+fun DetailGroup(title: String, items: List<String>) {
+    Column(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(
+            text = "$title:",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.secondary
+        )
+        items.filter { it.isNotBlank() }.forEach { item ->
+            Text(
+                text = "- $item",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(start = 16.dp, top = 2.dp)
+            )
+        }
+    }
+}
+
+
+
+
 @Preview
 @Composable
 fun WorkDetailScreenPreview() {
     WorkDetailsScreen(
         onNavigateToReadWork = {},
-        onNavigateBack = {}
+        onNavigateBack = {},
+        onNavigateToLogin = {}
     )
 }
 

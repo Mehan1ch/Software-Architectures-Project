@@ -1,6 +1,7 @@
 package hu.bme.aut.android.writer_reader_client.feature.work_details
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,12 +11,15 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
 import hu.bme.aut.android.writer_reader_client.data.model.get.Work
+import hu.bme.aut.android.writer_reader_client.data.model.post.CommentRequest
 import hu.bme.aut.android.writer_reader_client.data.model.post.LikeRequest
 import hu.bme.aut.android.writer_reader_client.data.preferences.DataStoreManager
-import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
+import hu.bme.aut.android.writer_reader_client.data.repository.ApiManager
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -41,10 +45,12 @@ sealed class WorkDetailViewIntent {
 
 }
 
+@OptIn(FlowPreview::class)
 class WorkDetailViewModel (
     private val savedStateHandle: SavedStateHandle,
-    private val api: WriterReaderApi,
+    private val apiManager: ApiManager,
     private val context: Context,
+    private val onNavigateToLogin: () -> Unit
 ): ViewModel() {
 
     private val workId: String = checkNotNull(savedStateHandle["workId"])
@@ -53,115 +59,159 @@ class WorkDetailViewModel (
     val state = _state.asStateFlow()
     init {
         viewModelScope.launch {
-            DataStoreManager.getUserTokenFlow(context).collect {
-                _state.update { it.copy(userToken = it.userToken, userEmail = it.userEmail) }}
+            DataStoreManager.getUserTokenFlow(context).debounce(300).collect { token ->
+                _state.update { it.copy(userToken = token ?: "") }
+                if (_state.value.userToken.isEmpty()) {
+                    Log.e("DataStore", "Token not found")
+                } else {
+                    Log.d("DataStore", "Token successfully loaded: ${_state.value.userToken}")
+                }
+
+            }
         }
         loadWork(workId)
     }
 
 
-    fun loadWork(
-        workId: String
-    ) {
-        viewModelScope.launch(Dispatchers.IO){
-            _state.update { it.copy(isLoading = true) }
-            try {
-                val loadedWork = api.getWork(workId)
-                val work = loadedWork.body()?.data ?:Work()
-                _state.update { it.copy(
-                    work = work,
-                    isLoading = false
-                ) }
+    private fun loadWork(workId: String)
+    {
+        _state.update { it.copy(isLoading = true) }
 
-            } catch (e: Exception) {
-                _state.update { it.copy(
-                    isError = true,
-                    throwable = e
-                ) }
-            }
+        viewModelScope.launch(Dispatchers.IO){
+            apiManager.getWork(
+                id = workId,
+                onSuccess = { workResponse ->
+                    _state.update {
+                        it.copy(
+                            work = workResponse.data,
+                            isLoading = false
+                        )
+                    }
+                    println("Work response: ${workResponse.data}")
+                },
+                onError = { errorMessage ->
+                    _state.update {
+                        it.copy(
+                            isError = true,
+                            isLoading = false,
+                            throwable = Exception(errorMessage)
+                        )
+                    }
+                    println("Error: $errorMessage")
+                }
+            )
         }
     }
 
     fun onIntent(intent: WorkDetailViewIntent){
-        viewModelScope.launch {
-            when (intent) {
-                is WorkDetailViewIntent.LikeWorkButtonClicked -> {
-                    launch {
-                        try {
-                            api.postLike(
-                                body = LikeRequest(
+        if(_state.value.userToken.isEmpty()){
+            onNavigateToLogin()
+        }else
+        {
+            viewModelScope.launch {
+                when (intent) {
+                    is WorkDetailViewIntent.LikeWorkButtonClicked -> {
+                        launch {
+                            apiManager.postLike(
+                                token = _state.value.userToken,
+                                likeRequest = LikeRequest(
                                     likeableId = workId,
                                     likeableType = "App\\Models\\Work"
                                 ),
-                                authHeader =  _state.value.userToken
+                                onSuccess = { likeResponse ->
+                                    _state.update {
+                                        it.copy(
+                                            work = it.work.copy(
+                                                isLiked = !it.work.isLiked,
+                                                likes = it.work.likes + if (it.work.isLiked) -1 else 1
+                                            )
+                                        )
+                                    }
+                                    println("Like response: ${likeResponse.data}")
+                                },
+                                onError = { errorMessage ->
+                                    _state.update {
+                                        it.copy(
+                                            isError = true,
+                                            isLoading = false,
+                                            throwable = Exception(errorMessage)
+                                        )
+                                    }
+                                    println("Error: $errorMessage")
+                                }
                             )
                         }
-                        catch (e: Exception) {
-                            println("Error: ${e.message}")
-                        }
                     }
+                    is WorkDetailViewIntent.CommentChanged -> {
+                        _state.update { it.copy(newComment = intent.text) }
+                    }
+                    is WorkDetailViewIntent.CommentSendButtonClicked -> {
+                        launch {
+                            println(_state.value.userToken)
 
-                    _state.update { it.copy(work = it.work.copy(
-                        isLiked = !it.work.isLiked,
-                        likes = it.work.likes + if (it.work.isLiked) -1 else 1
-                    )) }
-
-                }
-                is WorkDetailViewIntent.CommentChanged -> {
-                    _state.update { it.copy(newComment = intent.text) }
-                }
-                is WorkDetailViewIntent.CommentSendButtonClicked -> {
-                    launch {
-                        println("Comment: ${_state.value.newComment}")
-                        try {
-                           /* val commentResponse = api.createComment(
+                            apiManager.postComment(
                                 token = _state.value.userToken,
-                                comment = Comment(
+                                commentRequest = CommentRequest(
                                     content = _state.value.newComment,
-                                    commentableId = workId,
+                                    commentableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e",
                                     commentableType = "App\\Models\\Work"
-                                )
+                                ),
+                                onSuccess = { commentResponse ->
+                                    loadWork(_state.value.work.id)
+                                    println("Comment response: ${commentResponse.data}")
+                                },
+                                onError = { errorMessage ->
+                                    _state.update {
+                                        it.copy(
+                                            isError = true,
+                                            isLoading = false,
+                                            throwable = Exception(errorMessage)
+                                        )
+                                    }
+                                    println("Error: $errorMessage")
+                                }
                             )
-                            println(commentResponse.body())
-                            loadWork(workId)
-*/
-                        }catch (e: Exception) {
-                            println("Error: ${e.message}")
                         }
+                        _state.update { it.copy(newComment = "") }
                     }
-
-
-                    _state.update { it.copy(newComment = "") }
-                }
-                is WorkDetailViewIntent.LikeCommentButtonClicked -> {
-                    launch {
-                        try {
-                            api.postLike(
-                                body = LikeRequest(
+                    is WorkDetailViewIntent.LikeCommentButtonClicked -> {
+                        launch {
+                            apiManager.postLike(
+                                token = _state.value.userToken,
+                                likeRequest = LikeRequest(
                                     likeableId = intent.commentId,
                                     likeableType = "App\\Models\\Comment"
                                 ),
-                                authHeader = _state.value.userToken
+                                onSuccess = { likeResponse ->
+                                    loadWork(_state.value.work.id)
+                                    println("Like response: ${likeResponse.data}")
+                                },
+                                onError = { errorMessage ->
+                                    _state.update {
+                                        it.copy(
+                                            isError = true,
+                                            isLoading = false,
+                                            throwable = Exception(errorMessage)
+                                        )
+                                    }
+                                    println("Error: $errorMessage")
+                                }
                             )
                         }
-                        catch (e: Exception) {
-                            println("Error: ${e.message}")
+                        println("Like Comment with Comment id: $intent.commentId")
+                        val updatedComments = _state.value.work.comments.map { comment ->
+                            if (comment.id == intent.commentId) {
+                                comment.copy(
+                                    likes = comment.likes + if (comment.isLiked) -1 else 1,
+                                    isLiked = !comment.isLiked
+                                )
+                            } else {
+                                comment
+                            }
                         }
+                        _state.update { it.copy(work = it.work.copy(comments = updatedComments)) }
                     }
-                    println("Like Comment with Comment id: $intent.commentId")
-                    val updatedComments = _state.value.work.comments.map { comment ->
-                        if (comment.id == intent.commentId) {
-                            comment.copy(
-                                likes = comment.likes + if (comment.isLiked) -1 else 1,
-                                isLiked = !comment.isLiked
-                            )
-                        } else {
-                            comment
-                        }
-                    }
-                    _state.update { it.copy(work = it.work.copy(comments = updatedComments)) }
                 }
-
             }
         }
     }
@@ -169,13 +219,14 @@ class WorkDetailViewModel (
 
 
     companion object {
-        fun Factory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+        fun Factory(context: Context, onNavigateToLogin: () -> Unit): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val savedStateHandle = createSavedStateHandle()
                 WorkDetailViewModel(
                     savedStateHandle = savedStateHandle,
-                    api = WriterReaderApplication.api,
-                    context = context
+                    apiManager = WriterReaderApplication.apiManager,
+                    context = context,
+                    onNavigateToLogin = onNavigateToLogin
                 )
             }
         }

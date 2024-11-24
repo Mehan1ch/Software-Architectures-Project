@@ -8,28 +8,20 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
 import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginRequest
 import hu.bme.aut.android.writer_reader_client.data.preferences.DataStoreManager
-import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import android.content.Context
-import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
 import hu.bme.aut.android.writer_reader_client.data.model.post.CommentRequest
-import hu.bme.aut.android.writer_reader_client.data.model.post.CommentResponse
-import retrofit2.Callback
-import hu.bme.aut.android.writer_reader_client.data.model.post.LikeRequest
-import hu.bme.aut.android.writer_reader_client.data.model.post.LikeResponse
 import hu.bme.aut.android.writer_reader_client.data.repository.ApiManager
-import retrofit2.Call
-import retrofit2.Response
 
 
 sealed class LoginViewIntent {
     data class EmailChanged(val email: String) : LoginViewIntent()
     data class PasswordChanged(val password: String) : LoginViewIntent()
-    data class LoginButtonClicked(val context: Context) : LoginViewIntent()
+    data class LoginButtonClicked(val context: Context, val onSuccessfulLogin: () -> Unit) : LoginViewIntent()
     object TogglePasswordVisibility : LoginViewIntent()
 }
 
@@ -49,7 +41,6 @@ sealed class LoginUiEvent {
 }
 
 class LoginViewModel(
-    private val api: WriterReaderApi,
     private val apiManager: ApiManager
 ): ViewModel() {
     private val _state = MutableStateFlow(LoginViewState())
@@ -85,17 +76,52 @@ class LoginViewModel(
 
 
                 is LoginViewIntent.LoginButtonClicked -> {
-                    login(intent.context)
+                    login(intent.context, intent.onSuccessfulLogin)
                 }
             }
         }
     }
 
-    private fun login(context: Context) {
+    private fun login(context: Context, onSuccessfulLogin: () -> Unit) {
         viewModelScope.launch {
+            apiManager.postComment(
+                token = "30|WMaTzuHLwbo5mtzJ0MxJYQlRAdABXgqCtOQ0Wheea8ea1eb7",
+                commentRequest = CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e"),
+                onSuccess = { commentResponse ->
+                    println("comment posted successfully: ${commentResponse.data}")
+                },
+                onError = { errorMessage ->
+                    println("Error: $errorMessage")
+                }
+            )
 
 
-
+            apiManager.login(
+                LoginRequest(
+                    email = _state.value.email,
+                    password = _state.value.password
+                ),
+                onSuccess = { loginResponse ->
+                    launch {
+                        DataStoreManager.storeUserToken(context, loginResponse.token)
+                        DataStoreManager.storeUserEmail(context, _state.value.email)
+                        DataStoreManager.getUserTokenFlow(context).collect{ token ->
+                            println("Token: $token")
+                        }
+                        onSuccessfulLogin()
+                    }
+                    _event.trySend(LoginUiEvent.LoginSuccessful)
+                    println("Login successful: $loginResponse")
+                    println(_event)
+                },
+                onError = { errorMessage ->
+                    _event.trySend(LoginUiEvent.LoginFailed(errorMessage))
+                    println("Error: $errorMessage")
+                    println(_event)
+                }
+            )
+        }
+    }
 
 
           /*  try {
@@ -121,7 +147,7 @@ class LoginViewModel(
                 println("Error: ${e.message}")
             }*/
 
-            try {
+     /*       try {
                 // 1. Register
                 val registerResponse = api.register(RegisterRequest("kurva", "kurva@anyad.com", "password", "password"))
                 println("Register response: ${registerResponse.isSuccessful}")
@@ -193,16 +219,7 @@ class LoginViewModel(
                                     println("Error: $errorMessage")
                                 }
                             )
-                            apiManager.postComment(
-                                token = token?:"",
-                                commentRequest = CommentRequest(content = "teszt komment", commentableType = "App\\Models\\Work", commentableId = "9d8d146b-e7d5-47a0-8f9e-20df01a6614e"),
-                                onSuccess = { commentResponse ->
-                                    println("Like posted successfully: ${commentResponse.data}")
-                                },
-                                onError = { errorMessage ->
-                                    println("Error: $errorMessage")
-                                }
-                            )
+
 
 
 
@@ -247,13 +264,12 @@ class LoginViewModel(
             }*/
 
         }
-    }
+    }*/
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 LoginViewModel(
-                    api = WriterReaderApplication.api,
                     apiManager = WriterReaderApplication.apiManager
                 )
             }

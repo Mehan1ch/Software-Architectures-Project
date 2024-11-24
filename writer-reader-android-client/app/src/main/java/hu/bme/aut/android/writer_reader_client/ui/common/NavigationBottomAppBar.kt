@@ -36,7 +36,7 @@ fun NavigationBottomAppBar(
     val navigationItems = listOf(
         NavigationItem(Screen.Home, "Kezdőlap", Icons.AutoMirrored.Filled.LibraryBooks, Icons.Filled.Home),
         NavigationItem(Screen.Login, "login", Icons.Outlined.Person, Icons.Filled.Person),
-        NavigationItem(Screen.Register, "Üzenetek", Icons.AutoMirrored.Outlined.Message, Icons.AutoMirrored.Filled.LibraryBooks
+        NavigationItem(Screen.UserList, "Üzenetek", Icons.AutoMirrored.Outlined.Message, Icons.AutoMirrored.Filled.LibraryBooks
         ),
         //NavigationItem(Screen.Messenger, "Üzenetek", Icons.Outlined.Notifications, Icons.Filled.Notifications),
     )

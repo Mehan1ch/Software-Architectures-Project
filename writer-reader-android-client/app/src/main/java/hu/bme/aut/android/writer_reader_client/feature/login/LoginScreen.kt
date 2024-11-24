@@ -135,7 +135,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { viewModel.onIntent(LoginViewIntent.LoginButtonClicked(context = context)
+                onClick = { viewModel.onIntent(LoginViewIntent.LoginButtonClicked(context = context, onSuccessfulLogin = onSuccessfulLogin)
                 )},
                 modifier = Modifier.width(TextFieldDefaults.MinWidth)
             ) {

@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.bme.aut.android.writer_reader_client.R
+import hu.bme.aut.android.writer_reader_client.feature.login.LoginUiEvent
 import hu.bme.aut.android.writer_reader_client.feature.login.LoginViewModel
 import hu.bme.aut.android.writer_reader_client.ui.common.NormalTextField
 import hu.bme.aut.android.writer_reader_client.ui.common.PasswordTextField
@@ -24,10 +26,35 @@ import hu.bme.aut.android.writer_reader_client.ui.common.PasswordTextField
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
+    onSuccessfulRegister: () -> Unit = {},
     viewModel: RegisterViewModel = viewModel(factory = RegisterViewModel.Factory),
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val hostState = remember { SnackbarHostState() }
+
+
+    LaunchedEffect(key1 = true) {
+        viewModel.event.collect { event ->
+            when (event) {
+                is RegisterUiEvent.RegisterSuccessful -> {
+                    onSuccessfulRegister()
+                }
+
+                is RegisterUiEvent.RegisterFailed -> {
+                    hostState.showSnackbar(
+                        message = event.error,
+                        withDismissAction = true,
+                        actionLabel = "OK"
+                        //modifier = Modifier.align(Alignment.BottomCenter)
+                        //snackbarData.dismissActionContentColor
+                        //snackbarData.actionColor
+                        //snackbarData.contentColor
+                    )
+                }
+            }
+        }
+    }
 
     Box(
         modifier = modifier

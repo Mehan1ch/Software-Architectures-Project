@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
 import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
-import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
+import hu.bme.aut.android.writer_reader_client.data.repository.ApiManager
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,7 +44,7 @@ data class RegisterViewState (
 
 
 class RegisterViewModel(
-    private val api: WriterReaderApi
+    private val apiManager: ApiManager
 ): ViewModel() {
     private val _state = MutableStateFlow(RegisterViewState())
     val state = _state.asStateFlow()
@@ -105,31 +105,21 @@ class RegisterViewModel(
 
     private fun register() {
         viewModelScope.launch {
-            try {
-                val request = RegisterRequest(
+            apiManager.register(
+                request = RegisterRequest(
                     name = _state.value.username,
                     email = _state.value.email,
                     password = _state.value.password,
-                    passwordConfirmation = _state.value.confirmPassword
-                )
-                println(_state.value.email)
-                println(_state.value.password)
-                val response = api.register(request)
-                println("Fostömlődés megnyitása")
-
-                if (response.isSuccessful) {
+                    passwordConfirmation = _state.value.confirmPassword),
+                onSuccess = {
+                    _event.trySend(RegisterUiEvent.RegisterSuccessful)
                     println("Registration successful!")
-                    _event.send(RegisterUiEvent.RegisterSuccessful)
-                } else {
-                    println("Login failed: ${response.errorBody()?.string()}")
-                    _event.send(RegisterUiEvent.RegisterFailed(response.errorBody()?.string() ?: "Unknown error"))
-
+                },
+                onError = { errorMessage ->
+                    _event.trySend(RegisterUiEvent.RegisterFailed(errorMessage))
+                    println("Registration failed: $errorMessage")
                 }
-
-            }catch (e: Exception) {
-                _event.send(RegisterUiEvent.RegisterFailed(e.message ?: "Unknown error"))
-            }
-
+            )
         }
     }
 
@@ -139,7 +129,7 @@ class RegisterViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 RegisterViewModel(
-                    api = WriterReaderApplication.api
+                    apiManager = WriterReaderApplication.apiManager
                 )
             }
         }

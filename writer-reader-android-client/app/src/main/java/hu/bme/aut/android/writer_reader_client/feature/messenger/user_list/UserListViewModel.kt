@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import hu.bme.aut.android.writer_reader_client.WriterReaderApplication
-import hu.bme.aut.android.writer_reader_client.data.model.get.User
-import hu.bme.aut.android.writer_reader_client.data.remote.api.WriterReaderApi
+import hu.bme.aut.android.writer_reader_client.data.model.get.UsersData
+import hu.bme.aut.android.writer_reader_client.data.repository.ApiManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 
 class UserListViewModel(
-    private val api: WriterReaderApi
+    private val apiManager: ApiManager
 ): ViewModel() {
 
     private val _state = MutableStateFlow(UserListState())
@@ -31,28 +31,27 @@ class UserListViewModel(
     private fun refreshUsers() {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val loadedWorks = api.getUsers()
-                val users = loadedWorks.body()?: emptyList()
-                _state.update {
-                    it.copy(
-                        users = users,
-                        isLoading = false,
-                        isError = false,
-                    )
+            apiManager.getUsers(
+                onSuccess = { usersResponse ->
+                    _state.update {
+                        it.copy(
+                            users = usersResponse.data,
+                            isLoading = false,
+                        )
+                    }
+                    println("Users: ${usersResponse.data}")
+                },
+                onError = { errorMessage ->
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            isError = true,
+                            throwable = Exception(errorMessage)
+                        )
+                    }
+                    println("Error: $errorMessage")
                 }
-
-                Log.d("UseListViewModel", "Loaded users: $users")
-            } catch (e: Exception) {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        isError = true,
-                        throwable = e
-                    )
-                }
-                Log.d("UserListViewModel", "Error loading users", e)
-            }
+            )
         }
     }
 
@@ -61,7 +60,7 @@ class UserListViewModel(
         searchWorks(state.value.searchText)
     }
 
-    fun searchWorks(query: String) {
+    private fun searchWorks(query: String) {
         _state.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -83,7 +82,7 @@ class UserListViewModel(
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 UserListViewModel(
-                    api = WriterReaderApplication.api
+                    apiManager = WriterReaderApplication.apiManager
                 )
             }
         }
@@ -92,7 +91,7 @@ class UserListViewModel(
 
 data class UserListState(
     val isLoading: Boolean = false,
-    val users: List<User> = emptyList(),
+    val users: List<UsersData> = emptyList(),
     val searchText: String = "",
     val isError: Boolean = false,
     val throwable: Throwable? = null

@@ -15,7 +15,7 @@ data class UsersData(
     val id: String,
     val name: String,
     val email: String,
-    @Json(name = "email_verified_at: String") val emailVerifiedAt: String,
+    @Json(name = "email_verified_at") val emailVerifiedAt: String,
     @Json(name = "created_at") val createdAt: String,
     @Json(name = "updated_at") val updatedAt: String
 )

@@ -18,5 +18,11 @@
     <string name="button_read_work">Elolvasom</string>
     <string name="chapter_number">%d. fejezet</string>
     <string name="work_details_title">Mű részletei</string>
+    <string name="language">Nyelv</string>
+    <string name="age_rating">Korhatár</string>
+    <string name="warnings">Figyelmeztetések</string>
+    <string name="characters">Karakterek</string>
+    <string name="tags">Címkék</string>
+    <string name="categories">Kategóriák</string>
 
 </resources>

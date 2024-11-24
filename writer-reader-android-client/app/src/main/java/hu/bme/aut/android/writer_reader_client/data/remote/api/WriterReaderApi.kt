@@ -73,6 +73,8 @@ interface WriterReaderApi {
     @GET("/api/users")
     suspend fun getUsers(): Response<UsersResponse>
 
+ //   @GET("/api/users/{id}")
+ //    suspend fun getUser(@Path("id") id: String): Response<UserResponse>
 
 
 
@@ -91,9 +93,6 @@ interface WriterReaderApi {
 
 }
 
-
-//@GET("/api/users/{id}")
-// suspend fun getUser(@Path("id") id: String): Response<UserResponse>
 
 
 

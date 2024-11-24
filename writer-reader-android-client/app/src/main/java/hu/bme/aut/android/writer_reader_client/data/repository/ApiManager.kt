@@ -1,5 +1,13 @@
 package hu.bme.aut.android.writer_reader_client.data.repository
 
+import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginRequest
+import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginResponse
+import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
+import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionsResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.UsersResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.WorkResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.WorksResponse
 import hu.bme.aut.android.writer_reader_client.data.model.post.CommentRequest
 import hu.bme.aut.android.writer_reader_client.data.model.post.CommentResponse
 import hu.bme.aut.android.writer_reader_client.data.model.post.LikeRequest
@@ -56,4 +64,182 @@ class ApiManager(private val repository: ApiRepository) {
             }
         })
     }
+
+
+    //---------------------------------------------Eddig működött----------------------------------------
+
+    // Works
+    suspend fun getWorks(
+        onSuccess: (WorksResponse) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.getWorks()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    onSuccess(it)
+                } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
+    suspend fun getWork(
+        id: String,
+        onSuccess: (WorkResponse) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.getWork(id)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    onSuccess(it)
+                } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
+    //Users
+    suspend fun getUsers(
+        onSuccess: (UsersResponse) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.getUsers()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    onSuccess(it)
+                } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
+
+
+    // Collections
+    suspend fun getCollections(
+        onSuccess: (CollectionsResponse) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.getCollections()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    onSuccess(it)
+                } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
+    suspend fun getCollection(
+        id: String,
+        onSuccess: (CollectionResponse) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.getCollection(id)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    onSuccess(it)
+                } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
+   /* suspend fun createCollection(
+        collection: Collection,
+        onSuccess: (CollectionResponse) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.createCollection(collection)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    onSuccess(it)
+                } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+*/
+    // Authentication
+    suspend fun register(
+       request: RegisterRequest,
+       onSuccess: () -> Unit,
+       onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.register(request)
+            if (response.isSuccessful) {
+                onSuccess()
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
+    suspend fun login(
+        request: LoginRequest,
+        onSuccess: (LoginResponse) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.login(request)
+            if (response.isSuccessful) {
+                response.body()?.let { loginResponse ->
+                    if (loginResponse.token.isNullOrEmpty()) {
+                        onError("Token is null or empty")
+                    }else {
+                        onSuccess(loginResponse)
+                    }
+                } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
+    suspend fun logout(
+        token: String,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        try {
+            val response = repository.logout(token)
+            if (response.isSuccessful) {
+                onSuccess()
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
 }
