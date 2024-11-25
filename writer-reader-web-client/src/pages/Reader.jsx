@@ -154,7 +154,7 @@ export default function Reader() {
       </Stack>
       <Stack spacing={0.5} sx={{ marginTop: 1 }}>
         {work.data?.comments?.map((comment) => (
-          <Comment comment={comment} />
+          <Comment comment={comment} key={comment.id} />
         ))}
       </Stack>
     </Stack>

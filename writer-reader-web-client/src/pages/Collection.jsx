@@ -32,31 +32,6 @@ export default function Collection() {
   return (
     <Stack>
       <Grid2 container spacing={4}>
-        {/*<Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <WorkCard />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <WorkCard />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <WorkCard />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <WorkCard />
-      </Grid2>
-
-      <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <WorkCard />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <WorkCard />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <WorkCard />
-      </Grid2>
-      <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-        <WorkCard />
-      </Grid2>*/}
         {collection?.data?.works?.data?.map((work) => (
           <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={work.id}>
             <WorkCard work={work} />
@@ -83,7 +58,7 @@ export default function Collection() {
       </Stack>
       <Stack spacing={0.5} sx={{ marginTop: 1 }}>
         {collection?.data?.comments?.data?.map((comment) => (
-          <Comment comment={comment} />
+          <Comment comment={comment} key={comment.id} />
         ))}
       </Stack>
     </Stack>
