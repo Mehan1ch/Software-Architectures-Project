@@ -116,7 +116,41 @@ A ViewModel figyeli az Intent-eket, végrehajtja a szükséges műveleteket, és
 
 
 \subsubsection{Grafikus felhasználói felület}
-    
+Itt bemutatjuk a mobil kliens grafikus felhasználói felületét, az egyes képernyők szerint.
+A \texttt{login} és \texttt{register} képernyőkön (\ref{fig:android_login}) a felhasználó bejelentkezhet, vagy új fiókot hozhat létre.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{figures/android_login.png}
+    \includegraphics[width=0.25\textwidth]{figures/android_register.png}
+    \caption{Bejelentkezési és regisztrációs képernyő}
+    \label{fig:android_login}
+\end{figure}
 
+A sikeres bejelentkezés után a felhasználó a \texttt{home}  (\ref{fig:android_home}. ábra) képernyőre kerül, 
+ahol a legfrissebb műveket láthatja, valamint kereshet a művek között cím vagy szerző alapján.
+A képernyő alján navigációs sáv található, melyel a bejelentkerési és az üzenetek képernyőre lehet navigálni. 
+(Sajnos az üzenetek képernyő még nincs implementálva.)
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{figures/android_home.png}
+    \includegraphics[width=0.25\textwidth]{figures/android_read.png}
+    \caption{Kezdőképernyő és mű olvasása képernyő}
+    \label{fig:android_home}
+\end{figure}
 
+Az egyes művekre kattintva a felhasználó a \texttt{work details} (\ref{fig:android_login}. ábra) képernyőre kerül, ahol a mű részleteit láthatja,
+lájkolhatja, hozzászólást írhat.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.25\textwidth]{figures/android_details1.png}
+    \includegraphics[width=0.25\textwidth]{figures/android_details2.png}
+    \caption{Mű részletei képernyő}
+    \label{fig:android_details}
+\end{figure}
+
+A mű olvasása gombra kattintva a felhasználó a \texttt{read work}  (\ref{fig:android_details}. ábra) képernyőre kerül, ahol a művet teljes terjedelmében elolvashatja.
+Az olvasás teljes képernyős, az egyes fejezetek között lapozni lehet.
+
+További funkciókat ellátó képernyők elkészítésére sajnos nem maradt időnk.
