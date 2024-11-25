@@ -8,7 +8,7 @@ export default function Comment({ comment }) {
       <Card variant="elevation">
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            {comment.use_name}
+            {comment.user_name}
           </Typography>
           <Typography variant="body1" sx={{ color: "text.secondary" }}>
             {comment.content}
