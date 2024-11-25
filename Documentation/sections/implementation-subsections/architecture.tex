@@ -13,12 +13,13 @@ A szoftver egészében és komponenseiben is rétzegzett architektúrát valós�
 \begin{itemize}
     \item  [1.] Adat réteg (Data Layer)
     \begin{itemize}
-        \item Adatlekérdezési réteg: REST API hívások implementációja, JSON objektumok kotlin osztályokra való leképezése.
-        \item Adatelérési réteg: hálózati kommunikáció és hibakezelés és egységesített kezelése, magasabb szintű kódban könnyebben használható.
+        \item Adatlekérdezési réteg (HTTP kliens): REST API hívások implementációja, JSON objektumok kotlin osztályokra való leképezése.
+        \item Adatelérési réteg (Repository): hálózati kommunikáció és hibakezelés és egységesített kezelése, magasabb szintű kódban könnyebben használható.
     \end{itemize}
     \item  [2.] UI réteg (UI Layer)
     \begin{itemize}
-        \item  Megjelenítés (View)
         \item  Állapotkezelés (View Model)
+        \item  Megjelenítés (View)
+
     \end{itemize}
 \end{itemize}
