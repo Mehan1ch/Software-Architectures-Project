@@ -32,6 +32,72 @@ A factory-k segítségével lehetőség van tesztadatok generálására az adatb
 
 \subsubsection{Üzleti logika réteg - BLL}
 
+Az üzleti logikai réteg a Laravel keretrendszerben a vezérlőkön (Controller) és a hozzájuk kapcsolódó komponenseken keresztül valósul meg. Ez a réteg felel az alkalmazás alapvető működési logikájáért, amely az adatbázis-interakciók és a felhasználói kérések között helyezkedik el.
+\paragraph{Vezérlők (Controllers)}
+
+A vezérlők a Laravel MVC (Model-View-Controller) architektúrájának központi elemei, amelyek a beérkező HTTP-kéréseket kezelik és a megfelelő válaszokat generálják.
+A projektben mindegyik modellre készítettünk egy \textsl{<modell neve>Controller} névkonvenciójú vezérlő osztályt. A vezérlők a Laravel keretrendszerben a app/Http/Controllers könyvtárban találhatók. Minden vezérlő osztály a Laravel saját Controller bázisosztályból származik, amely alapvető funkciókat biztosít. A vezérlők metódusai a különböző CRUD HTTP-kérésekhez (GET, POST, PUT, DELETE) kapcsolódnak, és az útvonalak (routes) segítségével érhetők el.
+
+
+\paragraph{Útvonalak és REST API (Routing and REST API)}
+
+Az útvonalak határozzák meg, hogy a beérkező HTTP-kérések mely vezérlők mely metódusait hívják meg. A Laravelben az útvonalak a routes könyvtárban találhatók, és különböző fájlokban definiálhatók. Az alkalmazásunk útvonalai az api.php fájlban találhatóak, és alább látható belőle egy kódrészlet.
+\begin{lstlisting}[language=php][]
+    // api.php
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+        Route::post('/works', [WorkController::class, 'store'])
+                            ->can('create', Work::class);
+        Route::put('/works/{work}', [WorkController::class, 'update'])
+                            ->can('update', 'work');
+        Route::delete('/works/{work}', [WorkController::class, 'destroy'])
+                            ->can('delete', 'work');
+    });
+    Route::get('/works', [WorkController::class, 'index'])
+                            ->can('view', Work::class);
+    Route::get('/works/{work}', [WorkController::class, 'show'])
+                            ->can('view', Work::class);
+\end{lstlisting}
+
+E példában az útvonalak a WorkController különböző metódusaira irányítják a kéréseket, és az \textbf{auth:sanctum} middleware biztosítja, hogy csak hitelesített felhasználók férhessenek hozzá ezekhez az útvonalakhoz.
+
+A REST API (Representational State Transfer Application Programming Interface) egy architektúrális stílus, amely lehetővé teszi az erőforrások HTTP protokollon keresztüli elérését és manipulálását. A Laravelben az útvonalak és vezérlők segítségével valósítható meg a REST API-k kialakítása.
+
+
+\paragraph{Kérések (Requests)}
+A Laravel Request osztálya biztosítja, hogy objektumorientált módon lehessen kezelni, az alkalmazás által aktuálisan kezelt HTTP-kérelmeket, valamint a kéréssel együtt elküldött cookie-k és fájlok lekérdezését. A HTTP kérések példányainak kiosztását DI (Dependency Injection) segítségével oldja meg a Laravel.
+
+\paragraph{Válaszok (Responses)}
+A Response példányok használata, lehetővé teszi a válasz HTTP státuszkódjának és fejlécének testreszabását. Minden modellhez tartozó Response példány a Laravel saját Response osztályából örököl, amely számos módszert biztosít a HTTP-válaszok testreszabására.
+
+
+\paragraph{Autómatikus értesítés moderáció eredményéről}
+A Laravel egyszerű módot biztosít az e-mailek küldésére mindenféle gond és nehézség nélkül a Mailable osztály használatával.
+A Laravel Mail API a népszerű Swiftmailer könyvtárra épült. Mi úgy konfiguráltuk, hogy SMTP-t használjon, de sok egyéb konfigurációval is lehet használni (Pl.: Mailgun, Amazon SES).
+A Mail konfigurációkat a backend projekt gyökérkönyvtárában megtalálható .env fájlban kell beállítani az alábbi módon:
+\begin{lstlisting}[language=php]
+    MAIL_MAILER=smtp
+    MAIL_HOST=mailpit
+    MAIL_PORT=1025
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+    MAIL_FROM_ADDRESS="hello@example.com"
+    MAIL_FROM_NAME="${APP_NAME}"
+\end{lstlisting}
+Az alábbi parancs kiadásával tudjuk létrehozni a saját Mailable osztályunk és a hozzá tartozó email-levél sablon fájlunkat.
+
+    \textbf{ \$ php artisan make:mail ModerationMail  --markdown=emails.moderations}
+
+A ModerationMailable osztályból biztosítom a sablon számára a paramétereket, melyeknek értékeit megszeretnénk jeleníteni az email-ben. Ilyen paraméterek jelenleg a \textbf{work}, ami az adott munka objektumát reprezentálja, és a címét és az azonosítóját kérdezem le a sablonban. Valamint a \textbf{creator}, ami pedig az a User példány, amelyik létrehozta a munkát.
+
+Miután elkészült a saját Mailable osztályunk és a hozzátartozó markdown sablont is megformáztuk, akkor már csak a kiküldés implementálása hiányzik. Erre használható a Laravel Mail Facade. Rengeteg metódussal rendelkezik, de a legfontosabb a \textbf{to} metódus. Ez a metódus határozza meg, hogy az email hova kerül elküldésre. Átadhatjuk a felhasználó email címét paraméterként, és a Laravel elküldi az emailt a megadott email címre. A következő fontos metódus a \textbf{send} metódus. Ez a metódus lehetővé teszi számunkra, hogy megadjunk egy Mailable üzenet példányt, tehát itt adtuk meg a korábban létrehozott Mailable osztályt.
+A levél elküldését a Work modell osztályának updating metódusában implementáltuk, mivel moderálást csakis munkákra lehet kérni, és amikor a ModerationStatus enumjának értéke APPROVED vagy EDIT\_REQUESTED értékek valamelyikét veszi fel, akkor kell kiküldenünk az emailt.
+
+A Laravel megkönnyíti az emailek tesztelését azáltal, hogy third-party könyvtárakat szolgáltat, mint például a Laravel mailpit, vagy a Mailtrap. Ezek a szolgáltatások egy hamis SMTP szervert biztosítanak, ahonnan tesztelhetjük és ellenőrizhetjük, hogy az emailek helyesen vannak\-e formázva. Értelemszerűen meg kell változtatni a mail konfigurációkat az .env fájlban, hogy valamely hamis SMTP szerver hitelesítő adatait használja. A Mailtrap használatával például vizuálisan láthatjuk, hogyan van formázva az email és emiatt döntöttünk mi is e mellett.
+
 
 \textbf{Authentikáció:} Az authentikációra a Laravel Breeze \cite{LaravelBreeze} csomagot használtuk, mely egy minimális authentikációs rendszert biztosít. Az authentikációhoz szükséges routokat, controllereket, view-kat és middleware-eket a csomag automatikusan generálja. Az authentikációhoz szükséges adatbázis táblákat is a csomag generálja, így a felhasználók regisztrációja, bejelentkezése, jelszó visszaállítása, stb. egyszerűen megvalósítható.
 
@@ -40,6 +106,7 @@ A Breeze alapvetően Session alapú CSRF és CORS védelemmel rendelkező authen
 \textbf{Authorizáció:} Az authorizációra a Spatie cég által fejlesztett és karbantartott Laravel Permission csomagot \cite{LaravelPermissions} használtuk. A csomag segítségével lehetőség van jogosultságok (permissions) definiálására, azokhoz szerepkörök (roles) rendelésére, valamint a jogosultságok és szerepkörök alapján az authorizáció megvalósítására. A csomag a Laravel Policy-ket használja az authorizáció megvalósítására, amelyek segítségével a jogosultságokat és szerepköröket a modellekhez lehet rendelni.
 
 Ennek előnye hogy ellenőrzéskor csak a jogosultság meglétét kell ellenőrizni, azonban a jogosultságok egységesen kioszthatók role-ok segítségével. Az alkalmazás 3 szerepkört valósít meg, melyek a \texttt{Registered}, \texttt{Moderator} és \texttt{Admin}. Az admin az alkalmazás ServiceProvider-ében minden ellenőrzésen automatikusan átengedésre kerül, így nem kell az össze jogosultságot hozzárendelni.\\
+
 
 \subsubsection{Tesztelés}
 
