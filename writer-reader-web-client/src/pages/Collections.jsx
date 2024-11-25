@@ -1,5 +1,4 @@
 import {
-  Container,
   Grid2,
   TextField,
   IconButton,
@@ -8,9 +7,14 @@ import {
 } from "@mui/material";
 import CollectionCard from "../components/CollectionCard";
 import { Search as SearchIcon } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "../api/axios";
+import LoadingBar from "../components/LoadingBar";
 
 export default function Collections() {
+  const [page, setPage] = useState(0);
+  const [collections, setCollections] = useState();
+
   const handleSubmit = (event) => {
     const searchBar = document.getElementById("searchBar");
     if (!searchBar.value || searchBar.value.length < 1) {
@@ -22,6 +26,24 @@ export default function Collections() {
       searchBar: data.get("searchBar"),
     });
   };
+
+  const getWorks = async () => {
+    await axios
+      .get("/api/collections")
+      .then((response) => {
+        setCollections(response.data);
+        setPage(response.data.meta.current_page);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    getWorks();
+  }, []);
+
+  if (!collections) {
+    return <LoadingBar />;
+  }
 
   const SearchBar = () => (
     <Box
@@ -49,6 +71,7 @@ export default function Collections() {
       />
     </Box>
   );
+
   return (
     <>
       <div
@@ -63,7 +86,7 @@ export default function Collections() {
         <SearchBar />
       </div>
       <Grid2 container spacing={4}>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+        {/*<Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <CollectionCard />
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
@@ -87,7 +110,12 @@ export default function Collections() {
         </Grid2>
         <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <CollectionCard />
-        </Grid2>
+        </Grid2>*/}
+        {collections?.data?.map((collection) => (
+          <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={collection.id}>
+            <CollectionCard collection={collection} />
+          </Grid2>
+        ))}
       </Grid2>
     </>
   );

@@ -37,8 +37,11 @@ function App() {
               <Route path="/account" element={<Account />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/reader" element={<Reader />} />
-              <Route path="/collection" element={<Collection />} />
+              <Route path="/reader/:workID" element={<Reader />} />
+              <Route
+                path="/collection/:collectionID"
+                element={<Collection />}
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Container>
