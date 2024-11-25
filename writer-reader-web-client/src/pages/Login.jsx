@@ -1,4 +1,4 @@
-import { Link as RouterLink, Navigate } from "react-router-dom";
+import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/ContextProvider";
 import {
   Box,
@@ -24,9 +24,11 @@ export default function Login() {
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [loginErrors, setLoginErrors] = useState([]);
   const [invalidCred, setInvalidCred] = useState(false);
+  const navigate = useNavigate();
 
   if (user) {
-    return <Navigate to="/" />;
+    navigate(-1, { replace: true });
+    //return <Navigate to="/" />;
   }
 
   const getXSRFCookie = () => {

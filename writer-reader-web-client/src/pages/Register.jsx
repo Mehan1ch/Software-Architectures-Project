@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link as RouterLink, redirect } from "react-router-dom";
+import { Link as RouterLink, redirect, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/ContextProvider";
 import {
   Box,
@@ -26,9 +26,11 @@ export default function Register() {
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [usernameError, setUsernameError] = useState(false);
   const [usernameErrorMessage, setUsernameErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   if (user) {
-    return <Navigate to="/" />;
+    navigate(-1, { replace: true });
+    //return <Navigate to="/" />;
   }
 
   const getXSRFCookie = () => {
