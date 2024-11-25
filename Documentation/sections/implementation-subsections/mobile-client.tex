@@ -19,7 +19,7 @@ A mobilé architektúrája rétegekre bontható, ezek kifejtésében bemutatjuk 
  a használt androidos technológiákat.
 
 
-\subsubsection{Adatlekérdezés (Data Query Layer)}
+\subsubsection{Adatlekérdezés (HTTP kliens)}
 A mobil kliens a szerverrel való hálózati kommunikációt a Retrofit könyvtár segítségével valósítja meg.
 A Retrofit egy nyílt forráskódú Android és Java HTTP-kliens, amely a REST API-k hívását teszi lehetővé.
 
@@ -64,7 +64,7 @@ A REST API végpontok eléréséhez egy Retrofit klienst kell létrehozni, itt k
 és az alap URL-t a szerverhez, ami jelenleg \texttt{http://10.0.2.2}, ez egy alias és az android emulátoron a host gép címét jelenti.
 A retrofit kliens a \texttt{WriterReaderApplication} osztályban az alkalmazáés indulásakor jön létre.
 
-\subsubsection{Adatelérés (Data Access Layer)}
+\subsubsection{Adatelérés (Repository)}
 
 Az alkalmazás az adatelérésre egy a hálózati kommunikáció feletti absztrakciós réteget használ (\textbf{data access layer}), 
 ami lényegeében egy \texttt{ApiMAnager} nevű wrapper osztály a Retrofit kliens és a hálózati hívások köré. Megkönnyíti a magasabb szintű kódból való használatot.
@@ -81,3 +81,35 @@ Az \texttt{ApiMAnager} osztályt az alkalmazás indulásakor pédányosítjuk í
 
 
 \subsubsection{UI réteg (UI Layer)}
+
+A alkalmazás egyes képernyőit MVI (Model-View-Intent) architektúra szerint valósítottuk meg.
+Ennek az architektúrának 4 komponense van
+\begin{itemize}
+    \item \textbf{Model} 
+    \item \textbf{Intent} 
+    \item \textbf{View} 
+    \item \textbf{View-Model}
+\end{itemize}
+
+\paragraph{Model}
+A Model az alkalmazás állapotának (State) egy reprezentációja. Ez a komponens tartalmazza a képernyőhöz 
+szükséges összes adatot és a felhasználói interakciók eredményét. 
+Az állapot megváltozása új state objektum létrehozásával történik.
+
+\paragraph{Intent}
+Az Intent-ek képviselik a felhasználói interakciókat és a képernyő eseményeit (például: egy gomb lenyomása). 
+Az Intent-ek explicit módon jelzik a ViewModel-nek, hogy milyen műveleteket kell végrehajtania.
+
+\paragraph{View}
+A View a Jetpack Compose deklaratív UI komponensei által megvalósított felhasználói felület.
+Az composable elemek kizárólag a State alapján frissülnek.
+A View nem tartalmaz logikát, hanem kizárólag az állapot megjelenítéséért felelős.
+
+
+\paragraph{View-Model}
+A ViewModel felel az Intent-ek feldolgozásáért és az állapot frissítéséért. 
+Ez a komponens biztosítja a State folytonosságát és kezeli az üzleti logikát,
+például hálózati kérések indítását.
+A ViewModel figyeli az Intent-eket, végrehajtja a szükséges műveleteket, és az új állapotot a View felé közvetíti.
+
+
