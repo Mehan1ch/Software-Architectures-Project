@@ -1,11 +1,26 @@
 \subsection{Architektúra}
 
-A szoftver egészében és komponenseiben is rétzegzett architektúrát valósít mmeg.
+A szoftver egészében és komponenseiben is rétzegzett architektúrát valósít meg, melynek egy áttekintő ábrája látható a \ref{fig:architecture} ábrán.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.5]{./figures/architecture.png}
+    \caption{A szoftver architektúrája}
+    \label{fig:architecture}
+\end{figure}
+
+A szoftver egy kliens-szerver architektúrát valósít meg, ahol a kliensek a szerverrel REST API-n keresztül kommunikálnak. A szerver oldali alkalmazás a Laravel PHP keretrendszer segítségével készült, míg a kliens oldali alkalmazás két részre osztható: egy webes frontendre, mely a React keretrendszerre épül, és egy mobil kliensre, mely a JetPack Compose keretrendszer segítségével készült.
 
 \subsubsection{Backend architektúra}
 
-A Laravel MVC architektúrájának kifejtése...., magas szintű kép
+A Laravel alapból az MVC (Model-View-Controller) architektúrát követi, azonban a projektünkben a nézeteket a kliensek kezelik, így csak a Modell és a Controller rétegek maradnak meg. Így a Laravel alkalmazásunk 2 fő rétegre osztható:
 
+\begin{itemize}
+    \item Adathozzáférési réteg (Data Access Layer)
+    \item Üzleti logikai réteg (Business Logic Layer)
+\end{itemize}
+
+A kliensekkel való kommunikáció REST API-n keresztül történik, így a Laravel alkalmazásunkban a REST API végpontok implementációja a kontrollerekben található. A küldött és fogadott adatok JSON formátumban vannak, melyek a Laravel által biztosított Resource osztályok segítségével könnyen kezelhetőek, melyek egyfajta DTO (Data Transfer Object) mintaként működnek.
 
 \subsubsection{Mobilos kliens}
 
