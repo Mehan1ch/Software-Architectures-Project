@@ -33,11 +33,11 @@ A factory-k segítségével lehetőség van tesztadatok generálására az adatb
 \subsubsection{Üzleti logika réteg - BLL}
 
 
-\textbf{Authentikáció:} Az authentikációra a Laravel Breeze csomagot használtuk, mely egy minimális authentikációs rendszert biztosít. Az authentikációhoz szükséges routokat, controllereket, view-kat és middleware-eket a csomag automatikusan generálja. Az authentikációhoz szükséges adatbázis táblákat is a csomag generálja, így a felhasználók regisztrációja, bejelentkezése, jelszó visszaállítása, stb. egyszerűen megvalósítható.
+\textbf{Authentikáció:} Az authentikációra a Laravel Breeze \cite{LaravelBreeze} csomagot használtuk, mely egy minimális authentikációs rendszert biztosít. Az authentikációhoz szükséges routokat, controllereket, view-kat és middleware-eket a csomag automatikusan generálja. Az authentikációhoz szükséges adatbázis táblákat is a csomag generálja, így a felhasználók regisztrációja, bejelentkezése, jelszó visszaállítása, stb. egyszerűen megvalósítható.
 
-A Breeze alapvetően Session alapú CSRF és CORS védelemmel rendelkező authentikációt biztosít a frontendek számára. Azonban maga a Breeze egy másik csomagra a Laravel Sanctum-ra épít. Ennek előnye, hogy a Sanctum biztosít API Token alapú authentikációt is melyet a mobil kliens így ki tudott használni.\\
+A Breeze alapvetően Session alapú CSRF és CORS védelemmel rendelkező authentikációt biztosít a frontendek számára. Azonban maga a Breeze egy másik csomagra a Laravel Sanctum-ra \cite{LaravelSanctum} épít. Ennek előnye, hogy a Sanctum biztosít API Token alapú authentikációt is melyet a mobil kliens így ki tudott használni.\\
 
-\textbf{Authorizáció:} Az authorizációra a Spatie cég által fejlesztett és karbantartott Laravel Permission csomagot használtuk. A csomag segítségével lehetőség van jogosultságok (permissions) definiálására, azokhoz szerepkörök (roles) rendelésére, valamint a jogosultságok és szerepkörök alapján az authorizáció megvalósítására. A csomag a Laravel Policy-ket használja az authorizáció megvalósítására, amelyek segítségével a jogosultságokat és szerepköröket a modellekhez lehet rendelni.
+\textbf{Authorizáció:} Az authorizációra a Spatie cég által fejlesztett és karbantartott Laravel Permission csomagot \cite{LaravelPermissions} használtuk. A csomag segítségével lehetőség van jogosultságok (permissions) definiálására, azokhoz szerepkörök (roles) rendelésére, valamint a jogosultságok és szerepkörök alapján az authorizáció megvalósítására. A csomag a Laravel Policy-ket használja az authorizáció megvalósítására, amelyek segítségével a jogosultságokat és szerepköröket a modellekhez lehet rendelni.
 
 Ennek előnye hogy ellenőrzéskor csak a jogosultság meglétét kell ellenőrizni, azonban a jogosultságok egységesen kioszthatók role-ok segítségével. Az alkalmazás 3 szerepkört valósít meg, melyek a \texttt{Registered}, \texttt{Moderator} és \texttt{Admin}. Az admin az alkalmazás ServiceProvider-ében minden ellenőrzésen automatikusan átengedésre kerül, így nem kell az össze jogosultságot hozzárendelni.\\
 
@@ -47,7 +47,7 @@ Teszteltünk, PEST, mekkora fedettség, mi lett tesztelve és miért
 
 \subsubsection{Admin felület}
 
-Bár nem külön alkalmazás réteg de megemlítendő, hogy az admin felület megvalósítására a FilamentPHP csomagot használtuk a backend oldalon. Előnye, hogy a modell osztályokhoz definiálhatóak úgynevezett filament resource-ok melyek az admin felületen megjelenő mezőket és azok viselkedését definiálják. A csomag segítségével lehetőség van a modellek szerkesztésére, törlésére, listázására, stb. Az admin felület a \ref{fig:admin}. ábrán látható.
+Bár nem külön alkalmazás réteg de megemlítendő, hogy az admin felület megvalósítására a FilamentPHP csomagot \cite{FilamentPHP} használtuk a backend oldalon. Előnye, hogy a modell osztályokhoz definiálhatóak úgynevezett filament resource-ok melyek az admin felületen megjelenő mezőket és azok viselkedését definiálják. A csomag segítségével lehetőség van a modellek szerkesztésére, törlésére, listázására, stb. Az admin felület a \ref{fig:admin}. ábrán látható.
 
 \begin{figure}[H]
     \centering
