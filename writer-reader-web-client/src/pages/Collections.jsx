@@ -4,6 +4,8 @@ import {
   IconButton,
   Box,
   InputAdornment,
+  Container,
+  Pagination,
 } from "@mui/material";
 import CollectionCard from "../components/CollectionCard";
 import { Search as SearchIcon } from "@mui/icons-material";
@@ -12,8 +14,13 @@ import axios from "../api/axios";
 import LoadingBar from "../components/LoadingBar";
 
 export default function Collections() {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [collections, setCollections] = useState();
+
+  const handleChange = (event, value) => {
+    setPage(value);
+    getCollections(value);
+  };
 
   const handleSubmit = (event) => {
     const searchBar = document.getElementById("searchBar");
@@ -27,9 +34,10 @@ export default function Collections() {
     });
   };
 
-  const getWorks = async () => {
+  const getCollections = async (param) => {
+    let getPage = !param ? page : param;
     await axios
-      .get("/api/collections")
+      .get(`/api/collections?page=${getPage}`)
       .then((response) => {
         setCollections(response.data);
         setPage(response.data.meta.current_page);
@@ -38,7 +46,9 @@ export default function Collections() {
   };
 
   useEffect(() => {
-    getWorks();
+    if (!collections) {
+      getCollections();
+    }
   }, []);
 
   if (!collections) {
@@ -86,37 +96,24 @@ export default function Collections() {
         <SearchBar />
       </div>
       <Grid2 container spacing={4}>
-        {/*<Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <CollectionCard />
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <CollectionCard />
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <CollectionCard />
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <CollectionCard />
-        </Grid2>
-
-        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <CollectionCard />
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <CollectionCard />
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <CollectionCard />
-        </Grid2>
-        <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <CollectionCard />
-        </Grid2>*/}
         {collections?.data?.map((collection) => (
           <Grid2 size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={collection.id}>
             <CollectionCard collection={collection} />
           </Grid2>
         ))}
       </Grid2>
+      <Container maxWidth="xs" sx={{ marginTop: 2 }}>
+        <Pagination
+          color="primary"
+          count={collections.meta?.last_page}
+          page={page}
+          onChange={handleChange}
+          siblingCount={1}
+          boundaryCount={0}
+          showFirstButton
+          showLastButton
+        />
+      </Container>
     </>
   );
 }
