@@ -13,6 +13,7 @@ import MyWorks from "./components/MyWorks.jsx";
 import MyCollections from "./components/MyCollections.jsx";
 import Reader from "./pages/Reader.jsx";
 import Collection from "./pages/Collection.jsx";
+import Editor from "./pages/Editor.jsx";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/reader/:workID" element={<Reader />} />
+              <Route path="/editor" element={<Editor />} />
               <Route
                 path="/collection/:collectionID"
                 element={<Collection />}
