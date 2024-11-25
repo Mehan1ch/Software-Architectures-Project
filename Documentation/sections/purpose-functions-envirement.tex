@@ -40,8 +40,13 @@ A moderátorok a moderálási jogosultságokkal rendelkeznek, az adminisztrátor
 
 \subsection{A rendszer környezete}
 
---- Backend és web környezetének leírása ---
+\subsubsection{Backend}
 
+A backend a Laravel PHP keretrendszerrel készült, mely egy MVC (Model-View-Controller) architektúrát követ. A megvalósítás során a Laravel 11-es verzióját használtuk. A backend szolgáltatásokat REST API-n keresztül érhetik el a kliensek, így lazán csatoltak a rendszerek, könnyű bővíteni, karbantartani őket.
+
+\subsubsection{Web kliens}
+
+\subsubsection{Mobil kliens}
 A mobil kliens platformspecifikus, android operációs rendszerre készült kotlin nyelven Android Studioban.
 A felhasználói felület normál méretű mobiltelefonra lett optimalizálva, egyéb méretű eszközökön (pl. okosórán) nem lett tesztelve.
 A mobil kliens használatához internetelérés szükséges, hogy az alkalmazás elérje a backend szolgáltatásokat. 
