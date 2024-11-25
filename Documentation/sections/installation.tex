@@ -1,6 +1,19 @@
 \section{Telepítési lerírás}
 \label{sec:installation}
 
+\subsection{Backend telepítése}
+
+\subsubsection{Fejlesztői környezet telepítése}
+
+A backend fejlesztői környezet telepítéséhez szükséges a PHP és a Composer csomag kezelő telepítése. Az alkalmazás egyéb függőségei (adatbázis, stb) Docker kontérekekben futnak, így a Docker telepítése szükséges. A Docker telepítéséhez a \url{https://docs.docker.com/get-docker/} címről tölthető le a telepítő. A Composer telepítéséhez a \url{https://getcomposer.org/download/} címről tölthető le a telepítő. A Composer telepítése után a backend mappában a következő parancsot kell futtatni: \texttt{composer install}. Ezzel a Composer telepíti a Laravel függőségeket. 
+
+A backend mappában a \texttt{.env.example} fájlt le kell másolni a \texttt{.env}-be. Ebben a fájlban kell beállítani az alkalmazás konfigurációját (adatbázis, frontend\_url, stb).
+
+Ezután a \texttt{docker-compose.yaml} fájl segítségével indítható a backend. Ennek megkönnyítésére mi a Laravel Sail csomagot használtuk mely egy CLI a különböző konténerek kezelésére (lásd \cite{LaravelSail}). Indítás után szükséges az alkalmazás egyedi kulcsának generálása (\texttt{php artisan key:generate}, \texttt{sail} esetén a \texttt{php} kulcsszó minden további parancsban helyettesítendő \texttt{sail}-el), az adatbázis migrálása (\texttt{php artisan migrate}) és a jogosultságok inicializálása (\texttt{php artisan db:seed --class=PermissionSeeder}). Ezek után a backend elérhető a \url{http://localhost:8000} címen.
+
+\subsubsection{Éles környezet telepítése}
+Az éles környezetben való telepítéshez lásd a Laravel hivatalos dokumentációját: \url{https://laravel.com/docs/11.x/deployment}. Ezen kívűl az email küldés funkcióhoz szükséges egy SMTP szerver és annak konfigurációjának beállítása a \texttt{.env} fájlban.
+
 
 \subsection{Android kliens telepítése}
 A projekt továbbfejlesztéséhez vagy szerkesztéséhez Android stúdió telepítése szükséges. 
