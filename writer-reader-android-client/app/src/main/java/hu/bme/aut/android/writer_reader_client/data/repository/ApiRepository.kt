@@ -64,9 +64,9 @@ class ApiRepository(private val api: WriterReaderApi) {
         return api.getUsers()
     }
 
-    suspend fun getUser(token: String): Response<Any> {
-        return api.getUser("Bearer $token")
-    }
+  //  suspend fun getUser(token: String): Response<Any> {
+  //      return api.getUser("Bearer $token")
+  //  }
 
     // Authentication
     suspend fun register(request: RegisterRequest): Response<Void?> {

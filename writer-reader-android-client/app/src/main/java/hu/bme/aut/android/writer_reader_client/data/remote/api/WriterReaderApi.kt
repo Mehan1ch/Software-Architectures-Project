@@ -73,8 +73,8 @@ interface WriterReaderApi {
     @GET("/api/users")
     suspend fun getUsers(): Response<UsersResponse>
 
- //   @GET("/api/users/{id}")
- //    suspend fun getUser(@Path("id") id: String): Response<UserResponse>
+    //@GET("/api/users/{id}")
+   //  suspend fun getUser(@Path("id") id: String): Response<UserResponse>
 
 
 
@@ -86,7 +86,7 @@ interface WriterReaderApi {
     suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 
     @GET("/api/user")
-    suspend fun getUser(@Header("Authorization") authHeader: String): Response<Any>
+    suspend fun getCurrentUser(@Header("Authorization") authHeader: String): Response<Any>
 
     @POST("/api/logout")
     suspend fun logout(@Header("Authorization") authHeader: String): Response<Any>

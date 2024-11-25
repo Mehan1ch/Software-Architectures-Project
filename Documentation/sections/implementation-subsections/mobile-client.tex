@@ -1,0 +1,83 @@
+\subsection{Mobil kliens megvaklósítása}
+Ebben a fejezetben a mobil kliens implementációjának részleteit mutatjuk be. Sajnos előre nem látható és
+technikai nehézségek miatt a megszabott határidőig nem sikerült a specifikációban előírt minden funkciót elkészíteni, 
+itt csak a működő komponensek kerülnek bemutatásra.
+
+A programban a következő főbb funkciók érhetők el: 
+\begin{itemize}
+    \item Regisztráció
+    \item Bejelentkezés
+    \item Művek böngészése
+    \item Művek részleteinek megtekintése
+    \item Művek olvasása
+    \item Kedvelés küldése
+    \item Hozzászólás írása
+    \item korábbi privát üzenetek megtekintése
+\end{itemize}
+
+A mobilé architektúrája rétegekre bontható, ezek kifejtésében bemutatjuk nagyvonalakban a kód felépítését és a használt technológiákat.
+ a használt androidos technológiákat.
+
+
+\subsubsection{Adatlekérdezés (Data Query Layer)}
+A mobil kliens a szerverrel való hálózati kommunikációt a Retrofit könyvtár segítségével valósítja meg.
+A Retrofit egy nyílt forráskódú Android és Java HTTP-kliens, amely a REST API-k hívását teszi lehetővé.
+
+
+\paragraph{REST API interfész}
+Az API-hívások kezelésére a \texttt{WriterReaderApi} interfész definiálja a szerver által támogatott végpontokat. 
+Az egyes metódusok Retrofit-es annotációkkal vannak ellátva, amelyek a megfelelő HTTP metódusokat és a végpontokat definiálják.
+Az interfész nem tartalmazza az összes szerver által biztosított végpontot, hanem csak amelyek a mobil klens eddigi 
+funkcióihoz szükségesek:
+
+\begin{itemize}
+    \item \textbf{Művek kezelése:}
+    \begin{itemize}
+        \item \texttt{getWorks}: Az összes mű lekérdezése.
+        \item \texttt{getWork}: Egy adott mű részleteinek lekérdezése azonosító alapján.
+    \end{itemize}
+    \item \textbf{Felhasználók kezelése:}
+    \begin{itemize}
+        \item \texttt{getUsers}: Az elérhető felhasználók listázása.
+        \item \texttt{getUser}: Egy adott felhasználó adatainak lekérdezése azonosító alapján.
+        \item \texttt{getCurrentUser}: Az aktuálisan bejelentkezett felhasználó adatainak lekérdezése token alapján.
+    \end{itemize}
+    \item \textbf{Hozzászólások és kedvelések kezelése:}
+    \begin{itemize}
+        \item \texttt{postComment}: Hozzászólás küldése.
+        \item \texttt{postLike}: Kedvelés hozzáadása.
+        \item \texttt{deleteLike}: Kedvelés törlése.
+    \end{itemize}
+    \item \textbf{Hitelesítés:}
+    \begin{itemize}
+        \item \texttt{register}: Új felhasználó regisztrációja.
+        \item \texttt{login}: Bejelentkezés a rendszerbe.
+        \item \texttt{logout}: Kijelentkezés az aktuális munkamenetből.
+    \end{itemize}
+\end{itemize}
+
+A HTTP kommunikációban JSON objektumokat használunk, melyeket kotlin osztályokra képződnek le
+A JSON objektumok és Kotlin osztályok közti átalakítást a \textbf{Moshi} könyvtár segítségével végezzük el. 
+
+\paragraph{Retrofit konfiguráció}
+A REST API végpontok eléréséhez egy Retrofit klienst kell létrehozni, itt konfiguráljuk például az időtúllépési értékeket, a moshi JSON adaptert
+és az alap URL-t a szerverhez, ami jelenleg \texttt{http://10.0.2.2}, ez egy alias és az android emulátoron a host gép címét jelenti.
+A retrofit kliens a \texttt{WriterReaderApplication} osztályban az alkalmazáés indulásakor jön létre.
+
+\subsubsection{Adatelérés (Data Access Layer)}
+
+Az alkalmazás az adatelérésre egy a hálózati kommunikáció feletti absztrakciós réteget használ (\textbf{data access layer}), 
+ami lényegeében egy \texttt{ApiMAnager} nevű wrapper osztály a Retrofit kliens és a hálózati hívások köré. Megkönnyíti a magasabb szintű kódból való használatot.
+AZ adatelérési réteg két fontosabb feladata az API-hívások kezelése és a hibakezelés.
+Az osztáy suspend fun metóduasi gondoskodnak arról,
+hogy a hálózati hívások csak corutineokon belül történjenek, így ne blokkolják a UI szálat,
+\paragraph{Hibakezelés} A válaszok kezeléséhez a \texttt{Retrofit Response} osztályt használja, 
+amely tartalmazza a HTTP státuszkódot és a szerver által küldött adatokat. 
+Minden API-hívás esetén figyelembe vesszük a lehetséges hibákat, mint például hálózati időtúllépést vagy nem várt szerverhibákat, 
+hogy megfelelő visszajelzést adhassunk a felhasználónak. Az \texttt{ApiMAnager} metódusai onSuccess és onError callback 
+függvényeket várnak paraméterként, amelyek a hálózati hívások végrehajtásakor hívódnak meg.
+
+Az \texttt{ApiMAnager} osztályt az alkalmazás indulásakor pédányosítjuk így az egész alkalmazásban elérhető lesz.
+
+
+\subsubsection{UI réteg (UI Layer)}
