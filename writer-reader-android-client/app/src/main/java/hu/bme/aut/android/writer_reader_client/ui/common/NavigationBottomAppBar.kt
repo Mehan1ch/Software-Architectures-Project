@@ -31,14 +31,13 @@ data class NavigationItem(
 
 @Composable
 fun NavigationBottomAppBar(
-    navHostController: NavHostController = rememberNavController()
+    navHostController: NavHostController = rememberNavController(),
+    userToken: String = ""
 ) {
     val navigationItems = listOf(
         NavigationItem(Screen.Home, "Kezdőlap", Icons.AutoMirrored.Filled.LibraryBooks, Icons.Filled.Home),
         NavigationItem(Screen.Login, "login", Icons.Outlined.Person, Icons.Filled.Person),
-        NavigationItem(Screen.UserList, "Üzenetek", Icons.AutoMirrored.Outlined.Message, Icons.AutoMirrored.Filled.LibraryBooks
-        ),
-        //NavigationItem(Screen.Messenger, "Üzenetek", Icons.Outlined.Notifications, Icons.Filled.Notifications),
+        NavigationItem(Screen.UserList, "Üzenetek", Icons.AutoMirrored.Outlined.Message, Icons.AutoMirrored.Filled.LibraryBooks),
     )
 
     NavigationBar(

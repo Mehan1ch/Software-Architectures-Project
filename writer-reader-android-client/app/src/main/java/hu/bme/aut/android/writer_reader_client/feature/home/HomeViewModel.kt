@@ -35,6 +35,11 @@ class HomeViewModel(
         refreshWorks()
     }
 
+    fun okError(){
+        _state.update { it.copy(isError = false, throwable = null) }
+        refreshWorks()
+    }
+
     private fun refreshWorks() {
         _state.update { it.copy(isLoading = true) }
 

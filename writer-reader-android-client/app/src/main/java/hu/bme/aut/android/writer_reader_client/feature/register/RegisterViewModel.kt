@@ -24,6 +24,7 @@ sealed class RegisterViewIntent {
     object TogglePasswordVisibility : RegisterViewIntent()
     object ToggleConfirmPasswordVisibility : RegisterViewIntent()
     data class RegisterButtonClicked(val context: Context) : RegisterViewIntent()
+    object ErrorOkButtonClicked : RegisterViewIntent()
 }
 
 sealed class RegisterUiEvent {
@@ -41,8 +42,11 @@ data class RegisterViewState (
     val isUsernameError: Boolean = false,
     val isEmailError: Boolean = false,
     val isPasswordError: Boolean = false,
-    val isConfirmPasswordError: Boolean = false
-)
+    val isConfirmPasswordError: Boolean = false,
+    val isError: Boolean = false,
+    val throwable: Throwable? = null,
+
+    )
 
 
 class RegisterViewModel(
@@ -59,6 +63,12 @@ class RegisterViewModel(
 
     fun onIntent(intent: RegisterViewIntent) {
         when (intent) {
+            is RegisterViewIntent.ErrorOkButtonClicked -> {
+                _state.value = _state.value.copy(
+                    isError = false,
+                    throwable = null
+                )
+            }
             is RegisterViewIntent.UsernameChanged -> {
                 _state.value = _state.value.copy(
                     username = intent.username,
@@ -126,6 +136,10 @@ class RegisterViewModel(
                 onError = { errorMessage ->
                     _event.trySend(RegisterUiEvent.RegisterFailed(errorMessage))
                     println("Registration failed: $errorMessage")
+                    _state.value = _state.value.copy(
+                        isError = true,
+                        throwable = Exception(errorMessage)
+                    )
                 }
             )
         }

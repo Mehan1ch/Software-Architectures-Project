@@ -86,7 +86,9 @@ fun NavGraph(
             ReadWork()
         }
 
-        composable(Screen.UserList.route){
+        composable(
+            route = Screen.UserList.route,
+        ){
             UserListScreen(navHostController = navHostController)
         }
 

@@ -8,6 +8,7 @@ import hu.bme.aut.android.writer_reader_client.data.model.get.Collection
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionsResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.Comment
+import hu.bme.aut.android.writer_reader_client.data.model.get.UserDetails
 import hu.bme.aut.android.writer_reader_client.data.model.get.UsersResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorkResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorksResponse
@@ -45,22 +46,17 @@ interface WriterReaderApi {
     suspend fun createCollection(@Body collection: Collection): Response<CollectionResponse>
 
 
-
-
-
     @POST("/api/comments")
     fun postComment(
         @Header("Authorization") authHeader: String,
         @Body comment: CommentRequest
     ): Call<CommentResponse>
 
-
     @POST("/api/likes")
     fun postLike(
         @Header("Authorization") authHeader: String,
         @Body body: LikeRequest
-        ): Call<LikeResponse>
-
+    ): Call<LikeResponse>
 
     @DELETE("/api/likes/{id}")
     fun deleteLike(
@@ -73,9 +69,8 @@ interface WriterReaderApi {
     @GET("/api/users")
     suspend fun getUsers(): Response<UsersResponse>
 
- //   @GET("/api/users/{id}")
- //    suspend fun getUser(@Path("id") id: String): Response<UserResponse>
-
+    @GET("/api/users/{id}")
+     suspend fun getUserById(@Path("id") id: String): Response<UserDetails>
 
 
     // Authentication

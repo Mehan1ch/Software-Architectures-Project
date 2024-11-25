@@ -5,6 +5,7 @@ import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginResponse
 import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionsResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.UserDetails
 import hu.bme.aut.android.writer_reader_client.data.model.get.UsersResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorkResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorksResponse
@@ -165,24 +166,6 @@ class ApiManager(private val repository: ApiRepository) {
         }
     }
 
-   /* suspend fun createCollection(
-        collection: Collection,
-        onSuccess: (CollectionResponse) -> Unit,
-        onError: (String) -> Unit
-    ) {
-        try {
-            val response = repository.createCollection(collection)
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    onSuccess(it)
-                } ?: onError("Response body is null")
-            } else {
-                onError(response.errorBody()?.string() ?: "Unknown error")
-            }
-        } catch (e: Exception) {
-            onError(e.message ?: "Network error")
-        }
-    }*/
 
     // Authentication
     suspend fun register(
@@ -193,9 +176,7 @@ class ApiManager(private val repository: ApiRepository) {
         try {
             val response = repository.register(request)
             if (response.isSuccessful) {
-
                 onSuccess(response)
-
             } else {
                 onError(response.errorBody()?.string() ?: "Unknown error")
             }
@@ -203,32 +184,6 @@ class ApiManager(private val repository: ApiRepository) {
             onError(e.message ?: "Network error")
         }
     }
-/*
-    fun register(
-        request: RegisterRequest,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) {
-        repository.register(request, object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if (response.isSuccessful) {
-                    if (response.code() == 200) {
-                        onSuccess()
-                    } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
-                    }
-                } else {
-                    onError(response.errorBody()?.string() ?: "Unknown error")
-                }
-            }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                onError(t.message ?: "Network error")
-            }
-        })
-    }
-
-*/
 
     suspend fun login(
         request: LoginRequest,
@@ -270,4 +225,42 @@ class ApiManager(private val repository: ApiRepository) {
         }
     }
 
+    //Users
+    suspend fun getUserById(
+        id: String,
+        onSuccess: (UserDetails) -> Unit,
+        onError: (String) -> Unit
+    ){
+        try {
+            val response = repository.getUserById(id)
+            if (response.isSuccessful) {
+                response.body()?.let { responseBody ->
+                    onSuccess(responseBody)
+                    } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
+
+    suspend fun getCurrentUser(
+        token: String,
+        onSuccess: (Any) -> Unit,
+        onError: (String) -> Unit
+    ){
+        try {
+            val response = repository.getUser(token)
+            if (response.isSuccessful) {
+                response.body()?.let { responseBody ->
+                    onSuccess(responseBody as UserDetails)
+                    } ?: onError("Response body is null")
+            } else {
+                onError(response.errorBody()?.string() ?: "Unknown error")
+            }
+        } catch (e: Exception) {
+            onError(e.message ?: "Network error")
+        }
+    }
 }

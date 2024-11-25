@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import hu.bme.aut.android.writer_reader_client.R
+import hu.bme.aut.android.writer_reader_client.feature.register.RegisterViewIntent
 import hu.bme.aut.android.writer_reader_client.ui.common.NormalTextField
 import hu.bme.aut.android.writer_reader_client.ui.common.PasswordTextField
 import hu.bme.aut.android.writer_reader_client.ui.common.WorkCard
@@ -79,78 +81,92 @@ fun LoginScreen(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
-           // .padding(28.dp),
         contentAlignment = Alignment.Center
 
     ){
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineLarge
-            )
-
-            Spacer(modifier = Modifier.height(26.dp))
-
-            NormalTextField(
-                value = state.email,
-                label = stringResource(id = R.string.textfield_label_email),
-                onValueChange = { newValue ->
-                    viewModel.onIntent(LoginViewIntent.EmailChanged(newValue))
-                },
-                isError = state.isUsernameError,
-
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null
-                    )
-                },
-                trailingIcon = {},
-                onDone = { }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            PasswordTextField(
-                value = state.password,
-                label = stringResource(id = R.string.textfield_label_password),
-                onValueChange = { newValue ->
-                    viewModel.onIntent(LoginViewIntent.PasswordChanged(newValue))
-                },
-                isError = state.isPasswordError,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Key,
-                        contentDescription = null
-                    )
-                },
-                isVisible = state.isPasswordVisible,
-                onVisibilityChanged = {
-                    viewModel.onIntent(LoginViewIntent.TogglePasswordVisibility)
-                },
-                onDone = { }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { viewModel.onIntent(LoginViewIntent.LoginButtonClicked(context = context, onSuccessfulLogin = onSuccessfulLogin)
-                )},
-                modifier = Modifier.width(TextFieldDefaults.MinWidth)
+        if(state.isError){
+            Snackbar(
+                modifier.align(Alignment.Center),
+                containerColor = MaterialTheme.colorScheme.error,
+                contentColor = MaterialTheme.colorScheme.onError,
+                action = {
+                    Button(onClick = {viewModel.onIntent(LoginViewIntent.ErrorOkButtonClicked) })
+                    {
+                        Text("OK")
+                    }
+                }
             ) {
-                Text(text = stringResource(id = R.string.button_label_login))
+                Text(text = state.throwable?.message ?: "An unknown error occurred")
             }
+        }
+        else{
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineLarge
+                )
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(26.dp))
 
-            TextButton(
-                onClick = onRegisterButtonClicked
-            ) {
-                Text(text = stringResource(id = R.string.button_label_register))
+                NormalTextField(
+                    value = state.email,
+                    label = stringResource(id = R.string.textfield_label_email),
+                    onValueChange = { newValue ->
+                        viewModel.onIntent(LoginViewIntent.EmailChanged(newValue))
+                    },
+                    isError = state.isUsernameError,
+
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null
+                        )
+                    },
+                    trailingIcon = {},
+                    onDone = { }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                PasswordTextField(
+                    value = state.password,
+                    label = stringResource(id = R.string.textfield_label_password),
+                    onValueChange = { newValue ->
+                        viewModel.onIntent(LoginViewIntent.PasswordChanged(newValue))
+                    },
+                    isError = state.isPasswordError,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Key,
+                            contentDescription = null
+                        )
+                    },
+                    isVisible = state.isPasswordVisible,
+                    onVisibilityChanged = {
+                        viewModel.onIntent(LoginViewIntent.TogglePasswordVisibility)
+                    },
+                    onDone = { }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = { viewModel.onIntent(LoginViewIntent.LoginButtonClicked(context = context, onSuccessfulLogin = onSuccessfulLogin)
+                    )},
+                    modifier = Modifier.width(TextFieldDefaults.MinWidth)
+                ) {
+                    Text(text = stringResource(id = R.string.button_label_login))
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                TextButton(
+                    onClick = onRegisterButtonClicked
+                ) {
+                    Text(text = stringResource(id = R.string.button_label_register))
+                }
             }
-
-
         }
     }
 }

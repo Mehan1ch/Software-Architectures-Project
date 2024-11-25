@@ -38,6 +38,8 @@ sealed class WorkDetailViewIntent {
     data class CommentChanged(val text: String) : WorkDetailViewIntent()
     object CommentSendButtonClicked : WorkDetailViewIntent()
     data class LikeCommentButtonClicked(val commentId: String) : WorkDetailViewIntent()
+    object ErrorOkButtonClicked : WorkDetailViewIntent()
+
 }
 
 @OptIn(FlowPreview::class)
@@ -104,6 +106,15 @@ class WorkDetailViewModel (
         {
             viewModelScope.launch {
                 when (intent) {
+                    is WorkDetailViewIntent.ErrorOkButtonClicked -> {
+                        _state.update {
+                            it.copy(
+                                isError = false,
+                                throwable = null
+                            )
+                        }
+                        loadWork(workId)
+                    }
                     is WorkDetailViewIntent.LikeWorkButtonClicked -> {
                         launch {
                             apiManager.postLike(
@@ -113,14 +124,7 @@ class WorkDetailViewModel (
                                     likeableType = "App\\Models\\Work"
                                 ),
                                 onSuccess = { likeResponse ->
-                                    _state.update {
-                                        it.copy(
-                                            work = it.work.copy(
-                                                isLiked = !it.work.isLiked,
-                                                likes = it.work.likes + if (it.work.isLiked) -1 else 1
-                                            )
-                                        )
-                                    }
+                                    loadWork(_state.value.work.id)
                                     println("Like response: ${likeResponse.data}")
                                 },
                                 onError = { errorMessage ->
@@ -134,6 +138,14 @@ class WorkDetailViewModel (
                                     println("Error: $errorMessage")
                                 }
                             )
+                            _state.update {
+                                it.copy(
+                                    work = it.work.copy(
+                                        isLiked = !it.work.isLiked,
+                                        likes = it.work.likes + if (it.work.isLiked) -1 else 1
+                                    )
+                                )
+                            }
                         }
                     }
                     is WorkDetailViewIntent.CommentChanged -> {

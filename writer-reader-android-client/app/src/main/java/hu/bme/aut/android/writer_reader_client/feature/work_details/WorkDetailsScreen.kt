@@ -29,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -88,7 +89,21 @@ fun WorkDetailsScreen(
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
-            } else {
+            }else if (state.isError) {
+                Snackbar(
+                    modifier.align(Alignment.Center),
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError,
+                    action = {
+                        Button(onClick = {viewModel.onIntent(WorkDetailViewIntent.ErrorOkButtonClicked)}) {
+                            Text("OK")
+                        }
+                    }
+                ) {
+                    Text(text = state.throwable?.message ?: "An unknown error occurred")
+                }
+            }
+            else {
                 LazyColumn(
                     modifier = Modifier
                         .padding(paddingValues)

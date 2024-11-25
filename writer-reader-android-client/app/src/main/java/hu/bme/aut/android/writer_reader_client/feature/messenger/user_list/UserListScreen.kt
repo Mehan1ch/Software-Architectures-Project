@@ -51,8 +51,9 @@ import hu.bme.aut.android.writer_reader_client.ui.common.WorkCard
 fun UserListScreen(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    viewModel: UserListViewModel = viewModel(factory = UserListViewModel.Factory)
+    viewModel: UserListViewModel = viewModel(factory = UserListViewModel.Factory(context = LocalContext.current, onTokenNotFound = { navHostController.navigate(Screen.Login.route) }))
 ){
+
     val state by viewModel.state.collectAsStateWithLifecycle()
     Scaffold(
         modifier = modifier.fillMaxSize(),

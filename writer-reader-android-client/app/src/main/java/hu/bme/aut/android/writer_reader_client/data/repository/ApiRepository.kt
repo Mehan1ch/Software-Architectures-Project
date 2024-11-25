@@ -5,6 +5,7 @@ import hu.bme.aut.android.writer_reader_client.data.model.auth.LoginResponse
 import hu.bme.aut.android.writer_reader_client.data.model.auth.RegisterRequest
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.CollectionsResponse
+import hu.bme.aut.android.writer_reader_client.data.model.get.UserDetails
 import hu.bme.aut.android.writer_reader_client.data.model.get.UsersResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorkResponse
 import hu.bme.aut.android.writer_reader_client.data.model.get.WorksResponse
@@ -55,9 +56,7 @@ class ApiRepository(private val api: WriterReaderApi) {
         return api.getCollection(id)
     }
 
-  //  suspend fun createCollection(collection: Collection): Response<CollectionResponse> {
-  //      return api.createCollection(collection)
-  //  }
+
 
     // Felhasználók
     suspend fun getUsers(): Response<UsersResponse> {
@@ -67,6 +66,12 @@ class ApiRepository(private val api: WriterReaderApi) {
     suspend fun getUser(token: String): Response<Any> {
         return api.getUser("Bearer $token")
     }
+
+
+    suspend fun getUserById(id: String): Response<UserDetails> {
+        return api.getUserById(id)
+    }
+
 
     // Authentication
     suspend fun register(request: RegisterRequest): Response<Void?> {

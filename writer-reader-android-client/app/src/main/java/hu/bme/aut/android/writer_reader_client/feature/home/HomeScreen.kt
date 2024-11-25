@@ -13,10 +13,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.Button
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -69,7 +72,24 @@ fun HomeScreen(
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
-            } else {
+            } else if (state.isError) {
+                Snackbar(
+                    modifier.align(Alignment.Center),
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError,
+                    action = {
+                        Button(onClick = {viewModel.okError()}
+                        )
+                        {
+                            Text("OK")
+                        }
+                    }
+                ) {
+                    Text(text = state.throwable?.message ?: "An unknown error occurred")
+                }
+
+            }
+            else {
                 LazyColumn(
                 ) {
                     items(state.searchedWorks.size) { index ->
